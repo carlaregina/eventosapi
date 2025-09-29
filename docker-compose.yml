@@ -1,4 +1,13 @@
 services:
+  eventos_api:
+    build: .
+    container_name: eventos-api
+    environment:
+      POSTGRES_HOST: postgres 
+    depends_on: 
+      - postgres
+    ports:
+      - "8080:8080"
   postgres:
     image: postgres:17-alpine3.21
     container_name: eventos_db
