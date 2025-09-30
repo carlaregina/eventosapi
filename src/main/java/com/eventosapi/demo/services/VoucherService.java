@@ -1,10 +1,9 @@
-package com.eventosapi.demo.service;
+package com.eventosapi.demo.services;
 
-import com.eventosapi.demo.domain.dto.InscricaoDTO;
+import com.eventosapi.demo.dtos.InscricaoDTO;
 import net.sf.jasperreports.engine.*;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;

@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18c8e2ee-be6e-4753-a651-0cc39709ec5a" name="Changes" comment="criando e alterando entidades" />
+    <list default="true" id="18c8e2ee-be6e-4753-a651-0cc39709ec5a" name="Changes" comment="criando enums">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/controller/VoucherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/controller/VoucherController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/domain/dto/InscricaoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/dtos/InscricaoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/domain/model/Inscricao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Evento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Evento.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Inscricao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Inscricao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Local.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Local.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/service/VoucherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/VoucherService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,7 +92,23 @@
       <option name="project" value="LOCAL" />
       <updated>1759236975023</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="criando enums">
+      <option name="closed" value="true" />
+      <created>1759237183260</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1759237183260</updated>
+    </task>
+    <task id="LOCAL-00003" summary="criando enums">
+      <option name="closed" value="true" />
+      <created>1759237237335</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1759237237335</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -91,6 +116,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="criando e alterando entidades" />
-    <option name="LAST_COMMIT_MESSAGE" value="criando e alterando entidades" />
+    <MESSAGE value="criando enums" />
+    <option name="LAST_COMMIT_MESSAGE" value="criando enums" />
   </component>
 </project>
