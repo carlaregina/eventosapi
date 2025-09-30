@@ -21,11 +21,6 @@ public class LocalService {
     private final LocalRepository localRepository;
 
     @Transactional(readOnly = true)
-    public Page<Local> listar(Pageable pageable) {
-        return localRepository.findAll(pageable);
-    }
-
-    @Transactional(readOnly = true)
     public Page<Local> listar(FiltroLocalDTO filtro, Pageable pageable) {
         Specification<Local> specification = LocalSpecification.build()
             .and(LocalSpecification.comNome(filtro.getNome()))
