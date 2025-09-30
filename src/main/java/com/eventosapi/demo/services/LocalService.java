@@ -1,12 +1,16 @@
 package com.eventosapi.demo.services;
 
+import com.eventosapi.demo.dtos.FiltroLocalDTO;
 import com.eventosapi.demo.dtos.LocalDTO;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.repositories.LocalRepository;
+import com.eventosapi.demo.specifications.LocalSpecification;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,21 @@ public class LocalService {
     @Transactional(readOnly = true)
     public Page<Local> listar(Pageable pageable) {
         return localRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Local> listar(FiltroLocalDTO filtro, Pageable pageable) {
+        Specification<Local> specification = LocalSpecification.build()
+            .and(LocalSpecification.comNome(filtro.getNome()))
+            .and(LocalSpecification.comCep(filtro.getCep()))
+            .and(LocalSpecification.comLogradouro(filtro.getLogradouro()))
+            .and(LocalSpecification.comNumero(filtro.getNumero()))
+            .and(LocalSpecification.comBairro(filtro.getBairro()))
+            .and(LocalSpecification.comCidade(filtro.getCidade()))
+            .and(LocalSpecification.comEstado(filtro.getEstado()))
+            .and(LocalSpecification.comTipo(filtro.getTipo()));
+
+        return localRepository.findAll(specification, pageable);
     }
 
     @Transactional(readOnly = true)
