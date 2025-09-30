@@ -2,7 +2,9 @@ package com.eventosapi.demo.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +23,11 @@ public class LocalController {
     @GetMapping
     public Page<Local> listar(Pageable pageable) {
         return localService.listar(pageable);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Local> buscarPorId(@PathVariable Long id) {
+        Local local = localService.buscarPorId(id);
+        return ResponseEntity.ok(local);
     }
 }
