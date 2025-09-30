@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18c8e2ee-be6e-4753-a651-0cc39709ec5a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+    <list default="true" id="18c8e2ee-be6e-4753-a651-0cc39709ec5a" name="Changes" comment="criando enums">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/controller/VoucherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/controller/VoucherController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/domain/dto/InscricaoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/dtos/InscricaoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/domain/model/Inscricao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Evento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Evento.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Inscricao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Inscricao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Local.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Local.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/service/VoucherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/VoucherService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,11 +22,18 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -31,12 +45,9 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/carlaregina/eventosapi.git&quot;,
-    &quot;accountId&quot;: &quot;c352e6a0-d4c9-4e61-9703-44bcfe190090&quot;
+    &quot;accountId&quot;: &quot;6a5b65f4-3beb-4512-bcb9-c9dbcae2344b&quot;
   }
 }</component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/main/resources/application.properties" root0="FORCE_HIGHLIGHTING" />
-  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -49,7 +60,7 @@
 }</component>
   <component name="ProjectId" id="33O54RC9cwzJyY62XrErZJ4BPQu" />
   <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -57,54 +68,13 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;Maven.demo [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.demo [install].executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;Application.EventosapiApplication.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.EventosapiApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/voucher&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;#3 on feature/entityStructure&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/ambiente/eventosapi/src/main/resources/relatorios/input&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/josarauj/IdeaProjects/eventosapi&quot;
   }
 }</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\ambiente\eventosapi\src\main\resources\relatorios\input" />
-      <recent name="C:\ambiente\eventosapi\src\main\resources\relatorios" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\ambiente\eventosapi\src\main\resources\relatorios\input" />
-    </key>
-  </component>
-  <component name="RunManager">
-    <configuration name="EventosapiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <module name="demo" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.eventosapi.demo.EventosapiApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.189" />
-        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.189" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -113,12 +83,40 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1759175086907</updated>
-      <workItem from="1759194262916" duration="9680000" />
-      <workItem from="1759230748982" duration="117000" />
     </task>
+    <task id="LOCAL-00001" summary="criando e alterando entidades">
+      <option name="closed" value="true" />
+      <created>1759236975023</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1759236975023</updated>
+    </task>
+    <task id="LOCAL-00002" summary="criando enums">
+      <option name="closed" value="true" />
+      <created>1759237183260</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1759237183260</updated>
+    </task>
+    <task id="LOCAL-00003" summary="criando enums">
+      <option name="closed" value="true" />
+      <created>1759237237335</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1759237237335</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="docker-compose.yml" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="criando e alterando entidades" />
+    <MESSAGE value="criando enums" />
+    <option name="LAST_COMMIT_MESSAGE" value="criando enums" />
   </component>
 </project>

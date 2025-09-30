@@ -1,9 +1,8 @@
 package com.eventosapi.demo.controller;
 
-import com.eventosapi.demo.domain.dto.InscricaoDTO;
-import com.eventosapi.demo.service.VoucherService;
+import com.eventosapi.demo.dtos.InscricaoDTO;
+import com.eventosapi.demo.services.VoucherService;
 import net.sf.jasperreports.engine.JasperExportManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
