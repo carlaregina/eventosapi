@@ -19,6 +19,7 @@ import com.eventosapi.demo.dtos.LocalDTO;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.services.LocalService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -40,13 +41,13 @@ public class LocalController {
     }
 
     @PostMapping
-    public ResponseEntity<Local> salvar(@RequestBody LocalDTO dto) {
+    public ResponseEntity<Local> salvar(@Valid @RequestBody LocalDTO dto) {
         Local salvo = localService.salvar(dto);
         return ResponseEntity.status(CREATED).body(salvo);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Local> atualizar(@PathVariable Long id, @RequestBody LocalDTO dto) {
+    public ResponseEntity<Local> atualizar(@PathVariable Long id, @Valid @RequestBody LocalDTO dto) {
         Local local = localService.atualizar(id, dto);
         return ResponseEntity.ok(local);
     }
