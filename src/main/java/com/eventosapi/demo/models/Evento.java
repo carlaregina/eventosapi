@@ -1,13 +1,13 @@
 package com.eventosapi.demo.models;
 
-import com.eventosapi.demo.enums.tipoEvento;
+import com.eventosapi.demo.enums.TipoEvento;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "evento")
-public class evento implements Serializable {
+public class Evento implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,25 +25,25 @@ public class evento implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false, length = 255)
-    private tipoEvento tipo;
+    private TipoEvento tipo;
 
     @Column(name = "max_participantes", nullable = false)
     private Integer maxParticipantes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizador", nullable = false, foreignKey = @ForeignKey(name = "fk_evento_organizador"))
-    private usuario organizador;
+    private Usuario organizador;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_local", nullable = false, foreignKey = @ForeignKey(name = "fk_evento_local"))
-    private local local;
+    private Local local;
 
     // Construtores
-    public evento() {
+    public Evento() {
     }
 
-    public evento(String titulo, String descricao, LocalDateTime data, tipoEvento tipo,
-                  Integer maxParticipantes, usuario organizador, local local) {
+    public Evento(String titulo, String descricao, LocalDateTime data, TipoEvento tipo,
+                  Integer maxParticipantes, Usuario organizador, Local local) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.data = data;

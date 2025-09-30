@@ -1,12 +1,12 @@
 package com.eventosapi.demo.models;
 
-import com.eventosapi.demo.enums.tipoLocal;
+import com.eventosapi.demo.enums.TipoLocal;
 import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "local")
-public class local implements Serializable{
+public class Local implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,13 +33,13 @@ public class local implements Serializable{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", length = 255)
-    private tipoLocal tipo;
+    private TipoLocal tipo;
 
     // Construtores
-    public local() {}
+    public Local() {}
 
-    public local(String cep, String rua, String numero, String bairro,
-                 String cidade, String estado, tipoLocal tipo) {
+    public Local(String cep, String rua, String numero, String bairro,
+                 String cidade, String estado, TipoLocal tipo) {
         this.cep = cep;
         this.rua = rua;
         this.numero = numero;

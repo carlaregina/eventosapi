@@ -1,6 +1,6 @@
 package com.eventosapi.demo.enums;
 
-public enum tipoLocal
+public enum TipoLocal
 {
     RURAL,
     PARQUE,

@@ -1,11 +1,12 @@
 package com.eventosapi.demo.models;
 
+import com.eventosapi.demo.enums.TipoUsuario;
 import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "usuario")
-public class usuario implements Serializable {
+public class Usuario implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,15 +22,20 @@ public class usuario implements Serializable {
     @Column(name = "telefone", nullable = false, length = 20)
     private String telefone;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", length = 255)
+    private TipoUsuario tipo;
+
     // Construtores
-    public usuario() {
+    public Usuario() {
 
     }
 
-    public usuario(String nome, String email, String telefone) {
+    public Usuario(String nome, String email, String telefone, TipoUsuario tipo) {
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
+        this.tipo = tipo;
     }
 
     // Getters e Setters
@@ -37,8 +43,16 @@ public class usuario implements Serializable {
         return id;
     }
 
-    public void setIdUsuario(Long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public TipoUsuario getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoUsuario tipo) {
+        this.tipo = tipo;
     }
 
     public String getNome() {

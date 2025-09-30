@@ -1,6 +1,6 @@
 package com.eventosapi.demo.enums;
 
-public enum tipoEvento
+public enum TipoEvento
 {
     FESTA_SHOW,
     TEATRO,

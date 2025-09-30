@@ -6,6 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="18c8e2ee-be6e-4753-a651-0cc39709ec5a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/config/webConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/enums/tipoEvento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/enums/TipoEvento.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/enums/tipoLocal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/enums/TipoLocal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/evento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Evento.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/inscricao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Inscricao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/local.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Local.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/models/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/repositories/eventoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/repositories/EventoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/repositories/inscricaoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/repositories/InscricaoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/repositories/localRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/repositories/LocalRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/repositories/usuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/repositories/UsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/eventoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/EventoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/inscricaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/InscricaoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/localService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/LocalService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/usuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/UsuarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,13 +31,18 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -54,14 +75,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;#1 on feature/database&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/josarauj/IdeaProjects/eventosapi&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.EventosapiApplication.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "#3 on feature/entityStructure",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/josarauj/IdeaProjects/eventosapi"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -72,5 +94,8 @@
       <updated>1759175086907</updated>
     </task>
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="docker-compose.yml" />
   </component>
 </project>

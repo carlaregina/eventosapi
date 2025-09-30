@@ -1,5 +1,6 @@
 package com.eventosapi.demo.models;
 
+import com.eventosapi.demo.enums.TipoInscricao;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 @Table(name = "inscricao",
        uniqueConstraints = { @UniqueConstraint(
        columnNames = {"id_evento", "id_usuario"})})
-public class inscricao {
+public class Inscricao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,16 +17,27 @@ public class inscricao {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_evento", nullable = false)
-    private evento evento;
+    private Evento evento;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private usuario usuario;
+    private Usuario usuario;
 
     @Column(name = "data", nullable = false)
     private LocalDateTime data = LocalDateTime.now();
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", length = 255)
+    private TipoInscricao tipo;
+
     // Getters e Setters
+    public TipoInscricao getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoInscricao tipo) {
+        this.tipo = tipo;
+    }
 
     public Long getId() {
         return id;
@@ -35,19 +47,19 @@ public class inscricao {
         this.id = id;
     }
 
-    public evento getEvento() {
+    public Evento getEvento() {
         return evento;
     }
 
-    public void setEvento(evento evento) {
+    public void setEvento(Evento evento) {
         this.evento = evento;
     }
 
-    public usuario getUsuario() {
+    public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(usuario usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
