@@ -3,12 +3,14 @@ package com.eventosapi.demo.models;
 import com.eventosapi.demo.enums.TipoEvento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Builder
 @Entity
 @Table(name = "evento")
 @Data
@@ -45,43 +47,4 @@ public class Evento implements Serializable {
     @JoinColumn(name = "id_local", nullable = false, foreignKey = @ForeignKey(name = "fk_evento_local"))
     private Local local;
 
-//    // Construtores
-//    public Evento() {
-//    }
-//
-//    public Evento(String titulo, String descricao, LocalDateTime data, TipoEvento tipo,
-//                  Integer maxParticipantes, Usuario organizador, Local local) {
-//        this.titulo = titulo;
-//        this.descricao = descricao;
-//        this.data = data;
-//        this.tipo = tipo;
-//        this.maxParticipantes = maxParticipantes;
-//        this.organizador = organizador;
-//        this.local = local;
-//    }
-//
-//    // Getters e Setters
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public String getTitulo() {
-//        return titulo;
-//    }
-//
-//    public void setTitulo(String titulo) {
-//        this.titulo = titulo;
-//    }
-//
-//    public String getDescricao() {
-//        return descricao;
-//    }
-//
-//    public void setDescricao(String descricao) {
-//
-//    }
 }
