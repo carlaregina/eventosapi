@@ -3,7 +3,7 @@ services:
     build: .
     container_name: eventos-api
     environment:
-      POSTGRES_HOST: postgres 
+      POSTGRES_HOST: eventos_db
     depends_on: 
       - postgres
     ports:
