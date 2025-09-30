@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18c8e2ee-be6e-4753-a651-0cc39709ec5a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/domain/dto/InscricaoDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/domain/model/Inscricao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/controller/VoucherController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/service/VoucherService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/relatorios/input/Inscricao.jrxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/domain/model/Inscricao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/domain/model/Inscricao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +40,9 @@
     &quot;accountId&quot;: &quot;c352e6a0-d4c9-4e61-9703-44bcfe190090&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/resources/application.properties" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -56,19 +63,36 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Maven.demo [clean].executor": "Run",
+    "Maven.demo [install].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.EventosapiApplication.executor": "Run",
     "git-widget-placeholder": "feature/voucher",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/ambiente/eventosapi",
+    "last_opened_file_path": "C:/ambiente/eventosapi/src/main/resources/relatorios/input",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "File.Encoding",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\ambiente\eventosapi\src\main\resources\relatorios\input" />
+      <recent name="C:\ambiente\eventosapi\src\main\resources\relatorios" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\ambiente\eventosapi\src\main\resources\relatorios\input" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="EventosapiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
@@ -95,7 +119,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1759175086907</updated>
-      <workItem from="1759194262916" duration="1426000" />
+      <workItem from="1759194262916" duration="9680000" />
     </task>
     <servers />
   </component>

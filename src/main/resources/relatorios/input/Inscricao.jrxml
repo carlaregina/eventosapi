@@ -1,0 +1,47 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="Inscricao" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5f066a68-a5d0-40ea-a4bd-cf4ea414c695">
+	<parameter name="NUMERO_INSCRICAO" class="java.lang.String"/>
+	<parameter name="LOCAL_EVENTO" class="java.lang.String"/>
+	<parameter name="SAUDACAO_USUARIO" class="java.lang.String"/>
+	<parameter name="HORARIO_EVENTO" class="java.lang.String"/>
+	<parameter name="NOME_EVENTO" class="java.lang.String"/>
+	<query language="sql"><![CDATA[]]></query>
+	<background splitType="Stretch"/>
+	<title height="53" splitType="Stretch">
+		<element kind="staticText" uuid="c36258c9-d1ec-4274-a12f-6cb2e3e76416" x="80" y="10" width="390" height="40" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[COMPROVANTE DE INSCRIÇÃO
+]]></text>
+		</element>
+	</title>
+	<columnHeader height="47" splitType="Stretch">
+		<element kind="textField" uuid="fe105e50-7d14-4603-bb82-8b75f9cc5325" x="20" y="10" width="130" height="30">
+			<expression><![CDATA[$P{SAUDACAO_USUARIO}]]></expression>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="183" splitType="Stretch">
+			<element kind="textField" uuid="76247367-0178-4cc2-bbee-8b5bca2aa22d" x="20" y="69" width="390" height="31" vTextAlign="Middle">
+				<expression><![CDATA[$P{HORARIO_EVENTO}]]></expression>
+			</element>
+			<element kind="textField" uuid="4365121e-8070-4143-8fd8-f3d68bd03fdc" x="20" y="37" width="390" height="30" vTextAlign="Middle">
+				<expression><![CDATA[$P{NOME_EVENTO}]]></expression>
+			</element>
+			<element kind="textField" uuid="288d635f-0fde-4531-8c62-f5c8697120bd" x="20" y="104" width="390" height="30" vTextAlign="Middle">
+				<expression><![CDATA[$P{LOCAL_EVENTO}]]></expression>
+			</element>
+			<element kind="textField" uuid="36c9947f-c921-409a-80d0-c5d17d146a5b" x="20" y="6" width="390" height="30" vTextAlign="Middle">
+				<expression><![CDATA[$P{NUMERO_INSCRICAO}]]></expression>
+			</element>
+			<element kind="staticText" uuid="9c9a7491-7967-404c-843b-96cfe2ea771d" x="22" y="153" width="478" height="30" forecolor="#C71714">
+				<text><![CDATA[Os portões estarão abertos 1h (uma hora) antes do início do evento.
+Verifique a classificação indicativa.]]></text>
+			</element>
+			<element kind="image" uuid="14112fed-5dec-4c21-a79f-908a45e9e14a" x="420" y="6" width="130" height="124">
+				<expression><![CDATA["https://codigosdebarrasbrasil.com.br/wp-content/uploads/2019/09/codigo_qr-300x300.png"]]></expression>
+			</element>
+			<element kind="staticText" uuid="e96b8299-00aa-4ee3-ab0e-2809417c5513" x="420" y="140" width="130" height="30" hTextAlign="Left">
+				<text><![CDATA[Apresente o código na entrada no evento.]]></text>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

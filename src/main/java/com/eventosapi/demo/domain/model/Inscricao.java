@@ -20,16 +20,16 @@ public class Inscricao {
     @Column(name = "id_inscricao")
     private Long id;
 
-    @NotNull(message = "O evento é obrigatório")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_evento", nullable = false)
-    private Evento evento;
-
-
-    @NotNull(message = "O usuário é obrigatório")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
+//    @NotNull(message = "O evento é obrigatório")
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_evento", nullable = false)
+//    private Evento evento;
+//
+//
+//    @NotNull(message = "O usuário é obrigatório")
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_usuario", nullable = false)
+//    private Usuario usuario;
 
     @NotNull(message = "A data é obrigatória")
     @Column(nullable = false)
