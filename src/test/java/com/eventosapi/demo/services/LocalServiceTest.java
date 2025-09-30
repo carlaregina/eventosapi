@@ -2,6 +2,7 @@ package com.eventosapi.demo.services;
 
 import com.eventosapi.demo.dtos.FiltroLocalDTO;
 import com.eventosapi.demo.dtos.LocalDTO;
+import com.eventosapi.demo.enums.Estado;
 import com.eventosapi.demo.enums.TipoLocal;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Local;
@@ -44,7 +45,7 @@ class LocalServiceTest {
         localDTO.setNumero("10");
         localDTO.setBairro("Centro");
         localDTO.setCidade("Cidade");
-        localDTO.setEstado("UF");
+        localDTO.setEstado(Estado.PE);
         localDTO.setTipo(TipoLocal.PRAIA);
 
         local = new Local();
@@ -64,12 +65,12 @@ class LocalServiceTest {
         FiltroLocalDTO filtro = new FiltroLocalDTO();
         Pageable pageable = PageRequest.of(0, 10);
         Page<Local> page = new PageImpl<>(List.of(local));
-        when(localRepository.findAll(any(Specification.class), pageable)).thenReturn(page);
+        when(localRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(page);
 
         Page<Local> result = localService.listar(filtro, pageable);
 
         assertEquals(1, result.getTotalElements());
-        verify(localRepository).findAll(pageable);
+        verify(localRepository).findAll(any(Specification.class), eq(pageable));
     }
 
     @Test
@@ -114,7 +115,7 @@ class LocalServiceTest {
         novoDTO.setNumero("99");
         novoDTO.setBairro("Novo Bairro");
         novoDTO.setCidade("Nova Cidade");
-        novoDTO.setEstado("NV");
+        novoDTO.setEstado(Estado.PB);
         novoDTO.setTipo(RURAL);
 
         Local result = localService.atualizar(1L, novoDTO);
@@ -125,7 +126,7 @@ class LocalServiceTest {
         assertEquals("99", result.getNumero());
         assertEquals("Novo Bairro", result.getBairro());
         assertEquals("Nova Cidade", result.getCidade());
-        assertEquals("NV", result.getEstado());
+        assertEquals(Estado.PB, result.getEstado());
         assertEquals(RURAL, result.getTipo());
         verify(localRepository).save(local);
     }

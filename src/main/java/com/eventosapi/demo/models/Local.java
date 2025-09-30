@@ -1,5 +1,6 @@
 package com.eventosapi.demo.models;
 
+import com.eventosapi.demo.enums.Estado;
 import com.eventosapi.demo.enums.TipoLocal;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,8 +38,9 @@ public class Local implements Serializable{
     @Column(name = "cidade", nullable = false, length = 255)
     private String cidade;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 2)
-    private String estado;
+    private Estado estado;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", length = 255)

@@ -1,5 +1,6 @@
 package com.eventosapi.demo.specifications;
 
+import com.eventosapi.demo.enums.Estado;
 import com.eventosapi.demo.enums.TipoLocal;
 import com.eventosapi.demo.models.Local;
 
@@ -43,9 +44,9 @@ public class LocalSpecification {
                 hasText(cidade) ? criteriaBuilder.like(criteriaBuilder.lower(root.get("cidade")), "%" + cidade.toLowerCase() + "%") : null;
     }
 
-    public static Specification<Local> comEstado(String estado) {
+    public static Specification<Local> comEstado(Estado estado) {
         return (root, query, criteriaBuilder) ->
-                hasText(estado) ? criteriaBuilder.equal(root.get("estado"), estado) : null;
+                estado != null ? criteriaBuilder.equal(root.get("estado"), estado) : null;
     }
 
     public static Specification<Local> comTipo(TipoLocal tipo) {

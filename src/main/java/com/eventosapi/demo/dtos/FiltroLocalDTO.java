@@ -1,5 +1,6 @@
 package com.eventosapi.demo.dtos;
 
+import com.eventosapi.demo.enums.Estado;
 import com.eventosapi.demo.enums.TipoLocal;
 import lombok.Data;
 
@@ -11,6 +12,6 @@ public class FiltroLocalDTO {
     private String numero;
     private String bairro;
     private String cidade;
-    private String estado;
+    private Estado estado;
     private TipoLocal tipo;
 }

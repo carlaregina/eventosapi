@@ -2,6 +2,7 @@ package com.eventosapi.demo.dtos;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.eventosapi.demo.enums.Estado;
 import com.eventosapi.demo.enums.TipoLocal;
 
 import jakarta.validation.constraints.NotBlank;
@@ -36,9 +37,8 @@ public class LocalDTO {
     @Length(max = 255, message = "A cidade deve ter no máximo 255 caracteres")
     private String cidade;
 
-    @NotBlank(message = "O estado é obrigatório")
-    @Length(max = 2, message = "O estado deve ter no máximo 2 caracteres")
-    private String estado;
+    @NotNull(message = "O estado é obrigatório")
+    private Estado estado;
 
     @NotNull(message = "O tipo é obrigatório")
     private TipoLocal tipo;
