@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eventosapi.demo.dtos.FiltroLocalDTO;
 import com.eventosapi.demo.dtos.LocalDTO;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.services.LocalService;
@@ -28,8 +29,8 @@ public class LocalController {
     private final LocalService localService;
 
     @GetMapping
-    public Page<Local> listar(Pageable pageable) {
-        return localService.listar(pageable);
+    public Page<Local> listar(FiltroLocalDTO filtro, Pageable pageable) {
+        return localService.listar(filtro, pageable);
     }
 
     @GetMapping("/{id}")
