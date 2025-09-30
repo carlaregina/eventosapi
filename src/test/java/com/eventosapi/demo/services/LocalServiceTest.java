@@ -1,5 +1,6 @@
 package com.eventosapi.demo.services;
 
+import com.eventosapi.demo.dtos.FiltroLocalDTO;
 import com.eventosapi.demo.dtos.LocalDTO;
 import com.eventosapi.demo.enums.TipoLocal;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
@@ -11,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,11 +61,12 @@ class LocalServiceTest {
 
     @Test
     void deveListarLocais() {
+        FiltroLocalDTO filtro = new FiltroLocalDTO();
         Pageable pageable = PageRequest.of(0, 10);
         Page<Local> page = new PageImpl<>(List.of(local));
-        when(localRepository.findAll(pageable)).thenReturn(page);
+        when(localRepository.findAll(any(Specification.class), pageable)).thenReturn(page);
 
-        Page<Local> result = localService.listar(pageable);
+        Page<Local> result = localService.listar(filtro, pageable);
 
         assertEquals(1, result.getTotalElements());
         verify(localRepository).findAll(pageable);
