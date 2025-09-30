@@ -12,6 +12,7 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAll(Exception ex){
         Map<String, String> body =  new HashMap<>();
@@ -26,5 +27,15 @@ public class GlobalExceptionHandler {
             erros.put(fe.getField(), fe.getDefaultMessage());
         }
         return new ResponseEntity<>(erros, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradoException.class)
+    public ResponseEntity<?> handleEntidadeNaoEncontradoException(EntidadeNaoEncontradoException ex){
+        Map<String, Object> body =  new HashMap<>();
+        body.put("timestamp", System.currentTimeMillis());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("error", "Entidade não encontrada");
+        body.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 }
