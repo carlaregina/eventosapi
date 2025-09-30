@@ -49,4 +49,10 @@ public class LocalController {
         Local local = localService.atualizar(id, dto);
         return ResponseEntity.ok(local);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        localService.removerPorId(id);
+        return ResponseEntity.noContent().build();
+    }
 }

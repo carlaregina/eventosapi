@@ -39,6 +39,12 @@ public class LocalService {
         return localRepository.save(local);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void removerPorId(Long id) {
+        Local local = buscarPorId(id);
+        localRepository.delete(local);
+    }
+
     private Local toEntity(LocalDTO dto) {
         Local local = new Local();
         atualizarEntity(local, dto);
