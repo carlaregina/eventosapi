@@ -5,9 +5,11 @@ import static org.springframework.http.HttpStatus.CREATED;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,5 +42,11 @@ public class LocalController {
     public ResponseEntity<Local> salvar(@RequestBody LocalDTO dto) {
         Local salvo = localService.salvar(dto);
         return ResponseEntity.status(CREATED).body(salvo);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Local> atualizar(@PathVariable Long id, @RequestBody LocalDTO dto) {
+        Local local = localService.atualizar(id, dto);
+        return ResponseEntity.ok(local);
     }
 }

@@ -1,16 +1,14 @@
 package com.eventosapi.demo.services;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.eventosapi.demo.dtos.LocalDTO;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.repositories.LocalRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +30,13 @@ public class LocalService {
     @Transactional(rollbackFor = Exception.class)
     public Local salvar(LocalDTO dto) {
         return localRepository.save(toEntity(dto));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Local atualizar(Long id, LocalDTO dto) {
+        Local local = buscarPorId(id);
+        atualizarEntity(local, dto);
+        return localRepository.save(local);
     }
 
     private Local toEntity(LocalDTO dto) {
