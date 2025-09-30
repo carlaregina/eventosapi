@@ -1,5 +1,6 @@
 CREATE TABLE local (
     id_local BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
     cep VARCHAR(9) NOT NULL,
     logradouro VARCHAR(255) NOT NULL,
     numero VARCHAR(20) NOT NULL,
