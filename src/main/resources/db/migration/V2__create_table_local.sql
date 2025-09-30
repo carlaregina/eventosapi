@@ -5,6 +5,6 @@ CREATE TABLE local (
     numero VARCHAR(20) NOT NULL,
     bairro VARCHAR(255) NOT NULL,
     cidade VARCHAR(255) NOT NULL,
-    estado CHAR(2) NOT NULL,
+    estado VARCHAR(2) NOT NULL,
     tipo VARCHAR(255)
 );
