@@ -19,11 +19,14 @@ public class Local implements Serializable{
     @Column(name = "id_local")
     private Long id;
 
+    @Column(name = "nome", nullable = false, length = 255)
+    private String nome;
+
     @Column(name = "cep", nullable = false, length = 9)
     private String cep;
 
-    @Column(name = "rua", nullable = false, length = 255)
-    private String rua;
+    @Column(name = "logradouro", nullable = false, length = 255)
+    private String logradouro;
 
     @Column(name = "numero", nullable = false, length = 20)
     private String numero;

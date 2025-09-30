@@ -1,6 +1,6 @@
 package com.eventosapi.demo.models;
 
-import com.eventosapi.demo.enums.TipoInscricao;
+import com.eventosapi.demo.enums.StatusInscricao;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,8 +34,8 @@ public class Inscricao {
     private LocalDateTime data = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", length = 255)
-    private TipoInscricao tipo;
+    @Column(name = "status", length = 255)
+    private StatusInscricao status;
 
 //    // Getters e Setters
 //    public TipoInscricao getTipo() {
