@@ -1,6 +1,6 @@
 package com.eventosapi.demo.controller;
 
-import com.eventosapi.demo.dtos.InscricaoRequest;
+import com.eventosapi.demo.dtos.InscricaoRequestDTO;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.services.VoucherService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,11 +35,9 @@ public class VoucherController {
         @ApiResponse(responseCode = "400", description = "Requisição inválida", 
             content = @Content)
     })
-    public ResponseEntity<byte[]> baixarVoucher(@RequestBody InscricaoRequest inscricao) {
+    public ResponseEntity<byte[]> baixarVoucher(@RequestBody InscricaoRequestDTO inscricao) {
         try {
-            var jasperPrint = voucherService.geraRelatorio(inscricao);
-
-            byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+            byte[] pdfBytes = voucherService.geraRelatorioPDF(inscricao);
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Inscricao.pdf")
