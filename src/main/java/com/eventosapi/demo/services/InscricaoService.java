@@ -1,5 +1,10 @@
 package com.eventosapi.demo.services;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.eventosapi.demo.dtos.InscricaoRequestDTO;
 import com.eventosapi.demo.enums.StatusInscricao;
 import com.eventosapi.demo.exceptions.DuplicidadeInscricaoException;
@@ -10,14 +15,6 @@ import com.eventosapi.demo.models.Usuario;
 import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.InscricaoRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.eventosapi.demo.services.VoucherService;
-import com.eventosapi.demo.services.EmailService;   
-
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Service
@@ -45,15 +42,15 @@ public class InscricaoService {
         }
 
         Evento evento = eventoRepository.findById(req.idEvento())
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Evento não encontrado"));
+            .orElseThrow(() -> new RecursoNaoEncontradoException("Evento não encontrado"));
         Usuario usuario = usuarioRepository.findById(req.idUsuario())
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
+            .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
 
         Inscricao inscricao = Inscricao.builder()
-                .evento(evento)
-                .usuario(usuario)
-                .status(StatusInscricao.CONFIRMADA)
-                .build();
+            .evento(evento)
+            .usuario(usuario)
+            .status(StatusInscricao.CONFIRMADA)
+            .build();
 
        inscricaoRepository.save(inscricao);
 
@@ -72,7 +69,7 @@ public class InscricaoService {
     @Transactional(readOnly = true)
     public Inscricao buscar(Long id) {
         return inscricaoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Inscrição não encontrada"));
+            .orElseThrow(() -> new RecursoNaoEncontradoException("Inscrição não encontrada"));
     }
 
     @Transactional(readOnly = true)
@@ -86,7 +83,6 @@ public class InscricaoService {
         var i = buscar(id);
         i.setStatus(status);   
         return i;
-        
     }
 
     @Transactional
