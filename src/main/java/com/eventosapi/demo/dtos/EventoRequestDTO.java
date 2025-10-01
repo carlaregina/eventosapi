@@ -2,12 +2,10 @@ package com.eventosapi.demo.dtos;
 
 import com.eventosapi.demo.enums.TipoEvento;
 import jakarta.validation.constraints.*;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Builder
