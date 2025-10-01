@@ -83,7 +83,7 @@ class InscricaoServiceTest {
         evento.setMaxParticipantes(10);
         evento.setTipo(TipoEvento.CURSO);
 
-        inscricaoRequestDTO = new InscricaoRequestDTO(1L, 1L, 1L, StatusInscricao.PENDENTE);
+        inscricaoRequestDTO = new InscricaoRequestDTO(1L, 1L, StatusInscricao.PENDENTE);
 
         inscricao = new Inscricao();
         inscricao.setId(1L);
@@ -133,7 +133,7 @@ class InscricaoServiceTest {
         when(eventoRepository.findById(1L)).thenReturn(Optional.of(evento));
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
         when(localRepository.save(any(Inscricao.class))).thenReturn(inscricao);
-        when(voucherService.geraRelatorioPDF(inscricaoRequestDTO)).thenReturn(new byte[0]);
+        when(voucherService.geraRelatorioPDF(any(Inscricao.class))).thenReturn(new byte[0]);
         doNothing().when(emailService).enviarComAnexo(any(String.class), any(String.class), any(String.class), any(byte[].class), any(String.class));
 
         Inscricao result = localService.criar(inscricaoRequestDTO);
