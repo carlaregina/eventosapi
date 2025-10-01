@@ -26,8 +26,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.eventosapi.demo.dtos.FiltroInscricaoDTO;
-import com.eventosapi.demo.dtos.InscricaoDTO;
-import com.eventosapi.demo.dtos.InscricaoResponse;
+import com.eventosapi.demo.dtos.InscricaoRequestDTO;
+import com.eventosapi.demo.dtos.InscricaoResponseDTO;
 import com.eventosapi.demo.enums.StatusInscricao;
 import com.eventosapi.demo.enums.TipoEvento;
 import com.eventosapi.demo.enums.TipoUsuario;
@@ -50,10 +50,16 @@ class InscricaoServiceTest {
     @Mock
     private EventoRepository eventoRepository;
 
+    @Mock
+    private VoucherService voucherService;
+
+    @Mock
+    private EmailService emailService;
+
     @InjectMocks
     private InscricaoService localService;
     
-    private InscricaoDTO inscricaoDTO;
+    private InscricaoRequestDTO inscricaoRequestDTO;
     private Inscricao inscricao;
     private Usuario usuario;
     private Evento evento;
@@ -76,14 +82,14 @@ class InscricaoServiceTest {
         evento.setData(LocalDateTime.now());
         evento.setMaxParticipantes(10);
         evento.setTipo(TipoEvento.CURSO);
-        
-        inscricaoDTO = new InscricaoDTO(1L, 1L, 1L, LocalDateTime.now());
+
+        inscricaoRequestDTO = new InscricaoRequestDTO(1L, 1L, 1L, StatusInscricao.PENDENTE);
 
         inscricao = new Inscricao();
         inscricao.setId(1L);
         inscricao.setEvento(evento);
         inscricao.setUsuario(usuario);
-        inscricao.setData(inscricaoDTO.data());
+        inscricao.setData(LocalDateTime.now());
         inscricao.setStatus(StatusInscricao.PENDENTE);
     }
 
@@ -94,7 +100,7 @@ class InscricaoServiceTest {
         Page<Inscricao> page = new PageImpl<>(List.of(inscricao));
         when(localRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(page);
 
-        Page<InscricaoResponse> result = localService.listar(filtro, pageable);
+        Page<InscricaoResponseDTO> result = localService.listar(filtro, pageable);
 
         assertEquals(1, result.getTotalElements());
         verify(localRepository).findAll(any(Specification.class), eq(pageable));
@@ -123,16 +129,18 @@ class InscricaoServiceTest {
 
     @Test
     void deveSalvarInscricao() {
+        when(localRepository.existsByEventoIdAndUsuarioId(1L, 1L)).thenReturn(false);
         when(eventoRepository.findById(1L)).thenReturn(Optional.of(evento));
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
-        when(localRepository.existsByEventoIdAndUsuarioId(1L, 1L)).thenReturn(false);
         when(localRepository.save(any(Inscricao.class))).thenReturn(inscricao);
+        when(voucherService.geraRelatorioPDF(inscricaoRequestDTO)).thenReturn(new byte[0]);
+        doNothing().when(emailService).enviarComAnexo(any(String.class), any(String.class), any(String.class), any(byte[].class), any(String.class));
 
-        Inscricao result = localService.criar(inscricaoDTO.idEvento(), inscricaoDTO.idUsuario());
+        Inscricao result = localService.criar(inscricaoRequestDTO);
 
         assertNotNull(result);
-        assertEquals(inscricaoDTO.idEvento(), result.getEvento().getId());
-        assertEquals(inscricaoDTO.idUsuario(), result.getUsuario().getId());
+        assertEquals(inscricaoRequestDTO.idEvento(), result.getEvento().getId());
+        assertEquals(inscricaoRequestDTO.idUsuario(), result.getUsuario().getId());
         verify(localRepository).save(any(Inscricao.class));
     }
 
