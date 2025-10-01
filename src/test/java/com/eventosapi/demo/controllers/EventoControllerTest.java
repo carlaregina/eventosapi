@@ -1,6 +1,7 @@
 package com.eventosapi.demo.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -14,11 +15,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import com.eventosapi.demo.controller.EventoController;
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
+import com.eventosapi.demo.dtos.FiltroEventoDTO;
 import com.eventosapi.demo.enums.TipoEvento;
 import com.eventosapi.demo.services.EventoService;
 
@@ -49,13 +55,16 @@ class EventoControllerTest {
 
     @Test
     void deveListarTodos() {
-        when(eventoService.listarTodos()).thenReturn(List.of(eventoDTO));
+        FiltroEventoDTO filtro = new FiltroEventoDTO();
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<EventoResponseDTO> page = new PageImpl<>(List.of(eventoDTO));
+        when(eventoService.listar(eq(filtro), eq(pageable))).thenReturn(page);
 
-        ResponseEntity<List<EventoResponseDTO>> response = eventoController.listarTodos();
+        ResponseEntity<Page<EventoResponseDTO>> response = eventoController.listarTodos(filtro, pageable);
 
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(1, response.getBody().size());
-        assertEquals("Evento Teste", response.getBody().get(0).getTitulo());
+        assertEquals(1, response.getBody().getTotalElements());
+        assertEquals("Evento Teste", response.getBody().getContent().get(0).getTitulo());
     }
 
     @Test
