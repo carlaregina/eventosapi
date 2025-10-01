@@ -2,9 +2,11 @@ package com.eventosapi.demo.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.eventosapi.demo.dtos.FiltroIncricaoDTO;
 import com.eventosapi.demo.dtos.InscricaoRequestDTO;
 import com.eventosapi.demo.dtos.InscricaoResponseDTO;
 import com.eventosapi.demo.enums.StatusInscricao;
@@ -16,6 +18,7 @@ import com.eventosapi.demo.models.Usuario;
 import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.InscricaoRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
+import com.eventosapi.demo.specifications.InscricaoSpecification;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +35,7 @@ public class InscricaoService {
 
     @Transactional
     public Inscricao criar(InscricaoRequestDTO req) {
-        if (inscricaoRepository.existsById(req.id())) {
+        if (inscricaoRepository.existsByEventoIdAndUsuarioId(req.idEvento(), req.idUsuario())) {
             throw new DuplicidadeInscricaoException("Usuário já inscrito neste evento.");
         }
 
@@ -68,8 +71,15 @@ public class InscricaoService {
     }
 
     @Transactional(readOnly = true)
-    public Page<InscricaoResponseDTO> listar(Pageable page) {
-        return inscricaoRepository.findAll(page).map(InscricaoResponseDTO::from);
+    public Page<InscricaoResponseDTO> listar(FiltroIncricaoDTO filtro, Pageable page) {
+        Specification<Inscricao> specification = InscricaoSpecification.build()
+            .and(InscricaoSpecification.comData(filtro.getData()))
+            .and(InscricaoSpecification.comDataMenorQue(filtro.getDataMenorQue()))
+            .and(InscricaoSpecification.comDataMaiorQue(filtro.getDataMaiorQue()))
+            .and(InscricaoSpecification.comStatus(filtro.getStatus()))
+            .and(InscricaoSpecification.comUsuarioId(filtro.getUsuarioId()))
+            .and(InscricaoSpecification.comEventoId(filtro.getEventoId()));
+        return inscricaoRepository.findAll(specification, page).map(InscricaoResponseDTO::from);
     }
 
     @Transactional
