@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.eventosapi.demo.dtos.InscricaoRequestDTO;
 import com.eventosapi.demo.enums.StatusInscricao;
 import com.eventosapi.demo.exceptions.DuplicidadeInscricaoException;
-import com.eventosapi.demo.exceptions.RecursoNaoEncontradoException;
+import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Evento;
 import com.eventosapi.demo.models.Inscricao;
 import com.eventosapi.demo.models.Usuario;
@@ -42,9 +42,9 @@ public class InscricaoService {
         }
 
         Evento evento = eventoRepository.findById(req.idEvento())
-            .orElseThrow(() -> new RecursoNaoEncontradoException("Evento não encontrado"));
+            .orElseThrow(() -> new EntidadeNaoEncontradoException("Evento não encontrado"));
         Usuario usuario = usuarioRepository.findById(req.idUsuario())
-            .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
+            .orElseThrow(() -> new EntidadeNaoEncontradoException("Usuário não encontrado"));
 
         Inscricao inscricao = Inscricao.builder()
             .evento(evento)
@@ -69,7 +69,7 @@ public class InscricaoService {
     @Transactional(readOnly = true)
     public Inscricao buscar(Long id) {
         return inscricaoRepository.findById(id)
-            .orElseThrow(() -> new RecursoNaoEncontradoException("Inscrição não encontrada"));
+            .orElseThrow(() -> new EntidadeNaoEncontradoException("Inscrição não encontrada"));
     }
 
     @Transactional(readOnly = true)
