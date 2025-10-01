@@ -3,6 +3,7 @@ package com.eventosapi.demo.models;
 import com.eventosapi.demo.enums.TipoUsuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Usuario implements Serializable {
 
     @Id
