@@ -17,8 +17,11 @@ import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.InscricaoRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
 
+import lombok.RequiredArgsConstructor;
+
 
 @Service
+@RequiredArgsConstructor
 public class InscricaoService {
 
     private final InscricaoRepository inscricaoRepository;
@@ -26,15 +29,6 @@ public class InscricaoService {
     private final UsuarioRepository usuarioRepository;
     private final VoucherService voucherService;
     private final EmailService emailService;
-
-    public InscricaoService(InscricaoRepository inscricaoRepository, EventoRepository eventoRepository, UsuarioRepository usuarioRepository,
-    EmailService emailService, VoucherService voucherService) {
-        this.inscricaoRepository = inscricaoRepository;
-        this.eventoRepository = eventoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.voucherService = voucherService;
-        this.emailService = emailService;    
-    }
 
     @Transactional
     public Inscricao criar(InscricaoRequestDTO req) {
