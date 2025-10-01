@@ -1,26 +1,30 @@
 package com.eventosapi.demo.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.eventosapi.demo.dtos.FiltroInscricaoDTO;
 import com.eventosapi.demo.dtos.InscricaoRequestDTO;
+import com.eventosapi.demo.dtos.InscricaoResponseDTO;
 import com.eventosapi.demo.enums.StatusInscricao;
 import com.eventosapi.demo.exceptions.DuplicidadeInscricaoException;
-import com.eventosapi.demo.exceptions.RecursoNaoEncontradoException;
+import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Evento;
 import com.eventosapi.demo.models.Inscricao;
 import com.eventosapi.demo.models.Usuario;
 import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.InscricaoRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.eventosapi.demo.services.VoucherService;
-import com.eventosapi.demo.services.EmailService;   
+import com.eventosapi.demo.specifications.InscricaoSpecification;
 
-
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 
 @Service
+@RequiredArgsConstructor
 public class InscricaoService {
 
     private final InscricaoRepository inscricaoRepository;
@@ -29,31 +33,22 @@ public class InscricaoService {
     private final VoucherService voucherService;
     private final EmailService emailService;
 
-    public InscricaoService(InscricaoRepository inscricaoRepository, EventoRepository eventoRepository, UsuarioRepository usuarioRepository,
-    EmailService emailService, VoucherService voucherService) {
-        this.inscricaoRepository = inscricaoRepository;
-        this.eventoRepository = eventoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.voucherService = voucherService;
-        this.emailService = emailService;    
-    }
-
     @Transactional
     public Inscricao criar(InscricaoRequestDTO req) {
-        if (inscricaoRepository.existsById(req.id())) {
+        if (inscricaoRepository.existsByEventoIdAndUsuarioId(req.idEvento(), req.idUsuario())) {
             throw new DuplicidadeInscricaoException("Usuário já inscrito neste evento.");
         }
 
         Evento evento = eventoRepository.findById(req.idEvento())
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Evento não encontrado"));
+            .orElseThrow(() -> new EntidadeNaoEncontradoException("Evento não encontrado"));
         Usuario usuario = usuarioRepository.findById(req.idUsuario())
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
+            .orElseThrow(() -> new EntidadeNaoEncontradoException("Usuário não encontrado"));
 
         Inscricao inscricao = Inscricao.builder()
-                .evento(evento)
-                .usuario(usuario)
-                .status(StatusInscricao.CONFIRMADA)
-                .build();
+            .evento(evento)
+            .usuario(usuario)
+            .status(StatusInscricao.CONFIRMADA)
+            .build();
 
        inscricaoRepository.save(inscricao);
 
@@ -72,21 +67,26 @@ public class InscricaoService {
     @Transactional(readOnly = true)
     public Inscricao buscar(Long id) {
         return inscricaoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Inscrição não encontrada"));
+            .orElseThrow(() -> new EntidadeNaoEncontradoException("Inscrição não encontrada"));
     }
 
     @Transactional(readOnly = true)
-    public List<Inscricao> listar(Long idEvento) {
-        if (idEvento != null) return inscricaoRepository.findByEventoId(idEvento);
-        return inscricaoRepository.findAll();
+    public Page<InscricaoResponseDTO> listar(FiltroInscricaoDTO filtro, Pageable page) {
+        Specification<Inscricao> specification = InscricaoSpecification.build()
+            .and(InscricaoSpecification.comData(filtro.getData()))
+            .and(InscricaoSpecification.comDataMenorQue(filtro.getDataMenorQue()))
+            .and(InscricaoSpecification.comDataMaiorQue(filtro.getDataMaiorQue()))
+            .and(InscricaoSpecification.comStatus(filtro.getStatus()))
+            .and(InscricaoSpecification.comUsuarioId(filtro.getUsuarioId()))
+            .and(InscricaoSpecification.comEventoId(filtro.getEventoId()));
+        return inscricaoRepository.findAll(specification, page).map(InscricaoResponseDTO::from);
     }
 
     @Transactional
     public Inscricao atualizarStatus(Long id, StatusInscricao status) {
-        var i = buscar(id);
-        i.setStatus(status);   
-        return i;
-        
+        var inscricao = buscar(id);
+        inscricao.setStatus(status);   
+        return inscricaoRepository.save(inscricao);
     }
 
     @Transactional
