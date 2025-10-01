@@ -52,7 +52,7 @@ public class InscricaoService {
        inscricaoRepository.save(inscricao);
 
         
-        byte[] pdf = voucherService.geraRelatorioPDF(req);
+        byte[] pdf = voucherService.geraRelatorioPDF(inscricao);
 
         String email = inscricao.getUsuario().getEmail();
         String assunto = "Confirmação de Inscrição";
@@ -60,7 +60,6 @@ public class InscricaoService {
         emailService.enviarComAnexo(email, assunto, corpo, pdf, "voucher.pdf");
 
         return inscricao;
-
     }
 
     @Transactional(readOnly = true)
