@@ -39,9 +39,7 @@ public class VoucherController {
     })
     public ResponseEntity<byte[]> baixarVoucher(@RequestBody InscricaoRequest inscricao) {
         try {
-            var jasperPrint = voucherService.geraRelatorio(inscricao);
-
-            byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+            byte[] pdfBytes = voucherService.geraRelatorioPDF(inscricao);
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Inscricao.pdf")

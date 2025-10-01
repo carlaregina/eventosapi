@@ -16,19 +16,20 @@ public class VoucherService {
 
     JasperReport jasperReport;
 
-    public JasperPrint geraRelatorio(InscricaoRequest inscricao) {
+    public byte[] geraRelatorioPDF(InscricaoRequest inscricao) {
         try (InputStream jasperTemplate = getClass().getResourceAsStream("/relatorios/input/Inscricao.jrxml")) {
             if (jasperTemplate == null) {
                 throw new RuntimeException("Arquivo .jrxml não encontrado em " + filePath);
             }
             jasperReport = JasperCompileManager.compileReport(jasperTemplate);
-            return JasperFillManager.fillReport(jasperReport, criaParametros(inscricao), new JREmptyDataSource());
+            JasperPrint jasperprint = JasperFillManager.fillReport(jasperReport, criaParametros(inscricao), new JREmptyDataSource());
+            return JasperExportManager.exportReportToPdf(jasperprint);
         } catch (JRException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Map criaParametros(InscricaoRequest inscricao) {
+    public Map<String, Object> criaParametros(InscricaoRequest inscricao) {
 
         Map parametros = new HashMap();
         parametros.put("SAUDACAO_USUARIO", saudacaoUsuario(inscricao));
