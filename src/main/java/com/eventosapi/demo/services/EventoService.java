@@ -10,25 +10,20 @@ import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.LocalRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
 
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class EventoService {
 
     private final EventoRepository eventoRepository;
     private final UsuarioRepository usuarioRepository;
     private final LocalRepository localRepository;
-
-    public EventoService(EventoRepository eventoRepository,
-                         UsuarioRepository usuarioRepository,
-                         LocalRepository localRepository) {
-        this.eventoRepository = eventoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.localRepository = localRepository;
-    }
 
     @Transactional(readOnly = true)
     public Page<EventoResponseDTO> listar(Pageable pageable) {

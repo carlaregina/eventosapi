@@ -4,6 +4,8 @@ import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
 import com.eventosapi.demo.services.EventoService;
 
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -11,14 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/eventos")
 public class EventoController {
 
     private final EventoService eventoService;
-
-    public EventoController(EventoService eventoService) {
-        this.eventoService = eventoService;
-    }
 
     @GetMapping
     public ResponseEntity<Page<EventoResponseDTO>> listarTodos(Pageable pageable) {
