@@ -11,8 +11,6 @@ import com.eventosapi.demo.repositories.InscricaoRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 

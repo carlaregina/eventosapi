@@ -2,16 +2,21 @@ package com.eventosapi.demo.services;
 
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
+import com.eventosapi.demo.dtos.FiltroEventoDTO;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Evento;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.models.Usuario;
+import com.eventosapi.demo.dtos.UsuarioResponseDTO;
 import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.LocalRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
+import com.eventosapi.demo.specifications.EventoSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,5 +113,16 @@ public class EventoService {
                 .localId(evento.getLocal().getId())
                 .build();
     }
-}
 
+    public Page<UsuarioResponseDTO> listarUsuariosPorEvento(FiltroEventoDTO eventoFiltro, Pageable pageable) {
+        Specification<Evento> specification = EventoSpecification.build()
+            .and(EventoSpecification.comTitulo(eventoFiltro.getTitulo()))
+            .and(EventoSpecification.comDescricao(eventoFiltro.getDescricao()))
+            .and(EventoSpecification.comTipo(eventoFiltro.getTipo()));
+
+        return eventoRepository.findAll(specification, pageable)
+            .map(evento -> new UsuarioResponseDTO(
+                evento.getOrganizador().getNome(), evento.getOrganizador().getEmail(), evento.getOrganizador().getTelefone(), evento.getOrganizador().getTipo()
+                ));
+    }
+}

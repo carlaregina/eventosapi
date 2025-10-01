@@ -2,13 +2,16 @@ package com.eventosapi.demo.controller;
 
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
+import com.eventosapi.demo.dtos.FiltroEventoDTO;
 import com.eventosapi.demo.services.EventoService;
+import io.swagger.v3.oas.annotations.Operation;
+import com.eventosapi.demo.dtos.UsuarioResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("/api/eventos")
@@ -50,5 +53,11 @@ public class EventoController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         eventoService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/participantes")
+    @Operation(summary = "Listar organizadores dos eventos com paginação e filtros")
+    public Page<UsuarioResponseDTO> listarOrganizadores(FiltroEventoDTO eventoFiltro, Pageable pageable) {
+        return eventoService.listarUsuariosPorEvento(eventoFiltro, pageable);
     }
 }

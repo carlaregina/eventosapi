@@ -2,7 +2,6 @@ package com.eventosapi.demo.dtos;
 
 import com.eventosapi.demo.enums.StatusInscricao;
 import com.eventosapi.demo.models.Inscricao;
-
 import java.time.LocalDateTime;
 
 // api/dto/response/InscricaoResponse.java

@@ -1,10 +1,8 @@
 package com.eventosapi.demo.controller;
 
-import com.eventosapi.demo.dtos.InscricaoDTO;
 import com.eventosapi.demo.dtos.InscricaoRequest;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.services.VoucherService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

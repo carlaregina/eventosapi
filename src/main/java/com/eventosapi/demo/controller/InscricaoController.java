@@ -1,22 +1,14 @@
 package com.eventosapi.demo.controller;
 
-
 import com.eventosapi.demo.dtos.InscricaoRequest;
 import com.eventosapi.demo.dtos.InscricaoResponse;
-import com.eventosapi.demo.exceptions.DuplicidadeInscricaoException;
-import com.eventosapi.demo.exceptions.RecursoNaoEncontradoException;
-import com.eventosapi.demo.models.Inscricao;
 import com.eventosapi.demo.services.InscricaoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.time.Instant;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 // api/controller/InscricaoController.java
 @RestController

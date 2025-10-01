@@ -1,7 +1,6 @@
 package com.eventosapi.demo.dtos;
 
 import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
 
 public record InscricaoDTO(

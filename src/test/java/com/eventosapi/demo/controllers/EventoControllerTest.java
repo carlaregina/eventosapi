@@ -3,18 +3,25 @@ package com.eventosapi.demo.controllers;
 import com.eventosapi.demo.controller.EventoController;
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
+import com.eventosapi.demo.dtos.FiltroEventoDTO;
+import com.eventosapi.demo.dtos.UsuarioResponseDTO;
 import com.eventosapi.demo.enums.TipoEvento;
+import com.eventosapi.demo.enums.TipoUsuario;
 import com.eventosapi.demo.services.EventoService;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-
 import java.time.LocalDateTime;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -123,4 +130,29 @@ class EventoControllerTest {
         assertEquals(204, response.getStatusCodeValue());
         verify(eventoService, times(1)).deletar(1L);
     }
+
+    
+    @Test
+    void deveListarOrganizadoresComSucesso() {
+        // Arrange
+        FiltroEventoDTO filtro = new FiltroEventoDTO(); // preencha se necessário
+        PageRequest pageable = PageRequest.of(0, 10);
+
+        List<UsuarioResponseDTO> usuarios = List.of(
+            new UsuarioResponseDTO("João", "joao@email.com", "123456789", TipoUsuario.OUTROS),
+            new UsuarioResponseDTO("Maria", "maria@email.com", "987654321", TipoUsuario.STAFF)
+        );
+        Page<UsuarioResponseDTO> pagina = new PageImpl<>(usuarios, pageable, usuarios.size());
+
+        Mockito.when(eventoService.listarUsuariosPorEvento(filtro, pageable)).thenReturn(pagina);
+
+        // Act
+        Page<UsuarioResponseDTO> resultado = eventoController.listarOrganizadores(filtro, pageable);
+
+        // Assert
+        Assertions.assertNotNull(resultado);
+        Assertions.assertEquals(2, resultado.getTotalElements());
+        Assertions.assertEquals("João", resultado.getContent().get(0).nome());
+    }
+
 }
