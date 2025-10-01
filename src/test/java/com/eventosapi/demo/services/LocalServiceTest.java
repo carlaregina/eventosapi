@@ -14,10 +14,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
-
 import java.util.List;
 import java.util.Optional;
-
 import static com.eventosapi.demo.enums.TipoLocal.RURAL;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

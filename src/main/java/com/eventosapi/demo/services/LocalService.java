@@ -6,7 +6,6 @@ import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.repositories.LocalRepository;
 import com.eventosapi.demo.specifications.LocalSpecification;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

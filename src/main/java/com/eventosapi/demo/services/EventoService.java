@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
 import com.eventosapi.demo.dtos.FiltroEventoDTO;
@@ -13,14 +12,19 @@ import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Evento;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.models.Usuario;
+import com.eventosapi.demo.dtos.UsuarioResponseDTO;
 import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.LocalRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
 import com.eventosapi.demo.specifications.EventoSpecification;
-
 import lombok.RequiredArgsConstructor;
-
-import java.time.format.DateTimeFormatter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +33,6 @@ public class EventoService {
     private final EventoRepository eventoRepository;
     private final UsuarioRepository usuarioRepository;
     private final LocalRepository localRepository;
-    private final EmailService emailService;
 
     @Transactional(readOnly = true)
     public Page<EventoResponseDTO> listar(FiltroEventoDTO filtro, Pageable pageable) {
@@ -94,11 +97,7 @@ public class EventoService {
         evento.setLocal(local);
 
         Evento atualizado = eventoRepository.save(evento);
-
-        EventoResponseDTO atualizadoDTO = toResponseDTO(atualizado);
-        enviaEmailDeAtualizacao(atualizadoDTO);
-
-        return atualizadoDTO;
+        return toResponseDTO(atualizado);
     }
 
     @Transactional
@@ -122,16 +121,15 @@ public class EventoService {
             .build();
     }
 
-    public void enviaEmailDeAtualizacao(EventoResponseDTO eventoDTO){
-        Local local = localRepository.findById(eventoDTO.getLocalId()).orElseThrow();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String horaFormatada = eventoDTO.getData().format(formatter);
+    public Page<UsuarioResponseDTO> listarUsuariosPorEvento(FiltroEventoDTO eventoFiltro, Pageable pageable) {
+        Specification<Evento> specification = EventoSpecification.build()
+            .and(EventoSpecification.comTitulo(eventoFiltro.getTitulo()))
+            .and(EventoSpecification.comDescricao(eventoFiltro.getDescricao()))
+            .and(EventoSpecification.comTipos(eventoFiltro.getTipos()));
 
-        String para = "tatianambmorais@gmail.com";
-        String assunto = "Houve uma alteração no evento " + eventoDTO.getTitulo();
-        String corpo = "Olá, o evento " + eventoDTO.getTitulo() + " foi atualizado.\n"
-                + "Observe os novos detalhes:\n"
-                + "Local: " + local.getNome() + " | Horário: " + horaFormatada;
-        emailService.enviarSimples(para, assunto, corpo);
+        return eventoRepository.findAll(specification, pageable)
+            .map(evento -> new UsuarioResponseDTO(
+                evento.getOrganizador().getNome(), evento.getOrganizador().getEmail(), evento.getOrganizador().getTelefone(), evento.getOrganizador().getTipo()
+                ));
     }
 }

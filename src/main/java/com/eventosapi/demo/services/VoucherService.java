@@ -1,28 +1,34 @@
 package com.eventosapi.demo.services;
 
-import com.eventosapi.demo.dtos.InscricaoRequestDTO;
-import com.eventosapi.demo.exceptions.RecursoNaoEncontradoException;
-import com.eventosapi.demo.models.Evento;
-import com.eventosapi.demo.models.Usuario;
-import com.eventosapi.demo.repositories.EventoRepository;
-import com.eventosapi.demo.repositories.UsuarioRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import net.sf.jasperreports.engine.*;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-@AllArgsConstructor
+import org.springframework.stereotype.Service;
+
+import com.eventosapi.demo.dtos.InscricaoRequestDTO;
+import com.eventosapi.demo.models.Evento;
+import com.eventosapi.demo.models.Usuario;
+import com.eventosapi.demo.repositories.EventoRepository;
+import com.eventosapi.demo.repositories.UsuarioRepository;
+
+import lombok.RequiredArgsConstructor;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+
 @Service
+@RequiredArgsConstructor
 public class VoucherService {
 
-    EventoRepository eventoRepository;
-    UsuarioRepository usuarioRepository;
+    private final EventoRepository eventoRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public byte[] geraRelatorioPDF(InscricaoRequestDTO inscricao) {
         try (InputStream jasperTemplate = getClass().getResourceAsStream("/relatorios/input/Inscricao.jrxml")) {

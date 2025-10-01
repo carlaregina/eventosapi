@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,9 @@ import org.springframework.data.jpa.domain.Specification;
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
 import com.eventosapi.demo.dtos.FiltroEventoDTO;
+import com.eventosapi.demo.dtos.UsuarioResponseDTO;
 import com.eventosapi.demo.enums.TipoEvento;
+import com.eventosapi.demo.enums.TipoUsuario;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Evento;
 import com.eventosapi.demo.models.Local;
@@ -33,9 +36,25 @@ import com.eventosapi.demo.models.Usuario;
 import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.LocalRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class EventoServiceTest {
 
+    @Mock
     private EventoRepository eventoRepository;
     private UsuarioRepository usuarioRepository;
     private LocalRepository localRepository;
@@ -152,5 +171,48 @@ class EventoServiceTest {
 
         verify(eventoRepository, times(1)).delete(evento);
     }
+
+    
+ @Test
+    void deveListarUsuariosPorEventoComFiltros() {
+        // Arrange
+        FiltroEventoDTO filtro = new FiltroEventoDTO();
+        filtro.setTitulo("Tech");
+        filtro.setDescricao("Conferência");
+        List<TipoEvento> listaEventos = new ArrayList<>();
+        listaEventos.add(TipoEvento.PALESTRA);
+        filtro.setTipos(listaEventos);
+
+        PageRequest pageable = PageRequest.of(0, 10);
+
+        Usuario organizador = new Usuario();
+        organizador.setNome("Carlos");
+        organizador.setEmail("carlos@email.com");
+        organizador.setTelefone("11999999999");
+        organizador.setTipo(TipoUsuario.PARTICIPANTE);
+
+        Evento evento = new Evento();
+        evento.setOrganizador(organizador);
+
+        List<Evento> eventos = List.of(evento);
+        Page<Evento> paginaEventos = new PageImpl<>(eventos, pageable, eventos.size());
+
+        Mockito.when(eventoRepository.findAll(Mockito.any(Specification.class), Mockito.eq(pageable)))
+               .thenReturn(paginaEventos);
+
+        // Act
+        Page<UsuarioResponseDTO> resultado = eventoService.listarUsuariosPorEvento(filtro, pageable);
+
+        // Assert
+        Assertions.assertNotNull(resultado);
+        Assertions.assertEquals(1, resultado.getTotalElements());
+
+        UsuarioResponseDTO dto = resultado.getContent().get(0);
+        Assertions.assertEquals("Carlos", dto.nome());
+        Assertions.assertEquals("carlos@email.com", dto.email());
+        Assertions.assertEquals("11999999999", dto.telefone());
+        Assertions.assertEquals(TipoUsuario.PARTICIPANTE, dto.tipo());
+    }
+
 
 }

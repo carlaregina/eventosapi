@@ -3,9 +3,7 @@ package com.eventosapi.demo.specifications;
 import com.eventosapi.demo.enums.Estado;
 import com.eventosapi.demo.enums.TipoLocal;
 import com.eventosapi.demo.models.Local;
-
 import static org.springframework.util.StringUtils.hasText;
-
 import org.springframework.data.jpa.domain.Specification;
 
 public class LocalSpecification {
