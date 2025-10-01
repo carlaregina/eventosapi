@@ -9,8 +9,8 @@ import lombok.Data;
 
 @Data
 public class FiltroIncricaoDTO {
-    private Long userId;
     private Long eventoId;
+    private Long usuarioId;
     private LocalDateTime data;
     private LocalDateTime dataMaiorQue;
     private LocalDateTime dataMenorQue;
