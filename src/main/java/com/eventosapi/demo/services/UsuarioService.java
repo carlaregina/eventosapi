@@ -2,12 +2,11 @@ package com.eventosapi.demo.services;
 
 import com.eventosapi.demo.dtos.UsuarioRequestDTO;
 import com.eventosapi.demo.dtos.UsuarioResponseDTO;
+import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Usuario;
 import com.eventosapi.demo.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,21 +41,21 @@ public class UsuarioService {
 
     public UsuarioResponseDTO obterUsuarioPorId(Long id){
         Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + id));
+            .orElseThrow(() -> new EntidadeNaoEncontradoException("Usuário não encontrado com ID: " + id));
 
         return toDto(usuario);
     }
 
     public void deletarUsuario(Long id){
         Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + id));
+            .orElseThrow(() -> new EntidadeNaoEncontradoException("Usuário não encontrado com ID: " + id));
 
         usuarioRepository.delete(usuario);
     }
 
     public UsuarioResponseDTO atualizarUsuario(Long id, UsuarioRequestDTO usuarioRequestDTO){
         Usuario usuarioExistente = usuarioRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + id));
+            .orElseThrow(() -> new EntidadeNaoEncontradoException("Usuário não encontrado com ID: " + id));
 
         usuarioExistente.setNome(usuarioRequestDTO.nome());
         usuarioExistente.setEmail(usuarioRequestDTO.email());
