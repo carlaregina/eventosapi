@@ -1,6 +1,5 @@
 package com.eventosapi.demo.controller;
 
-import com.eventosapi.demo.dtos.InscricaoDTO;
 import com.eventosapi.demo.dtos.InscricaoRequest;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.services.VoucherService;

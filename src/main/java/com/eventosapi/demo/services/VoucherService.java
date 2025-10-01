@@ -1,27 +1,36 @@
 package com.eventosapi.demo.services;
 
-import com.eventosapi.demo.dtos.InscricaoDTO;
+import com.eventosapi.demo.dtos.EventoResponseDTO;
 import com.eventosapi.demo.dtos.InscricaoRequest;
+import com.eventosapi.demo.exceptions.RecursoNaoEncontradoException;
+import com.eventosapi.demo.models.Evento;
+import com.eventosapi.demo.models.Usuario;
+import com.eventosapi.demo.repositories.EventoRepository;
+import com.eventosapi.demo.repositories.UsuarioRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
+@AllArgsConstructor
 @Service
 public class VoucherService {
-    String filePath = ("/relatorios/input/Inscricao.jrxml");
 
-    JasperReport jasperReport;
+    EventoRepository eventoRepository;
+    UsuarioRepository usuarioRepository;
 
     public byte[] geraRelatorioPDF(InscricaoRequest inscricao) {
         try (InputStream jasperTemplate = getClass().getResourceAsStream("/relatorios/input/Inscricao.jrxml")) {
             if (jasperTemplate == null) {
-                throw new RuntimeException("Arquivo .jrxml não encontrado em " + filePath);
+                throw new RuntimeException("Arquivo .jrxml não encontrado");
             }
-            jasperReport = JasperCompileManager.compileReport(jasperTemplate);
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperTemplate);
             JasperPrint jasperprint = JasperFillManager.fillReport(jasperReport, criaParametros(inscricao), new JREmptyDataSource());
             return JasperExportManager.exportReportToPdf(jasperprint);
         } catch (JRException | IOException e) {
@@ -42,22 +51,30 @@ public class VoucherService {
     }
 
     private String saudacaoUsuario(InscricaoRequest inscricao) {
-        return "Olá, Fulano, sua inscrição foi confirmada. Observe os detalhes do evento: ";
+        Usuario usuario = usuarioRepository.findById(inscricao.idUsuario()).orElseThrow();
+        return "Olá, "+ usuario.getNome() + ", sua inscrição foi confirmada. Observe os detalhes do evento: ";
     }
 
-    private String numeroInscricao(InscricaoRequest inscricao){
-        return "Número da inscrição: 123456";
+    private String numeroInscricao(InscricaoRequest inscricao) {
+        return "Número da inscrição: " + inscricao.id();
     }
 
-    private String nomeEvento(InscricaoRequest inscricao){
-        return "Evento: O grande Encontro - 25 anos";
+    private String nomeEvento(InscricaoRequest inscricao) {
+        return "Evento: " + recuperaEvento(inscricao).getTitulo();
     }
 
-    private String horarioEvento(InscricaoRequest inscricaoDTO){
-        return "Horário: 19:00";
+    private String horarioEvento(InscricaoRequest inscricao) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String horaFormatada = recuperaEvento(inscricao).getData().format(formatter);
+        return "Horário: " + horaFormatada;
+
     }
 
-    private String localEvento(InscricaoRequest inscricaoDTO){
-        return "Domus Hall";
+    private String localEvento(InscricaoRequest inscricao) {
+        return "Local: " + recuperaEvento(inscricao).getLocal().getNome();
+    }
+
+    private Evento recuperaEvento(InscricaoRequest inscricao) {
+        return eventoRepository.findById(inscricao.idEvento()).orElseThrow();
     }
 }
