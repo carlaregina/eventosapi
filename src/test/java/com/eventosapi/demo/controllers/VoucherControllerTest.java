@@ -1,6 +1,6 @@
 package com.eventosapi.demo.controllers;
 import com.eventosapi.demo.controller.VoucherController;
-import com.eventosapi.demo.dtos.*;
+import com.eventosapi.demo.dtos.InscricaoRequestDTO;
 import com.eventosapi.demo.services.VoucherService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

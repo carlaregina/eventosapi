@@ -1,6 +1,6 @@
 package com.eventosapi.demo.services;
 
-import com.eventosapi.demo.dtos.*;
+import com.eventosapi.demo.dtos.InscricaoRequestDTO;
 import com.eventosapi.demo.models.Evento;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.models.Usuario;
