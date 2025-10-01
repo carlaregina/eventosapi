@@ -1,6 +1,7 @@
 package com.eventosapi.demo.controller;
 
 import com.eventosapi.demo.dtos.InscricaoDTO;
+import com.eventosapi.demo.dtos.InscricaoRequest;
 import com.eventosapi.demo.services.VoucherService;
 import net.sf.jasperreports.engine.JasperExportManager;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +20,7 @@ public class VoucherController {
     }
 
     @PostMapping("/baixar")
-    public ResponseEntity<byte[]> baixarVoucher(@RequestBody InscricaoDTO inscricao) {
+    public ResponseEntity<byte[]> baixarVoucher(@RequestBody InscricaoRequest inscricao) {
         try {
             var jasperPrint = voucherService.geraRelatorio(inscricao);
 
