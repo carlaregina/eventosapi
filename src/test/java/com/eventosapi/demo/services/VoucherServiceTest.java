@@ -1,6 +1,6 @@
 package com.eventosapi.demo.services;
 
-import com.eventosapi.demo.dtos.InscricaoRequest;
+import com.eventosapi.demo.dtos.*;
 import com.eventosapi.demo.models.Evento;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.models.Usuario;
@@ -9,10 +9,8 @@ import com.eventosapi.demo.repositories.UsuarioRepository;
 import net.sf.jasperreports.engine.JRException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -44,7 +42,7 @@ class VoucherServiceTest {
         evento.setData(LocalDateTime.of(2025, 10, 1, 19, 0));
         evento.setLocal(local);
 
-        InscricaoRequest inscricao = new InscricaoRequest(123L, 1L, 1L, null);
+        InscricaoRequestDTO inscricao = new InscricaoRequestDTO(123L, 1L, 1L, null);
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
         when(eventoRepository.findById(1L)).thenReturn(Optional.of(evento));
@@ -60,7 +58,7 @@ class VoucherServiceTest {
 
     @Test
     void geraRelatorioPDF_deveLancarException_quandoUsuarioNaoEncontrado() {
-        InscricaoRequest inscricao = new InscricaoRequest(123L, 1L, 1L, null);
+        InscricaoRequestDTO inscricao = new InscricaoRequestDTO(123L, 1L, 1L, null);
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -77,7 +75,7 @@ class VoucherServiceTest {
         usuario.setId(1L);
         usuario.setNome("Tatiana");
 
-        InscricaoRequest inscricao = new InscricaoRequest(123L, 1L, 1L, null);
+        InscricaoRequestDTO inscricao = new InscricaoRequestDTO(123L, 1L, 1L, null);
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
         when(eventoRepository.findById(1L)).thenReturn(Optional.empty());

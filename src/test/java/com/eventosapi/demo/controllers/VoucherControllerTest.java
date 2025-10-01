@@ -1,6 +1,6 @@
 package com.eventosapi.demo.controllers;
 import com.eventosapi.demo.controller.VoucherController;
-import com.eventosapi.demo.dtos.InscricaoRequest;
+import com.eventosapi.demo.dtos.*;
 import com.eventosapi.demo.services.VoucherService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class VoucherControllerTest {
 
     @Test
     void baixarVoucher_deveRetornarPdf_quandoServicoRetornaByteArray() {
-        InscricaoRequest inscricao = new InscricaoRequest(123L, 1L, 1L, null);
+        InscricaoRequestDTO inscricao = new InscricaoRequestDTO(123L, 1L, 1L, null);
         byte[] pdfMock = new byte[]{1, 2, 3};
 
         when(voucherService.geraRelatorioPDF(inscricao)).thenReturn(pdfMock);
@@ -40,7 +40,7 @@ class VoucherControllerTest {
 
     @Test
     void baixarVoucher_deveRetornar500_quandoServicoLancaExcecao() {
-        InscricaoRequest inscricao = new InscricaoRequest(123L, 1L, 1L, null);
+        InscricaoRequestDTO inscricao = new InscricaoRequestDTO(123L, 1L, 1L, null);
 
         when(voucherService.geraRelatorioPDF(inscricao)).thenThrow(new RuntimeException("Erro no serviço"));
 
