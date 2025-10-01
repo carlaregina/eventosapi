@@ -1,4 +1,4 @@
-package main.java.com.eventosapi.demo.controller;
+package com.eventosapi.demo.controller;
 
 
 import com.eventosapi.demo.dtos.InscricaoRequest;
@@ -13,7 +13,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
