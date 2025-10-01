@@ -15,7 +15,7 @@ import com.eventosapi.demo.dtos.UsuarioResponseDTO;
 import com.eventosapi.demo.services.UsuarioService;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
     private final UsuarioService usuarioService;
 
