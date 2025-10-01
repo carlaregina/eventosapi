@@ -1,8 +1,8 @@
 package com.eventosapi.demo.controller;
 
 
-import com.eventosapi.demo.dtos.InscricaoRequest;
-import com.eventosapi.demo.dtos.InscricaoResponse;
+import com.eventosapi.demo.dtos.InscricaoRequestDTO;
+import com.eventosapi.demo.dtos.InscricaoResponseDTO;
 import com.eventosapi.demo.exceptions.DuplicidadeInscricaoException;
 import com.eventosapi.demo.exceptions.RecursoNaoEncontradoException;
 import com.eventosapi.demo.models.Inscricao;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-// api/controller/InscricaoController.java
+
 @RestController
 @RequestMapping("/api/inscricoes")
 @RequiredArgsConstructor
@@ -27,26 +27,25 @@ public class InscricaoController {
     private final InscricaoService service;
 
     @PostMapping
-    public ResponseEntity<InscricaoResponse> criar(@RequestBody @Valid InscricaoRequest req) {
-        var i = service.criar(req.idEvento(), req.idUsuario());
-        return ResponseEntity.status(HttpStatus.CREATED).body(InscricaoResponse.from(i));
+    public ResponseEntity<InscricaoResponseDTO> criar(@RequestBody @Valid InscricaoRequestDTO req) {
+        var i = service.criar(req);
+        return ResponseEntity.status(HttpStatus.CREATED).body(InscricaoResponseDTO.from(i));
     }
 
     @GetMapping("/{id}")
-    public InscricaoResponse buscar(@PathVariable Long id) {
-        return InscricaoResponse.from(service.buscar(id));
+    public InscricaoResponseDTO buscar(@PathVariable Long id) {
+        return InscricaoResponseDTO.from(service.buscar(id));
     }
 
     @GetMapping
-    public List<InscricaoResponse> listar(@RequestParam(required = false) Long eventoId) {
-        // ⚠️ Garanta @EntityGraph no repository para carregar evento/usuario (evitar LazyInitializationException)
-        return service.listar(eventoId).stream().map(InscricaoResponse::from).toList();
+    public List<InscricaoResponseDTO> listar(@RequestParam(required = false) Long eventoId) {
+        return service.listar(eventoId).stream().map(InscricaoResponseDTO::from).toList();
     }
 
     @PutMapping("/{id}")
-    public InscricaoResponse atualizar(@PathVariable Long id, @RequestBody @Valid InscricaoRequest req) {
+    public InscricaoResponseDTO atualizar(@PathVariable Long id, @RequestBody @Valid InscricaoRequestDTO req) {
         if (req.status() == null) throw new IllegalArgumentException("status é obrigatório para atualização");
-        return InscricaoResponse.from(service.atualizarStatus(id, req.status()));
+        return InscricaoResponseDTO.from(service.atualizarStatus(id, req.status()));
     }
 
     @DeleteMapping("/{id}")

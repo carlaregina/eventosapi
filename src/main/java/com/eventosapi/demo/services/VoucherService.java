@@ -1,7 +1,6 @@
 package com.eventosapi.demo.services;
 
-import com.eventosapi.demo.dtos.EventoResponseDTO;
-import com.eventosapi.demo.dtos.InscricaoRequest;
+import com.eventosapi.demo.dtos.InscricaoRequestDTO;
 import com.eventosapi.demo.exceptions.RecursoNaoEncontradoException;
 import com.eventosapi.demo.models.Evento;
 import com.eventosapi.demo.models.Usuario;
@@ -25,7 +24,7 @@ public class VoucherService {
     EventoRepository eventoRepository;
     UsuarioRepository usuarioRepository;
 
-    public byte[] geraRelatorioPDF(InscricaoRequest inscricao) {
+    public byte[] geraRelatorioPDF(InscricaoRequestDTO inscricao) {
         try (InputStream jasperTemplate = getClass().getResourceAsStream("/relatorios/input/Inscricao.jrxml")) {
             if (jasperTemplate == null) {
                 throw new RuntimeException("Arquivo .jrxml não encontrado");
@@ -38,7 +37,7 @@ public class VoucherService {
         }
     }
 
-    public Map<String, Object> criaParametros(InscricaoRequest inscricao) {
+    public Map<String, Object> criaParametros(InscricaoRequestDTO inscricao) {
 
         Map parametros = new HashMap();
         parametros.put("SAUDACAO_USUARIO", saudacaoUsuario(inscricao));
@@ -50,31 +49,31 @@ public class VoucherService {
         return parametros;
     }
 
-    private String saudacaoUsuario(InscricaoRequest inscricao) {
+    private String saudacaoUsuario(InscricaoRequestDTO inscricao) {
         Usuario usuario = usuarioRepository.findById(inscricao.idUsuario()).orElseThrow();
         return "Olá, "+ usuario.getNome() + ", sua inscrição foi confirmada. Observe os detalhes do evento: ";
     }
 
-    private String numeroInscricao(InscricaoRequest inscricao) {
+    private String numeroInscricao(InscricaoRequestDTO inscricao) {
         return "Número da inscrição: " + inscricao.id();
     }
 
-    private String nomeEvento(InscricaoRequest inscricao) {
+    private String nomeEvento(InscricaoRequestDTO inscricao) {
         return "Evento: " + recuperaEvento(inscricao).getTitulo();
     }
 
-    private String horarioEvento(InscricaoRequest inscricao) {
+    private String horarioEvento(InscricaoRequestDTO inscricao) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String horaFormatada = recuperaEvento(inscricao).getData().format(formatter);
         return "Horário: " + horaFormatada;
 
     }
 
-    private String localEvento(InscricaoRequest inscricao) {
+    private String localEvento(InscricaoRequestDTO inscricao) {
         return "Local: " + recuperaEvento(inscricao).getLocal().getNome();
     }
 
-    private Evento recuperaEvento(InscricaoRequest inscricao) {
+    private Evento recuperaEvento(InscricaoRequestDTO inscricao) {
         return eventoRepository.findById(inscricao.idEvento()).orElseThrow();
     }
 }

@@ -1,6 +1,6 @@
 package com.eventosapi.demo.controller;
 
-import com.eventosapi.demo.dtos.InscricaoRequest;
+import com.eventosapi.demo.dtos.InscricaoRequestDTO;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.services.VoucherService;
 
@@ -36,7 +36,7 @@ public class VoucherController {
         @ApiResponse(responseCode = "400", description = "Requisição inválida", 
             content = @Content)
     })
-    public ResponseEntity<byte[]> baixarVoucher(@RequestBody InscricaoRequest inscricao) {
+    public ResponseEntity<byte[]> baixarVoucher(@RequestBody InscricaoRequestDTO inscricao) {
         try {
             byte[] pdfBytes = voucherService.geraRelatorioPDF(inscricao);
 
