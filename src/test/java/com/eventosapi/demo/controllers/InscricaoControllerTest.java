@@ -73,7 +73,7 @@ class InscricaoControllerTest {
 
     void deveCriarInscricaoComSucesso() throws Exception {
         InscricaoRequestDTO request = new InscricaoRequestDTO(
-            null, 1L, 2L, StatusInscricao.CONFIRMADA
+             1L, 2L, StatusInscricao.CONFIRMADA
         );
        
     Evento evento = Evento.builder()
@@ -143,7 +143,7 @@ class InscricaoControllerTest {
     void deveAtualizarStatusDaInscricao() throws Exception {
        
 InscricaoRequestDTO request = new InscricaoRequestDTO(
-        null, 1L, 2L, StatusInscricao.CANCELADO
+         1L, 2L, StatusInscricao.CANCELADO
     );
 
     Evento evento = Evento.builder()
