@@ -12,8 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface InscricaoRepository extends JpaRepository<Inscricao, Long> {
-    boolean existsByEventoIdAndUsuarioId(Long idEvento, Long idUsuario);
-
+   
     @EntityGraph(attributePaths = {"evento","usuario"})
     Optional<Inscricao> findById(Long id);
 

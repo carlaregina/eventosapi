@@ -1,6 +1,5 @@
 package com.eventosapi.demo.services;
 
-import com.eventosapi.demo.dtos.InscricaoDTO;
 import com.eventosapi.demo.dtos.InscricaoRequest;
 import net.sf.jasperreports.engine.*;
 import org.springframework.stereotype.Service;

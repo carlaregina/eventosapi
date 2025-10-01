@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-// api/controller/InscricaoController.java
+
 @RestController
 @RequestMapping("/api/inscricoes")
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class InscricaoController {
 
     @PostMapping
     public ResponseEntity<InscricaoResponse> criar(@RequestBody @Valid InscricaoRequest req) {
-        var i = service.criar(req.idEvento(), req.idUsuario());
+        var i = service.criar(req);
         return ResponseEntity.status(HttpStatus.CREATED).body(InscricaoResponse.from(i));
     }
 
@@ -39,7 +39,6 @@ public class InscricaoController {
 
     @GetMapping
     public List<InscricaoResponse> listar(@RequestParam(required = false) Long eventoId) {
-        // ⚠️ Garanta @EntityGraph no repository para carregar evento/usuario (evitar LazyInitializationException)
         return service.listar(eventoId).stream().map(InscricaoResponse::from).toList();
     }
 
