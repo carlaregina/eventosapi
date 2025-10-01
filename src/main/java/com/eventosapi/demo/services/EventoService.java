@@ -2,6 +2,7 @@ package com.eventosapi.demo.services;
 
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
+import com.eventosapi.demo.dtos.FiltroEventoDTO;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Evento;
 import com.eventosapi.demo.models.Local;
@@ -9,11 +10,13 @@ import com.eventosapi.demo.models.Usuario;
 import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.LocalRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
+import com.eventosapi.demo.specifications.EventoSpecification;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +29,17 @@ public class EventoService {
     private final LocalRepository localRepository;
 
     @Transactional(readOnly = true)
-    public Page<EventoResponseDTO> listar(Pageable pageable) {
-        return eventoRepository.findAll(pageable).map(this::toResponseDTO);
+    public Page<EventoResponseDTO> listar(FiltroEventoDTO filtro, Pageable pageable) {
+        Specification<Evento> specification = EventoSpecification.build()
+                .and(EventoSpecification.comTitulo(filtro.getTitulo()))
+                .and(EventoSpecification.comDescricao(filtro.getDescricao()))
+                .and(EventoSpecification.comData(filtro.getData()))
+                .and(EventoSpecification.comDataMaiorQue(filtro.getDataMaiorQue()))
+                .and(EventoSpecification.comDataMenorQue(filtro.getDataMenorQue()))
+                .and(EventoSpecification.comTipos(filtro.getTipos()))
+                .and(EventoSpecification.comOrganizadorId(filtro.getOrganizadorId()))
+                .and(EventoSpecification.comLocalId(filtro.getLocalId()));
+        return eventoRepository.findAll(specification, pageable).map(this::toResponseDTO);
     }
 
     @Transactional(readOnly = true)

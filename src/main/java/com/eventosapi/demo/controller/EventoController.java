@@ -2,6 +2,7 @@ package com.eventosapi.demo.controller;
 
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
+import com.eventosapi.demo.dtos.FiltroEventoDTO;
 import com.eventosapi.demo.services.EventoService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class EventoController {
     private final EventoService eventoService;
 
     @GetMapping
-    public ResponseEntity<Page<EventoResponseDTO>> listarTodos(Pageable pageable) {
-        Page<EventoResponseDTO> eventos = eventoService.listar(pageable);
+    public ResponseEntity<Page<EventoResponseDTO>> listarTodos(FiltroEventoDTO filtro, Pageable pageable) {
+        Page<EventoResponseDTO> eventos = eventoService.listar(filtro, pageable);
         return ResponseEntity.ok(eventos);
     }
 
