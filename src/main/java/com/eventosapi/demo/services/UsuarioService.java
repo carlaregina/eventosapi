@@ -2,6 +2,7 @@ package com.eventosapi.demo.services;
 
 import com.eventosapi.demo.dtos.UsuarioRequestDTO;
 import com.eventosapi.demo.dtos.UsuarioResponseDTO;
+import com.eventosapi.demo.exceptions.DuplicidadeEmailUsuarioException;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Usuario;
 import com.eventosapi.demo.repositories.UsuarioRepository;
@@ -34,6 +35,9 @@ public class UsuarioService {
     }
 
     public UsuarioResponseDTO cadastrarUsuario(UsuarioRequestDTO usuarioRequestDTO){
+        if(usuarioRepository.existsByEmail(usuarioRequestDTO.email())){
+            throw new DuplicidadeEmailUsuarioException("Já existe um usuário cadastrado com o email: " + usuarioRequestDTO.email());
+        }
         Usuario usuario = usuarioRepository.save(toEntity(usuarioRequestDTO));
 
         return toDto(usuario);
