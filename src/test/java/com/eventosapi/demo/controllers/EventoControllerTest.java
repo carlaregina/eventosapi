@@ -1,10 +1,14 @@
 package com.eventosapi.demo.controllers;
 
-import com.eventosapi.demo.controller.EventoController;
-import com.eventosapi.demo.dtos.EventoRequestDTO;
-import com.eventosapi.demo.dtos.EventoResponseDTO;
-import com.eventosapi.demo.enums.TipoEvento;
-import com.eventosapi.demo.services.EventoService;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,11 +16,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import com.eventosapi.demo.controller.EventoController;
+import com.eventosapi.demo.dtos.EventoRequestDTO;
+import com.eventosapi.demo.dtos.EventoResponseDTO;
+import com.eventosapi.demo.enums.TipoEvento;
+import com.eventosapi.demo.services.EventoService;
 
 class EventoControllerTest {
 
