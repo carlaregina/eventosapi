@@ -20,6 +20,8 @@ import com.eventosapi.demo.specifications.EventoSpecification;
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.format.DateTimeFormatter;
+
 @Service
 @RequiredArgsConstructor
 public class EventoService {
@@ -27,6 +29,7 @@ public class EventoService {
     private final EventoRepository eventoRepository;
     private final UsuarioRepository usuarioRepository;
     private final LocalRepository localRepository;
+    private final EmailService emailService;
 
     @Transactional(readOnly = true)
     public Page<EventoResponseDTO> listar(FiltroEventoDTO filtro, Pageable pageable) {
@@ -91,7 +94,11 @@ public class EventoService {
         evento.setLocal(local);
 
         Evento atualizado = eventoRepository.save(evento);
-        return toResponseDTO(atualizado);
+
+        EventoResponseDTO atualizadoDTO = toResponseDTO(atualizado);
+        enviaEmailDeAtualizacao(atualizadoDTO);
+
+        return atualizadoDTO;
     }
 
     @Transactional
@@ -113,5 +120,18 @@ public class EventoService {
             .localId(evento.getLocal().getId())
             .localNome(evento.getLocal().getNome())
             .build();
+    }
+
+    public void enviaEmailDeAtualizacao(EventoResponseDTO eventoDTO){
+        Local local = localRepository.findById(eventoDTO.getLocalId()).orElseThrow();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String horaFormatada = eventoDTO.getData().format(formatter);
+
+        String para = "tatianambmorais@gmail.com";
+        String assunto = "Houve uma alteração no evento " + eventoDTO.getTitulo();
+        String corpo = "Olá, o evento " + eventoDTO.getTitulo() + " foi atualizado.\n"
+                + "Observe os novos detalhes:\n"
+                + "Local: " + local.getNome() + " | Horário: " + horaFormatada;
+        emailService.enviarSimples(para, assunto, corpo);
     }
 }

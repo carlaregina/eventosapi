@@ -17,6 +17,21 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
+    public void enviarSimples(String para, String assunto, String corpo){
+        try {
+            MimeMessage mensagem = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mensagem);
+
+            helper.setTo(para);
+            helper.setSubject(assunto);
+            helper.setText(corpo);
+
+            mailSender.send(mensagem);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Erro ao enviar e-mail", e);
+        }
+    }
+
     public void enviarComAnexo(String para, String assunto, String corpo, byte[] anexo, String nomeArquivo) {
         try {
             MimeMessage mensagem = mailSender.createMimeMessage();
