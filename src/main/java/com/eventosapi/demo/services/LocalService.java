@@ -75,4 +75,5 @@ public class LocalService {
         local.setEstado(dto.getEstado());
         local.setTipo(dto.getTipo());
     }
+
 }

@@ -1,6 +1,7 @@
 package com.eventosapi.demo.services;
 
 import com.eventosapi.demo.dtos.InscricaoDTO;
+import com.eventosapi.demo.dtos.InscricaoRequest;
 import net.sf.jasperreports.engine.*;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class VoucherService {
 
     JasperReport jasperReport;
 
-    public JasperPrint geraRelatorio(InscricaoDTO inscricao) {
+    public JasperPrint geraRelatorio(InscricaoRequest inscricao) {
         try (InputStream jasperTemplate = getClass().getResourceAsStream("/relatorios/input/Inscricao.jrxml")) {
             if (jasperTemplate == null) {
                 throw new RuntimeException("Arquivo .jrxml não encontrado em " + filePath);
@@ -27,7 +28,7 @@ public class VoucherService {
         }
     }
 
-    public Map criaParametros(InscricaoDTO inscricao) {
+    public Map criaParametros(InscricaoRequest inscricao) {
 
         Map parametros = new HashMap();
         parametros.put("SAUDACAO_USUARIO", saudacaoUsuario(inscricao));
@@ -39,23 +40,23 @@ public class VoucherService {
         return parametros;
     }
 
-    private String saudacaoUsuario(InscricaoDTO inscricao) {
+    private String saudacaoUsuario(InscricaoRequest inscricao) {
         return "Olá, Fulano, sua inscrição foi confirmada. Observe os detalhes do evento: ";
     }
 
-    private String numeroInscricao(InscricaoDTO inscricao){
+    private String numeroInscricao(InscricaoRequest inscricao){
         return "Número da inscrição: 123456";
     }
 
-    private String nomeEvento(InscricaoDTO inscricao){
+    private String nomeEvento(InscricaoRequest inscricao){
         return "Evento: O grande Encontro - 25 anos";
     }
 
-    private String horarioEvento(InscricaoDTO inscricaoDTO){
+    private String horarioEvento(InscricaoRequest inscricaoDTO){
         return "Horário: 19:00";
     }
 
-    private String localEvento(InscricaoDTO inscricaoDTO){
+    private String localEvento(InscricaoRequest inscricaoDTO){
         return "Domus Hall";
     }
 }

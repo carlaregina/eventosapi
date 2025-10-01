@@ -47,4 +47,5 @@ public class Local implements Serializable{
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", length = 255)
     private TipoLocal tipo;
+
 }

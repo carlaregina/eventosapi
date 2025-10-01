@@ -1,6 +1,7 @@
 package com.eventosapi.demo.controller;
 
 import com.eventosapi.demo.dtos.InscricaoDTO;
+import com.eventosapi.demo.dtos.InscricaoRequest;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.services.VoucherService;
 
@@ -36,7 +37,7 @@ public class VoucherController {
         @ApiResponse(responseCode = "400", description = "Requisição inválida", 
             content = @Content)
     })
-    public ResponseEntity<byte[]> baixarVoucher(@RequestBody InscricaoDTO inscricao) {
+    public ResponseEntity<byte[]> baixarVoucher(@RequestBody InscricaoRequest inscricao) {
         try {
             var jasperPrint = voucherService.geraRelatorio(inscricao);
 
@@ -52,3 +53,4 @@ public class VoucherController {
         }
     }
 }
+
