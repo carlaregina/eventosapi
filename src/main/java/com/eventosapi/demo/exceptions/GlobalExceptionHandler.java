@@ -20,6 +20,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleAll(RuntimeException ex){
+        Map<String, String> body =  new HashMap<>();
+        body.put("message","Erro interno: "+ ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex){
         Map<String, String> erros =  new HashMap<>();
