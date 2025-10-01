@@ -105,7 +105,9 @@ public class EventoService {
                 .tipo(evento.getTipo())
                 .maxParticipantes(evento.getMaxParticipantes())
                 .organizadorId(evento.getOrganizador().getId())
+                .organizadorNome(evento.getOrganizador().getNome())
                 .localId(evento.getLocal().getId())
+                .localNome(evento.getLocal().getNome())
                 .build();
     }
 }
