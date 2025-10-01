@@ -3,11 +3,8 @@ package com.eventosapi.demo.models;
 import com.eventosapi.demo.enums.StatusInscricao;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-
 
 // domain/entity/Inscricao.java
 @Entity
@@ -71,4 +68,3 @@ public class Inscricao implements Serializable {
 //    @Column(name = "status", length = 255)
 //    private StatusInscricao status;
 //
-

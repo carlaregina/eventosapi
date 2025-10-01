@@ -1,10 +1,8 @@
 package com.eventosapi.demo.dtos;
 
 import org.hibernate.validator.constraints.Length;
-
 import com.eventosapi.demo.enums.Estado;
 import com.eventosapi.demo.enums.TipoLocal;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

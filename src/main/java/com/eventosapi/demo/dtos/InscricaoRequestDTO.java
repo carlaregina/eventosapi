@@ -14,6 +14,3 @@ public record InscricaoRequestDTO(
              @NotNull
              StatusInscricao status
          ) {}
-
-
-

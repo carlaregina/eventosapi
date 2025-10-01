@@ -3,7 +3,6 @@ package com.eventosapi.demo.dtos;
 import com.eventosapi.demo.enums.TipoEvento;
 import lombok.Builder;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Builder
