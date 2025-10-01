@@ -8,7 +8,7 @@ import com.eventosapi.demo.enums.StatusInscricao;
 import lombok.Data;
 
 @Data
-public class FiltroIncricaoDTO {
+public class FiltroInscricaoDTO {
     private Long eventoId;
     private Long usuarioId;
     private LocalDateTime data;

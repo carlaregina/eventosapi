@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eventosapi.demo.dtos.FiltroIncricaoDTO;
+import com.eventosapi.demo.dtos.FiltroInscricaoDTO;
 import com.eventosapi.demo.dtos.InscricaoRequestDTO;
 import com.eventosapi.demo.dtos.InscricaoResponseDTO;
 import com.eventosapi.demo.services.InscricaoService;
@@ -41,7 +41,7 @@ public class InscricaoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<InscricaoResponseDTO>> listar(FiltroIncricaoDTO filtro, Pageable pageable) {
+    public ResponseEntity<Page<InscricaoResponseDTO>> listar(FiltroInscricaoDTO filtro, Pageable pageable) {
         Page<InscricaoResponseDTO> page = service.listar(filtro, pageable);
         return ResponseEntity.ok(page);
     }

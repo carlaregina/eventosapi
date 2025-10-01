@@ -25,7 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import com.eventosapi.demo.dtos.FiltroIncricaoDTO;
+import com.eventosapi.demo.dtos.FiltroInscricaoDTO;
 import com.eventosapi.demo.dtos.InscricaoDTO;
 import com.eventosapi.demo.dtos.InscricaoResponse;
 import com.eventosapi.demo.enums.StatusInscricao;
@@ -89,7 +89,7 @@ class InscricaoServiceTest {
 
     @Test
     void deveListarInscricoes() {
-        FiltroIncricaoDTO filtro = new FiltroIncricaoDTO();
+        FiltroInscricaoDTO filtro = new FiltroInscricaoDTO();
         Pageable pageable = PageRequest.of(0, 10);
         Page<Inscricao> page = new PageImpl<>(List.of(inscricao));
         when(localRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(page);

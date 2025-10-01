@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.eventosapi.demo.dtos.FiltroIncricaoDTO;
+import com.eventosapi.demo.dtos.FiltroInscricaoDTO;
 import com.eventosapi.demo.dtos.InscricaoRequestDTO;
 import com.eventosapi.demo.dtos.InscricaoResponseDTO;
 import com.eventosapi.demo.enums.StatusInscricao;
@@ -71,7 +71,7 @@ public class InscricaoService {
     }
 
     @Transactional(readOnly = true)
-    public Page<InscricaoResponseDTO> listar(FiltroIncricaoDTO filtro, Pageable page) {
+    public Page<InscricaoResponseDTO> listar(FiltroInscricaoDTO filtro, Pageable page) {
         Specification<Inscricao> specification = InscricaoSpecification.build()
             .and(InscricaoSpecification.comData(filtro.getData()))
             .and(InscricaoSpecification.comDataMenorQue(filtro.getDataMenorQue()))
