@@ -84,9 +84,9 @@ public class InscricaoService {
 
     @Transactional
     public Inscricao atualizarStatus(Long id, StatusInscricao status) {
-        var i = buscar(id);
-        i.setStatus(status);   
-        return i;
+        var inscricao = buscar(id);
+        inscricao.setStatus(status);   
+        return inscricaoRepository.save(inscricao);
     }
 
     @Transactional
