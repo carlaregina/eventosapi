@@ -3,12 +3,12 @@ package com.eventosapi.demo.controller;
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
 import com.eventosapi.demo.services.EventoService;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/eventos")
@@ -21,8 +21,8 @@ public class EventoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EventoResponseDTO>> listarTodos() {
-        List<EventoResponseDTO> eventos = eventoService.listarTodos();
+    public ResponseEntity<Page<EventoResponseDTO>> listarTodos(Pageable pageable) {
+        Page<EventoResponseDTO> eventos = eventoService.listar(pageable);
         return ResponseEntity.ok(eventos);
     }
 

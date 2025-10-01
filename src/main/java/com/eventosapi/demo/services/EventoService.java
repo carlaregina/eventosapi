@@ -9,11 +9,11 @@ import com.eventosapi.demo.models.Usuario;
 import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.LocalRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EventoService {
@@ -31,11 +31,8 @@ public class EventoService {
     }
 
     @Transactional(readOnly = true)
-    public List<EventoResponseDTO> listarTodos() {
-        return eventoRepository.findAll()
-                .stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+    public Page<EventoResponseDTO> listar(Pageable pageable) {
+        return eventoRepository.findAll(pageable).map(this::toResponseDTO);
     }
 
     @Transactional(readOnly = true)
