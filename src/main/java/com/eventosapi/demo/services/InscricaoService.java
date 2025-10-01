@@ -22,7 +22,6 @@ import com.eventosapi.demo.specifications.InscricaoSpecification;
 
 import lombok.RequiredArgsConstructor;
 
-
 @Service
 @RequiredArgsConstructor
 public class InscricaoService {

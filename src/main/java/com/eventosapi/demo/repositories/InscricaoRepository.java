@@ -8,8 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-
-
 @Repository
 public interface InscricaoRepository extends JpaRepository<Inscricao, Long>, JpaSpecificationExecutor<Inscricao> {
     boolean existsByEventoIdAndUsuarioId(Long idEvento, Long idUsuario);
