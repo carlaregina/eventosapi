@@ -1,11 +1,12 @@
 package com.eventosapi.demo.services;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventosapi.demo.dtos.InscricaoRequestDTO;
+import com.eventosapi.demo.dtos.InscricaoResponseDTO;
 import com.eventosapi.demo.enums.StatusInscricao;
 import com.eventosapi.demo.exceptions.DuplicidadeInscricaoException;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
@@ -73,9 +74,8 @@ public class InscricaoService {
     }
 
     @Transactional(readOnly = true)
-    public List<Inscricao> listar(Long idEvento) {
-        if (idEvento != null) return inscricaoRepository.findByEventoId(idEvento);
-        return inscricaoRepository.findAll();
+    public Page<InscricaoResponseDTO> listar(Pageable page) {
+        return inscricaoRepository.findAll(page).map(InscricaoResponseDTO::from);
     }
 
     @Transactional
