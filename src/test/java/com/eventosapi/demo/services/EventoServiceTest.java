@@ -1,7 +1,30 @@
 package com.eventosapi.demo.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
+import com.eventosapi.demo.dtos.FiltroEventoDTO;
 import com.eventosapi.demo.enums.TipoEvento;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Evento;
@@ -10,17 +33,6 @@ import com.eventosapi.demo.models.Usuario;
 import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.LocalRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 class EventoServiceTest {
 
@@ -74,12 +86,15 @@ class EventoServiceTest {
 
     @Test
     void deveListarTodosEventos() {
-        when(eventoRepository.findAll()).thenReturn(List.of(evento));
+        FiltroEventoDTO filtro = new FiltroEventoDTO();
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Evento> page = new PageImpl<>(List.of(evento));
+        when(eventoRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(page);
 
-        List<EventoResponseDTO> resultado = eventoService.listarTodos();
+        Page<EventoResponseDTO> resultado = eventoService.listar(filtro, pageable);
 
-        assertEquals(1, resultado.size());
-        assertEquals("Workshop Spring Boot", resultado.get(0).getTitulo());
+        assertEquals(1, resultado.getTotalElements());
+        assertEquals("Workshop Spring Boot", resultado.getContent().get(0).getTitulo());
     }
 
     @Test

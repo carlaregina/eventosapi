@@ -1,6 +1,6 @@
 package com.eventosapi.demo.services;
 
-import com.eventosapi.demo.dtos.InscricaoRequest;
+import com.eventosapi.demo.dtos.InscricaoRequestDTO;
 import com.eventosapi.demo.enums.StatusInscricao;
 import com.eventosapi.demo.exceptions.DuplicidadeInscricaoException;
 import com.eventosapi.demo.exceptions.RecursoNaoEncontradoException;
@@ -39,7 +39,7 @@ public class InscricaoService {
     }
 
     @Transactional
-    public Inscricao criar(InscricaoRequest req) {
+    public Inscricao criar(InscricaoRequestDTO req) {
         if (inscricaoRepository.existsById(req.id())) {
             throw new DuplicidadeInscricaoException("Usuário já inscrito neste evento.");
         }
