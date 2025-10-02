@@ -1,33 +1,59 @@
 package com.eventosapi.demo.services;
 
-import com.eventosapi.demo.dtos.EventoRequestDTO;
-import com.eventosapi.demo.dtos.EventoResponseDTO;
-import com.eventosapi.demo.enums.TipoEvento;
-import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
-import com.eventosapi.demo.models.Evento;
-import com.eventosapi.demo.models.Local;
-import com.eventosapi.demo.models.Usuario;
-import com.eventosapi.demo.repositories.EventoRepository;
-import com.eventosapi.demo.repositories.LocalRepository;
-import com.eventosapi.demo.repositories.UsuarioRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+
+import com.eventosapi.demo.dtos.EventoRequestDTO;
+import com.eventosapi.demo.dtos.EventoResponseDTO;
+import com.eventosapi.demo.dtos.FiltroEventoDTO;
+import com.eventosapi.demo.dtos.FiltroInscricaoDTO;
+import com.eventosapi.demo.dtos.FiltroUsuarioDTO;
+import com.eventosapi.demo.dtos.UsuarioResponseDTO;
+import com.eventosapi.demo.enums.TipoEvento;
+import com.eventosapi.demo.enums.TipoUsuario;
+import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
+import com.eventosapi.demo.models.Evento;
+import com.eventosapi.demo.models.Inscricao;
+import com.eventosapi.demo.models.Local;
+import com.eventosapi.demo.models.Usuario;
+import com.eventosapi.demo.repositories.EventoRepository;
+import com.eventosapi.demo.repositories.InscricaoRepository;
+import com.eventosapi.demo.repositories.LocalRepository;
+import com.eventosapi.demo.repositories.UsuarioRepository;
 
 class EventoServiceTest {
 
+    @Mock
     private EventoRepository eventoRepository;
     private UsuarioRepository usuarioRepository;
     private LocalRepository localRepository;
     private EventoService eventoService;
+    private InscricaoRepository inscricaoRepository;
+    private EmailService emailService;
 
     private Usuario organizador;
     private Local local;
@@ -40,9 +66,10 @@ class EventoServiceTest {
         eventoRepository = mock(EventoRepository.class);
         usuarioRepository = mock(UsuarioRepository.class);
         localRepository = mock(LocalRepository.class);
+        inscricaoRepository = mock(InscricaoRepository.class);
 
         // criar service
-        eventoService = new EventoService(eventoRepository, usuarioRepository, localRepository);
+        eventoService = new EventoService(eventoRepository, usuarioRepository, localRepository, inscricaoRepository, emailService);
 
         // dados de teste
         organizador = new Usuario();
@@ -74,12 +101,15 @@ class EventoServiceTest {
 
     @Test
     void deveListarTodosEventos() {
-        when(eventoRepository.findAll()).thenReturn(List.of(evento));
+        FiltroEventoDTO filtro = new FiltroEventoDTO();
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Evento> page = new PageImpl<>(List.of(evento));
+        when(eventoRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(page);
 
-        List<EventoResponseDTO> resultado = eventoService.listarTodos();
+        Page<EventoResponseDTO> resultado = eventoService.listar(filtro, pageable);
 
-        assertEquals(1, resultado.size());
-        assertEquals("Workshop Spring Boot", resultado.get(0).getTitulo());
+        assertEquals(1, resultado.getTotalElements());
+        assertEquals("Workshop Spring Boot", resultado.getContent().get(0).getTitulo());
     }
 
     @Test
@@ -137,5 +167,41 @@ class EventoServiceTest {
 
         verify(eventoRepository, times(1)).delete(evento);
     }
+
+
+ @Test
+    void deveListarUsuariosPorEventoComFiltros() {
+        // Arrange
+        FiltroUsuarioDTO filtro = new FiltroUsuarioDTO();
+        PageRequest pageable = PageRequest.of(0, 10);
+
+        Usuario usuario = new Usuario();
+        usuario.setNome("Carlos");
+        usuario.setEmail("carlos@email.com");
+        usuario.setTelefone("11999999999");
+        usuario.setTipo(TipoUsuario.PARTICIPANTE);
+
+        Inscricao inscricao = new Inscricao();
+        inscricao.setUsuario(usuario);
+        inscricao.setEvento(evento);
+        List<Inscricao> inscricoes = List.of(inscricao);
+        Page<Inscricao> page = new PageImpl<>(inscricoes);
+
+        Mockito.when(inscricaoRepository.findAll(any(Specification.class), Mockito.eq(pageable))).thenReturn(page);
+
+        // Act
+        Page<UsuarioResponseDTO> resultado = eventoService.listarUsuariosPorEvento(1L, filtro, pageable);
+
+        // Assert
+        Assertions.assertNotNull(resultado);
+        Assertions.assertEquals(1, resultado.getTotalElements());
+
+        UsuarioResponseDTO dto = resultado.getContent().get(0);
+        Assertions.assertEquals("Carlos", dto.nome());
+        Assertions.assertEquals("carlos@email.com", dto.email());
+        Assertions.assertEquals("11999999999", dto.telefone());
+        Assertions.assertEquals(TipoUsuario.PARTICIPANTE, dto.tipo());
+    }
+
 
 }

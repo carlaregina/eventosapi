@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -43,17 +42,6 @@ class UsuarioControllerTest {
                 "11999999999",
                 TipoUsuario.STAFF
         );
-    }
-
-    @Test
-    void deveListarTodosUsuarios() {
-        when(usuarioService.listarUsuarios()).thenReturn(List.of(usuarioResponseDTO));
-
-        ResponseEntity<List<UsuarioResponseDTO>> response = usuarioController.listarTodos();
-
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(1, response.getBody().size());
-        assertEquals("José Vitor", response.getBody().get(0).nome());
     }
 
     @Test

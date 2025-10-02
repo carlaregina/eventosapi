@@ -2,27 +2,30 @@ package com.eventosapi.demo.controller;
 
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
+import com.eventosapi.demo.dtos.FiltroEventoDTO;
+import com.eventosapi.demo.dtos.FiltroUsuarioDTO;
+import com.eventosapi.demo.dtos.UsuarioResponseDTO;
 import com.eventosapi.demo.services.EventoService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.util.List;
-
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/eventos")
 public class EventoController {
 
     private final EventoService eventoService;
 
-    public EventoController(EventoService eventoService) {
-        this.eventoService = eventoService;
-    }
-
     @GetMapping
-    public ResponseEntity<List<EventoResponseDTO>> listarTodos() {
-        List<EventoResponseDTO> eventos = eventoService.listarTodos();
+    public ResponseEntity<Page<EventoResponseDTO>> listarTodos(FiltroEventoDTO filtro, Pageable pageable) {
+        Page<EventoResponseDTO> eventos = eventoService.listar(filtro, pageable);
         return ResponseEntity.ok(eventos);
     }
 
@@ -50,5 +53,11 @@ public class EventoController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         eventoService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/participantes")
+    @Operation(summary = "Listar organizadores dos eventos com paginação e filtros")
+    public Page<UsuarioResponseDTO> listarOrganizadores(@PathVariable Long id, FiltroUsuarioDTO eventoFiltro, Pageable pageable) {
+        return eventoService.listarUsuariosPorEvento(id, eventoFiltro, pageable);
     }
 }

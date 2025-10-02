@@ -6,6 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="18c8e2ee-be6e-4753-a651-0cc39709ec5a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/EventoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/EventoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/InscricaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eventosapi/demo/services/InscricaoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/eventosapi/demo/controllers/InscricaoControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/eventosapi/demo/controllers/InscricaoControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/eventosapi/demo/services/EventoServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/eventosapi/demo/services/EventoServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/eventosapi/demo/services/InscricaoServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/eventosapi/demo/services/InscricaoServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/eventosapi/demo/services/VoucherServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/eventosapi/demo/services/VoucherServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +41,16 @@
     &quot;accountId&quot;: &quot;c352e6a0-d4c9-4e61-9703-44bcfe190090&quot;
     }
     }</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
     &quot;associatedIndex&quot;: 0
     }</component>
@@ -49,6 +66,14 @@
   "keyToString": {
     "JUnit.EventoControllerTest.executor": "Run",
     "JUnit.EventoServiceTest.executor": "Run",
+    "JUnit.InscricaoControllerTest.deveCriarInscricaoComSucesso.executor": "Run",
+    "JUnit.InscricaoControllerTest.executor": "Run",
+    "JUnit.InscricaoServiceTest.executor": "Run",
+    "JUnit.LocalServiceTest.executor": "Run",
+    "JUnit.UsuarioControllerTest.executor": "Run",
+    "JUnit.UsuarioServiceTest.executor": "Run",
+    "JUnit.VoucherControllerTest.executor": "Run",
+    "JUnit.VoucherServiceTest.executor": "Run",
     "Maven.demo [spring-boot:run].executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -70,6 +95,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager" selected="JUnit.EventoServiceTest">
   <component name="RunManager" selected="Maven.demo [spring-boot:run]">
     <configuration name="EventoControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="demo" />
@@ -101,10 +127,85 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="InscricaoServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="demo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.eventosapi.demo.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.eventosapi.demo.services" />
+      <option name="MAIN_CLASS_NAME" value="com.eventosapi.demo.services.InscricaoServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LocalServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="demo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.eventosapi.demo.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.eventosapi.demo.services" />
+      <option name="MAIN_CLASS_NAME" value="com.eventosapi.demo.services.LocalServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UsuarioServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="demo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.eventosapi.demo.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.eventosapi.demo.services" />
+      <option name="MAIN_CLASS_NAME" value="com.eventosapi.demo.services.UsuarioServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VoucherServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="demo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.eventosapi.demo.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.eventosapi.demo.services" />
+      <option name="MAIN_CLASS_NAME" value="com.eventosapi.demo.services.VoucherServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="demo [spring-boot:run]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
       <MavenSettings>
         <option name="myGeneralSettings" />
-        <option name="myRunnerSettings" />
+        <option name="myRunnerSettings">
+          <MavenRunnerSettings>
+            <option name="delegateBuildToMaven" value="false" />
+            <option name="environmentProperties">
+              <map />
+            </option>
+            <option name="jreName" value="17" />
+            <option name="mavenProperties">
+              <map />
+            </option>
+            <option name="passParentEnv" value="true" />
+            <option name="runMavenInBackground" value="true" />
+            <option name="skipTests" value="false" />
+            <option name="vmOptions" value="" />
+          </MavenRunnerSettings>
+        </option>
         <option name="myRunnerParameters">
           <MavenRunnerParameters>
             <option name="cmdOptions" />
@@ -131,31 +232,21 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
-    <configuration name="EventosapiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <module name="demo" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.eventosapi.demo.EventosapiApplication" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.eventosapi.demo.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
-      <item itemvalue="JUnit.EventoControllerTest" />
+      <item itemvalue="JUnit.InscricaoServiceTest" />
+      <item itemvalue="JUnit.LocalServiceTest" />
+      <item itemvalue="JUnit.UsuarioServiceTest" />
+      <item itemvalue="JUnit.VoucherServiceTest" />
       <item itemvalue="JUnit.EventoServiceTest" />
       <item itemvalue="Maven.demo [spring-boot:run]" />
-      <item itemvalue="Spring Boot.EventosapiApplication" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.EventoServiceTest" />
-        <item itemvalue="JUnit.EventoControllerTest" />
-        <item itemvalue="Spring Boot.EventosapiApplication" />
+        <item itemvalue="JUnit.VoucherServiceTest" />
+        <item itemvalue="JUnit.UsuarioServiceTest" />
+        <item itemvalue="JUnit.LocalServiceTest" />
+        <item itemvalue="JUnit.InscricaoServiceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -177,8 +268,9 @@
       <updated>1759175086907</updated>
       <workItem from="1759259303896" duration="1763000" />
       <workItem from="1759261106147" duration="2371000" />
-      <workItem from="1759407133990" duration="46000" />
-      <workItem from="1759407190646" duration="130000" />
+      <workItem from="1759405840292" duration="1051000" />
+      <workItem from="1759406932373" duration="134000" />
+      <workItem from="1759407276691" duration="2158000" />
     </task>
     <servers />
   </component>
@@ -190,8 +282,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/eventosapi/demo/services/EventoServiceTest.java</url>
-          <line>3</line>
+          <line>27</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/eventosapi/demo/services/VoucherServiceTest.java</url>
+          <line>25</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

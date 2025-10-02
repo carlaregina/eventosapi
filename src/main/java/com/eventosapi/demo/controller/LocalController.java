@@ -1,7 +1,6 @@
 package com.eventosapi.demo.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +12,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.eventosapi.demo.dtos.FiltroLocalDTO;
 import com.eventosapi.demo.dtos.LocalDTO;
 import com.eventosapi.demo.models.Local;
 import com.eventosapi.demo.services.LocalService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

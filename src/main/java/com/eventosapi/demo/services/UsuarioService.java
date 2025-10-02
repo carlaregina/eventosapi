@@ -1,12 +1,18 @@
 package com.eventosapi.demo.services;
 
+import com.eventosapi.demo.dtos.FiltroUsuarioDTO;
 import com.eventosapi.demo.dtos.UsuarioRequestDTO;
 import com.eventosapi.demo.dtos.UsuarioResponseDTO;
+import com.eventosapi.demo.exceptions.DuplicidadeEmailUsuarioException;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Usuario;
 import com.eventosapi.demo.repositories.UsuarioRepository;
+import com.eventosapi.demo.specifications.UsuarioSpecification;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,6 +40,9 @@ public class UsuarioService {
     }
 
     public UsuarioResponseDTO cadastrarUsuario(UsuarioRequestDTO usuarioRequestDTO){
+        if(usuarioRepository.existsByEmail(usuarioRequestDTO.email())){
+            throw new DuplicidadeEmailUsuarioException("Já existe um usuário cadastrado com o email: " + usuarioRequestDTO.email());
+        }
         Usuario usuario = usuarioRepository.save(toEntity(usuarioRequestDTO));
 
         return toDto(usuario);
@@ -67,12 +76,15 @@ public class UsuarioService {
         return toDto(usuarioAtualizado);
     }
 
-    public List<UsuarioResponseDTO> listarUsuarios(){
-        List<Usuario> usuarios = usuarioRepository.findAll();
+    @Transactional(readOnly = true)
+    public Page<UsuarioResponseDTO> listarUsuarios(FiltroUsuarioDTO filtro, Pageable pageable) {
+        Specification<Usuario> specification = UsuarioSpecification.build()
+            .and(UsuarioSpecification.comNome(filtro.getNome()))
+            .and(UsuarioSpecification.comEmail(filtro.getEmail()))
+            .and(UsuarioSpecification.comTelefone(filtro.getTelefone()))
+            .and(UsuarioSpecification.comTipo(filtro.getTipo() != null ? filtro.getTipo().name() : null));
 
-        return usuarios.stream()
-            .map(this::toDto)
-            .toList();
+        return usuarioRepository.findAll(specification, pageable).map(this::toDto);
     }
 
 }

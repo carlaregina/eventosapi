@@ -2,11 +2,9 @@ package com.eventosapi.demo.dtos;
 
 import com.eventosapi.demo.enums.StatusInscricao;
 import com.eventosapi.demo.models.Inscricao;
-
 import java.time.LocalDateTime;
 
-// api/dto/response/InscricaoResponse.java
-public record InscricaoResponse(
+public record InscricaoResponseDTO(
     Long id,
     Long idEvento,
     String tituloEvento,
@@ -15,10 +13,10 @@ public record InscricaoResponse(
     LocalDateTime data,
     StatusInscricao status
 ) {
-    public static InscricaoResponse from(Inscricao i) {
+    public static InscricaoResponseDTO from(Inscricao i) {
         var e = i.getEvento();
         var u = i.getUsuario();
-        return new InscricaoResponse(
+        return new InscricaoResponseDTO(
             i.getId(),
             e != null ? e.getId() : null,
             e != null ? e.getTitulo() : null,
