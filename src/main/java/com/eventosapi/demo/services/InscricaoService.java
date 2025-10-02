@@ -51,13 +51,10 @@ public class InscricaoService {
 
        inscricaoRepository.save(inscricao);
 
-        
-        byte[] pdf = voucherService.geraRelatorioPDF(inscricao);
-
         String email = inscricao.getUsuario().getEmail();
         String assunto = "Confirmação de Inscrição";
         String corpo = "Olá " + inscricao.getUsuario().getNome() + ", segue seu voucher em anexo.";
-        emailService.enviarComAnexo(email, assunto, corpo, pdf, "voucher.pdf");
+        emailService.enviarComAnexo(email, assunto, corpo, req);
 
         return inscricao;
     }

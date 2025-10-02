@@ -44,6 +44,7 @@ class InscricaoServiceTest {
     @Mock
     private InscricaoRepository localRepository;
     
+
     @Mock
     private UsuarioRepository usuarioRepository;
 
@@ -59,6 +60,7 @@ class InscricaoServiceTest {
     @InjectMocks
     private InscricaoService localService;
     
+
     private InscricaoRequestDTO inscricaoRequestDTO;
     private Inscricao inscricao;
     private Usuario usuario;
@@ -133,8 +135,9 @@ class InscricaoServiceTest {
         when(eventoRepository.findById(1L)).thenReturn(Optional.of(evento));
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
         when(localRepository.save(any(Inscricao.class))).thenReturn(inscricao);
-        when(voucherService.geraRelatorioPDF(any(Inscricao.class))).thenReturn(new byte[0]);
-        doNothing().when(emailService).enviarComAnexo(any(String.class), any(String.class), any(String.class), any(byte[].class), any(String.class));
+
+        when(voucherService.geraRelatorioPDF(inscricaoRequestDTO)).thenReturn(new byte[0]);
+        doNothing().when(emailService).enviarComAnexo(any(String.class), any(String.class), any(String.class), any(InscricaoRequestDTO.class));
 
         Inscricao result = localService.criar(inscricaoRequestDTO);
 

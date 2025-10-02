@@ -20,5 +20,7 @@ public interface InscricaoRepository extends JpaRepository<Inscricao, Long>, Jpa
 
     @EntityGraph(attributePaths = {"evento","usuario"})
     List<Inscricao> findAll();
+
+
 }
 
