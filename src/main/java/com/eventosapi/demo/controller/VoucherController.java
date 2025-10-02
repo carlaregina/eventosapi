@@ -8,21 +8,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/voucher")
 @Tag(name = "Voucher")
 public class VoucherController {
 
-    private VoucherService voucherService;
-
-    public VoucherController(VoucherService voucherService) {
-        this.voucherService = voucherService;
-    }
+    private final VoucherService voucherService;
 
     @PostMapping("/{id}/baixar")
     @Operation(summary = "Baixar voucher em PDF")

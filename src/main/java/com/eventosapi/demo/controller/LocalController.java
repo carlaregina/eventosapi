@@ -34,18 +34,18 @@ public class LocalController {
     private final LocalService localService;
 
     @GetMapping
-    @Operation(summary = "Listar livros com paginação e filtros")
+    @Operation(summary = "Listar locais com paginação e filtros")
     public Page<Local> listar(FiltroLocalDTO filtro, Pageable pageable) {
         return localService.listar(filtro, pageable);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obter livro por ID")
+    @Operation(summary = "Obter local por ID")
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Livro encontrado", 
+        @ApiResponse(responseCode = "200", description = "Local encontrado", 
             content = { @Content(mediaType = "application/json", 
             schema = @Schema(implementation = Local.class)) }),
-        @ApiResponse(responseCode = "404", description = "Livro não encontrado", 
+        @ApiResponse(responseCode = "404", description = "Local não encontrado", 
             content = @Content)
     })
     public ResponseEntity<Local> buscarPorId(@PathVariable Long id) {
@@ -54,9 +54,9 @@ public class LocalController {
     }
 
     @PostMapping
-    @Operation(summary = "Criar um novo livro")
+    @Operation(summary = "Criar um novo local")
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "201", description = "Livro criado", 
+        @ApiResponse(responseCode = "201", description = "Local criado", 
             content = { @Content(mediaType = "application/json", 
             schema = @Schema(implementation = Local.class)) }),
     })
@@ -66,12 +66,12 @@ public class LocalController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Atualizar um livro existente")
+    @Operation(summary = "Atualizar um local existente")
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Livro atualizado", 
+        @ApiResponse(responseCode = "200", description = "Local atualizado", 
             content = { @Content(mediaType = "application/json", 
             schema = @Schema(implementation = Local.class)) }),
-        @ApiResponse(responseCode = "404", description = "Livro não encontrado", 
+        @ApiResponse(responseCode = "404", description = "Local não encontrado", 
             content = @Content)
     })
     public ResponseEntity<Local> atualizar(@PathVariable Long id, @Valid @RequestBody LocalDTO dto) {
@@ -80,12 +80,11 @@ public class LocalController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletar um livro por ID")
+    @Operation(summary = "Deletar um local por ID")
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "204", description = "Livro apagado", 
-            content = { @Content(mediaType = "application/json", 
-            schema = @Schema(implementation = Local.class)) }),
-        @ApiResponse(responseCode = "404", description = "Livro não encontrado", 
+        @ApiResponse(responseCode = "204", description = "Local apagado", 
+            content = { @Content(mediaType = "application/json") }),
+        @ApiResponse(responseCode = "404", description = "Local não encontrado", 
             content = @Content)
     })
     public ResponseEntity<Void> deletar(@PathVariable Long id) {

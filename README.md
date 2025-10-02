@@ -17,3 +17,11 @@ Sistema de gerenciamento de eventos.
 ```sh
 ./mvnw spring-boot:run
 ```
+
+## Modelagem
+
+![Modelagem](./docs/MER.jpg)
+
+## Documentação
+
+Swagger UI: http://localhost:8080/documentacao.html
