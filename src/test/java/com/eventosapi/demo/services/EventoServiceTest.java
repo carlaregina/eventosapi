@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.eventosapi.demo.repositories.InscricaoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
@@ -59,6 +60,8 @@ class EventoServiceTest {
     private UsuarioRepository usuarioRepository;
     private LocalRepository localRepository;
     private EventoService eventoService;
+    private InscricaoRepository inscricaoRepository;
+    private EmailService emailService;
 
     private Usuario organizador;
     private Local local;
@@ -71,9 +74,10 @@ class EventoServiceTest {
         eventoRepository = mock(EventoRepository.class);
         usuarioRepository = mock(UsuarioRepository.class);
         localRepository = mock(LocalRepository.class);
+        inscricaoRepository = mock(InscricaoRepository.class);
 
         // criar service
-        eventoService = new EventoService(eventoRepository, usuarioRepository, localRepository);
+        eventoService = new EventoService(eventoRepository, usuarioRepository, localRepository, inscricaoRepository, emailService);
 
         // dados de teste
         organizador = new Usuario();
@@ -172,7 +176,7 @@ class EventoServiceTest {
         verify(eventoRepository, times(1)).delete(evento);
     }
 
-    
+
  @Test
     void deveListarUsuariosPorEventoComFiltros() {
         // Arrange

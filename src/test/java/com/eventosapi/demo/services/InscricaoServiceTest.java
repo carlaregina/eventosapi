@@ -136,8 +136,8 @@ class InscricaoServiceTest {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
         when(localRepository.save(any(Inscricao.class))).thenReturn(inscricao);
 
-        when(voucherService.geraRelatorioPDF(inscricaoRequestDTO)).thenReturn(new byte[0]);
-        doNothing().when(emailService).enviarComAnexo(any(String.class), any(String.class), any(String.class), any(InscricaoRequestDTO.class));
+        when(voucherService.geraRelatorioPDF(inscricao)).thenReturn(new byte[0]);
+        doNothing().when(emailService).enviarComAnexo(any(String.class), any(String.class), any(String.class), any(Inscricao.class));
 
         Inscricao result = localService.criar(inscricaoRequestDTO);
 

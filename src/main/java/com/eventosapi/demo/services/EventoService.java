@@ -1,5 +1,7 @@
 package com.eventosapi.demo.services;
 
+import com.eventosapi.demo.models.Inscricao;
+import com.eventosapi.demo.repositories.InscricaoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,6 +25,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +37,8 @@ public class EventoService {
     private final EventoRepository eventoRepository;
     private final UsuarioRepository usuarioRepository;
     private final LocalRepository localRepository;
+    private final InscricaoRepository inscricaoRepository;
+    private final EmailService emailService;
 
     @Transactional(readOnly = true)
     public Page<EventoResponseDTO> listar(FiltroEventoDTO filtro, Pageable pageable) {
@@ -97,7 +103,11 @@ public class EventoService {
         evento.setLocal(local);
 
         Evento atualizado = eventoRepository.save(evento);
-        return toResponseDTO(atualizado);
+
+        EventoResponseDTO atualizadoDTO = toResponseDTO(atualizado);
+        enviaEmailDeAtualizacao(atualizadoDTO, id);
+
+        return atualizadoDTO;
     }
 
     @Transactional
@@ -131,5 +141,30 @@ public class EventoService {
             .map(evento -> new UsuarioResponseDTO(
                 evento.getOrganizador().getNome(), evento.getOrganizador().getEmail(), evento.getOrganizador().getTelefone(), evento.getOrganizador().getTipo()
                 ));
+    }
+
+    public void enviaEmailDeAtualizacao(EventoResponseDTO eventoDTO, Long id) {
+        Local local = localRepository.findById(eventoDTO.getLocalId()).orElseThrow();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String horaFormatada = eventoDTO.getData().format(formatter);
+
+        List<Inscricao> inscricoes = inscricaoRepository.findByEventoId(id);
+
+        String assunto = "Houve uma alteração no evento " + eventoDTO.getTitulo();
+        String corpo = "Olá, o evento " + eventoDTO.getTitulo() + " foi atualizado.\n"
+                + "Observe os novos detalhes:\n"
+                + "Local: " + local.getNome() + " | Horário: " + horaFormatada;
+
+        for (Inscricao inscricao : inscricoes) {
+            String email = inscricao.getUsuario().getEmail();
+            emailService.enviarComAnexo(email, assunto, corpo, inscricao);
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                e.printStackTrace();
+            }
+        }
     }
 }

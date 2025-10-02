@@ -1,5 +1,6 @@
 package com.eventosapi.demo.services;
 import com.eventosapi.demo.dtos.InscricaoRequestDTO;
+import com.eventosapi.demo.models.Inscricao;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -20,8 +21,8 @@ public class EmailService {
         this.voucherService = voucherService;
     }
 
-    public void enviarComAnexo(String para, String assunto, String corpo, InscricaoRequestDTO req) {
-        byte[] pdf = voucherService.geraRelatorioPDF(req);
+    public void enviarComAnexo(String para, String assunto, String corpo, Inscricao inscricao) {
+        byte[] pdf = voucherService.geraRelatorioPDF(inscricao);
         try {
             MimeMessage mensagem = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mensagem, true);

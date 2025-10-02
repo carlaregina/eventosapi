@@ -1,61 +1,29 @@
 package com.eventosapi.demo.controllers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.time.LocalDateTime;
-import java.util.List;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import static org.mockito.ArgumentMatchers.any;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import com.eventosapi.demo.controller.EventoController;
-import com.eventosapi.demo.dtos.EventoRequestDTO;
-import com.eventosapi.demo.dtos.EventoResponseDTO;
-import com.eventosapi.demo.dtos.FiltroEventoDTO;
-import com.eventosapi.demo.dtos.UsuarioResponseDTO;
-import com.eventosapi.demo.enums.TipoEvento;
-import com.eventosapi.demo.enums.TipoUsuario;
-import com.eventosapi.demo.services.EventoService;
+import java.time.LocalDateTime;
+
 import com.eventosapi.demo.controller.InscricaoController;
-import com.eventosapi.demo.dtos.FiltroInscricaoDTO;
 import com.eventosapi.demo.dtos.InscricaoRequestDTO;
-import com.eventosapi.demo.dtos.InscricaoResponseDTO;
-import com.eventosapi.demo.services.InscricaoService;    
 import com.eventosapi.demo.enums.StatusInscricao;
-import com.eventosapi.demo.models.Inscricao;
 import com.eventosapi.demo.models.Evento;
-import com.eventosapi.demo.models.Usuario;  
-import java.time.LocalDateTime;
-
-
+import com.eventosapi.demo.models.Inscricao;
+import com.eventosapi.demo.models.Usuario;
+import com.eventosapi.demo.services.InscricaoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;  
-
-
-
-
-
 
 @WebMvcTest(controllers = InscricaoController.class)
 @AutoConfigureMockMvc
@@ -67,115 +35,115 @@ class InscricaoControllerTest {
     @MockBean
     private InscricaoService inscricaoService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-
     void deveCriarInscricaoComSucesso() throws Exception {
+        // request corrigido na ordem correta do record
         InscricaoRequestDTO request = new InscricaoRequestDTO(
-            null, 1L, 2L, StatusInscricao.CONFIRMADA
+                1L, // idEvento
+                2L, // idUsuario
+                StatusInscricao.CONFIRMADA
         );
-       
-    Evento evento = Evento.builder()
-        .id(1L)
-        .titulo("Workshop Java")
-        .build();
 
-    Usuario usuario = Usuario.builder()
-        .id(2L)
-        .nome("Carla")
-        .build();
+        Evento evento = Evento.builder()
+                .id(1L)
+                .titulo("Workshop Java")
+                .build();
 
-    Inscricao inscricao = Inscricao.builder()
-        .id(10L)
-        .evento(evento)
-        .usuario(usuario)
-        .data(LocalDateTime.now())
-        .status(StatusInscricao.CONFIRMADA)
-        .build();
+        Usuario usuario = Usuario.builder()
+                .id(2L)
+                .nome("Carla")
+                .build();
 
-    when(inscricaoService.criar(any())).thenReturn(inscricao);
+        Inscricao inscricao = Inscricao.builder()
+                .id(10L)
+                .evento(evento)
+                .usuario(usuario)
+                .data(LocalDateTime.now())
+                .status(StatusInscricao.CONFIRMADA)
+                .build();
 
-    mockMvc.perform(post("/api/inscricoes")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").value(10))
-        .andExpect(jsonPath("$.status").value("CONFIRMADA"))
-        .andExpect(jsonPath("$.tituloEvento").value("Workshop Java"))
-        .andExpect(jsonPath("$.nomeUsuario").value("Carla"));
+        when(inscricaoService.criar(request)).thenReturn(inscricao);
 
+        mockMvc.perform(post("/api/inscricoes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(10))
+                .andExpect(jsonPath("$.status").value("CONFIRMADA"))
+                .andExpect(jsonPath("$.tituloEvento").value("Workshop Java"))
+                .andExpect(jsonPath("$.nomeUsuario").value("Carla"));
     }
 
     @Test
     void deveBuscarInscricaoPorId() throws Exception {
-      
-    Evento evento = Evento.builder()
-        .id(1L)
-        .titulo("Workshop Java")
-        .build();
+        Evento evento = Evento.builder()
+                .id(1L)
+                .titulo("Workshop Java")
+                .build();
 
-    Usuario usuario = Usuario.builder()
-        .id(2L)
-        .nome("Carla")
-        .build();
+        Usuario usuario = Usuario.builder()
+                .id(2L)
+                .nome("Carla")
+                .build();
 
-    Inscricao inscricao = Inscricao.builder()
-        .id(10L)
-        .evento(evento)
-        .usuario(usuario)
-        .data(LocalDateTime.now())
-        .status(StatusInscricao.CONFIRMADA)
-        .build();
+        Inscricao inscricao = Inscricao.builder()
+                .id(10L)
+                .evento(evento)
+                .usuario(usuario)
+                .data(LocalDateTime.now())
+                .status(StatusInscricao.CONFIRMADA)
+                .build();
 
-    when(inscricaoService.buscar(10L)).thenReturn(inscricao);
+        when(inscricaoService.buscar(10L)).thenReturn(inscricao);
 
-    mockMvc.perform(get("/api/inscricoes/10"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(10))
-        .andExpect(jsonPath("$.status").value("CONFIRMADA"))
-        .andExpect(jsonPath("$.tituloEvento").value("Workshop Java"))
-        .andExpect(jsonPath("$.nomeUsuario").value("Carla"));
-
+        mockMvc.perform(get("/api/inscricoes/10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(10))
+                .andExpect(jsonPath("$.status").value("CONFIRMADA"))
+                .andExpect(jsonPath("$.tituloEvento").value("Workshop Java"))
+                .andExpect(jsonPath("$.nomeUsuario").value("Carla"));
     }
 
     @Test
     void deveAtualizarStatusDaInscricao() throws Exception {
-       
-InscricaoRequestDTO request = new InscricaoRequestDTO(
-        null, 1L, 2L, StatusInscricao.CANCELADO
-    );
+        // request corrigido
+        InscricaoRequestDTO request = new InscricaoRequestDTO(
+                1L, // idEvento
+                2L, // idUsuario
+                StatusInscricao.CANCELADO
+        );
 
-    Evento evento = Evento.builder()
-        .id(1L)
-        .titulo("Workshop Java")
-        .build();
+        Evento evento = Evento.builder()
+                .id(1L)
+                .titulo("Workshop Java")
+                .build();
 
-    Usuario usuario = Usuario.builder()
-        .id(2L)
-        .nome("Carla")
-        .build();
+        Usuario usuario = Usuario.builder()
+                .id(2L)
+                .nome("Carla")
+                .build();
 
-    Inscricao inscricao = Inscricao.builder()
-        .id(10L)
-        .evento(evento)
-        .usuario(usuario)
-        .data(LocalDateTime.now())
-        .status(StatusInscricao.CANCELADO)
-        .build();
+        Inscricao inscricao = Inscricao.builder()
+                .id(10L)
+                .evento(evento)
+                .usuario(usuario)
+                .data(LocalDateTime.now())
+                .status(StatusInscricao.CANCELADO)
+                .build();
 
-    when(inscricaoService.atualizarStatus(eq(10L), eq(StatusInscricao.CANCELADO)))
-        .thenReturn(inscricao);
+        when(inscricaoService.atualizarStatus(eq(10L), eq(StatusInscricao.CANCELADO)))
+                .thenReturn(inscricao);
 
-    mockMvc.perform(put("/api/inscricoes/10")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(10))
-        .andExpect(jsonPath("$.status").value("CANCELADO"))
-        .andExpect(jsonPath("$.tituloEvento").value("Workshop Java"))
-        .andExpect(jsonPath("$.nomeUsuario").value("Carla"));
-
+        mockMvc.perform(put("/api/inscricoes/10")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(10))
+                .andExpect(jsonPath("$.status").value("CANCELADO"))
+                .andExpect(jsonPath("$.tituloEvento").value("Workshop Java"))
+                .andExpect(jsonPath("$.nomeUsuario").value("Carla"));
     }
 
     @Test
@@ -183,6 +151,6 @@ InscricaoRequestDTO request = new InscricaoRequestDTO(
         doNothing().when(inscricaoService).excluir(10L);
 
         mockMvc.perform(delete("/api/inscricoes/10"))
-            .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent());
     }
 }
