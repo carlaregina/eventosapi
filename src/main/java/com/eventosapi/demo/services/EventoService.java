@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
 import com.eventosapi.demo.dtos.FiltroEventoDTO;
+import com.eventosapi.demo.dtos.FiltroUsuarioDTO;
 import com.eventosapi.demo.exceptions.EntidadeNaoEncontradoException;
 import com.eventosapi.demo.models.Evento;
 import com.eventosapi.demo.models.Local;
@@ -19,6 +20,9 @@ import com.eventosapi.demo.repositories.EventoRepository;
 import com.eventosapi.demo.repositories.LocalRepository;
 import com.eventosapi.demo.repositories.UsuarioRepository;
 import com.eventosapi.demo.specifications.EventoSpecification;
+import com.eventosapi.demo.specifications.InscricaoSpecification;
+import com.eventosapi.demo.specifications.UsuarioSpecification;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -131,16 +135,23 @@ public class EventoService {
             .build();
     }
 
-    public Page<UsuarioResponseDTO> listarUsuariosPorEvento(FiltroEventoDTO eventoFiltro, Pageable pageable) {
-        Specification<Evento> specification = EventoSpecification.build()
-            .and(EventoSpecification.comTitulo(eventoFiltro.getTitulo()))
-            .and(EventoSpecification.comDescricao(eventoFiltro.getDescricao()))
-            .and(EventoSpecification.comTipos(eventoFiltro.getTipos()));
+    public Page<UsuarioResponseDTO> listarUsuariosPorEvento(Long id, FiltroUsuarioDTO filtro, Pageable pageable) {
+        Specification<Inscricao> specification = InscricaoSpecification.build()
+            .and(InscricaoSpecification.comEventoId(id))
+            .and(InscricaoSpecification.comUsuarioNome(filtro.getNome()))
+            .and(InscricaoSpecification.comUsuarioEmail(filtro.getEmail()))
+            .and(InscricaoSpecification.comUsuarioTelefone(filtro.getTelefone()))
+            .and(InscricaoSpecification.comUsuarioTipo(filtro.getTipo()));
 
-        return eventoRepository.findAll(specification, pageable)
-            .map(evento -> new UsuarioResponseDTO(
-                evento.getOrganizador().getNome(), evento.getOrganizador().getEmail(), evento.getOrganizador().getTelefone(), evento.getOrganizador().getTipo()
-                ));
+        Page<Inscricao> inscricoes = inscricaoRepository.findAll(specification, pageable);
+
+        return inscricoes.map(Inscricao::getUsuario)
+            .map(usuario -> new UsuarioResponseDTO(
+                usuario.getNome(),
+                usuario.getEmail(),
+                usuario.getTelefone(),
+                usuario.getTipo()
+            ));
     }
 
     public void enviaEmailDeAtualizacao(EventoResponseDTO eventoDTO, Long id) {

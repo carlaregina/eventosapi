@@ -1,11 +1,14 @@
 package com.eventosapi.demo.specifications;
 
+import static org.springframework.util.StringUtils.hasText;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
 
 import com.eventosapi.demo.enums.StatusInscricao;
+import com.eventosapi.demo.enums.TipoUsuario;
 import com.eventosapi.demo.models.Inscricao;
 
 public class InscricaoSpecification {
@@ -37,6 +40,26 @@ public class InscricaoSpecification {
     public static Specification<Inscricao> comUsuarioId(Long usuarioId) {
         return (root, query, criteriaBuilder) ->
                 usuarioId != null ? criteriaBuilder.equal(root.get("usuario").get("id"), usuarioId) : null;
+    }
+
+    public static Specification<Inscricao> comUsuarioNome(String nome) {
+        return (root, query, criteriaBuilder) ->
+                hasText(nome) ? criteriaBuilder.like(criteriaBuilder.lower(root.get("usuario").get("nome")), "%" + nome.toLowerCase() + "%") : null;
+    }
+
+    public static Specification<Inscricao> comUsuarioEmail(String email) {
+        return (root, query, criteriaBuilder) ->
+                hasText(email) ? criteriaBuilder.like(criteriaBuilder.lower(root.get("usuario").get("email")), "%" + email.toLowerCase() + "%") : null;
+    }
+
+    public static Specification<Inscricao> comUsuarioTelefone(String telefone) {
+        return (root, query, criteriaBuilder) ->
+                hasText(telefone) ? criteriaBuilder.like(criteriaBuilder.lower(root.get("usuario").get("telefone")), "%" + telefone.toLowerCase() + "%") : null;
+    }
+
+    public static Specification<Inscricao> comUsuarioTipo(TipoUsuario tipo) {
+        return (root, query, criteriaBuilder) ->
+                tipo != null ? criteriaBuilder.equal(root.get("usuario").get("tipo"), tipo) : null;
     }
 
     public static Specification<Inscricao> comEventoId(Long eventoId) {
