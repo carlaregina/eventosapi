@@ -1,6 +1,10 @@
 package com.eventosapi.demo.repositories;
 
 import com.eventosapi.demo.models.Inscricao;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -20,7 +24,5 @@ public interface InscricaoRepository extends JpaRepository<Inscricao, Long>, Jpa
 
     @EntityGraph(attributePaths = {"evento","usuario"})
     List<Inscricao> findAll();
-
-
 }
 

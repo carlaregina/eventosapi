@@ -3,6 +3,7 @@ package com.eventosapi.demo.controller;
 import com.eventosapi.demo.dtos.EventoRequestDTO;
 import com.eventosapi.demo.dtos.EventoResponseDTO;
 import com.eventosapi.demo.dtos.FiltroEventoDTO;
+import com.eventosapi.demo.dtos.FiltroUsuarioDTO;
 import com.eventosapi.demo.dtos.UsuarioResponseDTO;
 import com.eventosapi.demo.services.EventoService;
 
@@ -54,9 +55,9 @@ public class EventoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/participantes")
+    @GetMapping("/{id}/participantes")
     @Operation(summary = "Listar organizadores dos eventos com paginação e filtros")
-    public Page<UsuarioResponseDTO> listarOrganizadores(FiltroEventoDTO eventoFiltro, Pageable pageable) {
-        return eventoService.listarUsuariosPorEvento(eventoFiltro, pageable);
+    public Page<UsuarioResponseDTO> listarOrganizadores(@PathVariable Long id, FiltroUsuarioDTO eventoFiltro, Pageable pageable) {
+        return eventoService.listarUsuariosPorEvento(id, eventoFiltro, pageable);
     }
 }
