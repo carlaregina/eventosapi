@@ -1,0 +1,33 @@
+{
+    "Usuario": {
+        "nome": "Vitor",
+        "email": "vitor.engenhariapro@gmail.com",
+        "telefone": "99999999",
+        "tipo": "OUTROS"
+    },
+    "Local": {
+        "nome": "Auditório Central",
+        "cep": "58000-000",
+        "logradouro": "Av. Principal",
+        "numero": "100",
+        "bairro": "Centro",
+        "cidade": "João Pessoa",
+        "estado": "PB",
+        "tipo": "TEATRO"
+    },
+    "Evento": {
+        "titulo": "Reunião de Equipe Mensal",
+        "descricao": "Discussão de progresso do projeto, novas metas e planejamento para o próximo mês.",
+        "data": "2025-11-05T14:30:00",
+        "tipo": "PALESTRA",
+        "maxParticipantes": 20,
+        "organizadorId": 3,
+        "localId": 2
+    },
+    "Inscricao": {
+        "idEvento": 2,
+        "idUsuario": 3,
+        "data": "2024-10-01T10:00:00",
+        "status": "CONFIRMADA"
+    }
+}
