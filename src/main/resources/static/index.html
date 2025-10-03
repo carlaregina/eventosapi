@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Eventos — Usuário → Local → Evento → Inscrição</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="/styles.css" rel="stylesheet" />
+  <style>
+    :root { --bg:#f7f7f9; --card:#fff; --muted:#666; --border:#e5e5ea; }
+    *{ box-sizing: border-box; }
+    body{ margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color:#111; }
+    header{ padding:24px; border-bottom:1px solid var(--border); background: var(--card);}
+    h1{ margin:0 0 6px; }
+    main{ max-width: 980px; margin: 24px auto; padding: 0 16px; }
+    .card{ background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:16px; }
+    .grid{ display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 12px 0; }
+    label{ display:flex; flex-direction:column; gap:6px; font-size:14px; }
+    input, select{ padding:10px; border:1px solid var(--border); border-radius:8px; }
+    button{ padding:10px 14px; border:1px solid var(--border); border-radius:10px; background:#111; color:#fff; cursor:pointer; }
+    button.secondary{ background:#fff; color:#111; }
+    button.link{ background:transparent; color:#111; border:none; text-decoration:underline; padding:0; }
+    .muted{ color:var(--muted); }
+    .hidden{ display:none !important; }
+    .hint{ color:#444; font-size: 13px; margin-top: 8px; }
+    .actions{ display:flex; gap:8px; margin-top: 10px; flex-wrap: wrap; }
+    table{ width:100%; border-collapse: collapse; margin-top: 10px; }
+    th, td{ border:1px solid var(--border); padding:8px; text-align:left; }
+    .toast{ position: fixed; right: 20px; bottom: 20px; background:#111; color:#fff; padding:10px 14px; border-radius:10px; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Eventos</h1>
+  <p class="muted">Fluxo: <strong>Usuário</strong> → <strong>Local</strong> → <strong>Evento</strong> → <strong>Inscrição</strong>.</p>
+</header>
+
+<main>
+  <!-- PASSO 1: USUÁRIO -->
+  <section id="step1" class="card">
+    <h2>1) Criar usuário</h2>
+    <div class="grid">
+      <label>Nome <input id="uNome" type="text" placeholder="Ex.: Ana Silva"></label>
+      <label>E-mail <input id="uEmail" type="email" placeholder="ana@email.com"></label>
+      <label>Telefone <input id="uTelefone" type="text" placeholder="(11) 91234-5678"></label>
+      <label>Tipo
+        <!-- valores compatíveis com seu enum (pode ser carregado do back) -->
+        <select id="uTipo">
+          <option value="">Selecione</option>
+          <option value="PARTICIPANTE">PARTICIPANTE</option>
+          <option value="STAFF">STAFF</option>
+          <option value="OUTROS">OUTROS</option>
+        </select>
+      </label>
+    </div>
+    <button id="btnCriarUsuario">Criar usuário</button>
+    <p class="hint">Usuário criado: <strong id="usuarioCriado"></strong></p>
+    <div class="actions">
+      <button id="btnGoStep2" class="secondary" disabled>Ir para 2) Criar local</button>
+    </div>
+  </section>
+
+  <!-- PASSO 2: LOCAL -->
+  <section id="step2" class="card hidden">
+    <h2>2) Criar local</h2>
+    <div class="grid">
+      <label>Nome <input id="lNome" type="text" placeholder="Auditório Principal"></label>
+      <label>CEP <input id="lCep" type="text" placeholder="00000-000"></label>
+      <label>Logradouro <input id="lLogradouro" type="text" placeholder="Av. Exemplo"></label>
+      <label>Número <input id="lNumero" type="text" placeholder="123"></label>
+      <label>Bairro <input id="lBairro" type="text" placeholder="Centro"></label>
+      <label>Cidade <input id="lCidade" type="text" placeholder="São Paulo"></label>
+      <label>Estado
+        <select id="lEstado">
+          <option value="">UF</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option>
+          <option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option>
+          <option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option>
+          <option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option>
+          <option>SE</option><option>TO</option>
+        </select>
+      </label>
+      <label>Tipo
+        <select id="lTipo">
+          <option value="">Selecione</option>
+          <option value="PARQUE">Parque</option>
+          <option value="TEATRO">Teatro</option>
+          <option value="RESIDENCIAL">Residencial</option>
+          <option value="PRAIA">Praia</option>
+          <option value="RURAL">Rural</option>
+          <option value="COMERCIAL">Comercial</option>
+          <option value="OUTROS">Outros</option>
+        </select>
+      </label>
+    </div>
+    <button id="btnCriarLocal">Criar local</button>
+    <p class="hint">Local criado: <strong id="localCriado"></strong></p>
+    <div class="actions">
+      <button id="btnBack1" class="link">Voltar</button>
+      <!-- ⚠️ AQUI: depois de criar Local, habilita este botão para ir ao passo 3 (Evento) -->
+      <button id="btnGoStep3" class="secondary" disabled>Ir para 3) Criar evento</button>
+    </div>
+  </section>
+
+  <!-- PASSO 3: EVENTO -->
+  <section id="step3" class="card hidden">
+    <h2>3) Criar evento</h2>
+    <div class="grid">
+      <label>Título <input id="eTitulo" type="text" placeholder="Ex.: Meetup de Java"></label>
+      <label>Descrição <input id="eDescricao" type="text" placeholder="Opcional"></label>
+      <label>Data <input id="eData" type="datetime-local"></label>
+      <label>Tipo
+        <select id="eTipo">
+        <option value="">Selecione</option>
+        <option value="TEATRO">Teatro</option>
+        <option value="PASSEIOS_TOURS">Passeios & Tours</option>
+        <option value="ESPORTE">Esporte</option>
+        <option value="PALESTRA">Palestra</option>
+        <option value="FESTA_SHOW">Festa/Show</option>
+        <option value="CURSO">Curso</option>
+      </select>
+      </label>
+      <label>Máx. participantes <input id="eMax" type="number" min="1" value="100"></label>
+      <label>Organizador (ID) <input id="eOrganizadorId" type="number" placeholder="ID do usuário"></label>
+      <label>Local
+        <select id="eLocalId"></select>
+      </label>
+    </div>
+
+    <button id="btnCriarEvento">Criar evento</button>
+    <p class="hint">Ao criar, a lista de eventos será atualizada e este evento ficará pré-selecionado para inscrição.</p>
+
+    <div class="actions">
+      <button id="btnBack2a" class="link">Voltar</button>
+      <button id="btnGoStep4From3" class="secondary">Ir para 4) Inscrição</button>
+    </div>
+  </section>
+
+  <!-- PASSO 4: INSCRIÇÃO -->
+  <section id="step4" class="card hidden">
+    <h2>4) Inscrição em evento</h2>
+    <div class="grid">
+      <label>Usuário (ID) <input id="iUsuarioId" type="number" placeholder="ID do usuário" /></label>
+      <label>Evento
+        <select id="iEventoId">
+  <option value="" selected disabled>Selecione um evento</option>
+</select>
+      </label>
+    </div>
+    <button id="btnInscrever">Inscrever</button>
+    <p class="hint">Ao inscrever, o back envia o voucher por e-mail.</p>
+
+    <div class="actions">
+      <button id="btnBack3" class="link">Voltar</button>
+    </div>
+
+    <h3>Eventos disponíveis</h3>
+    <table>
+      <thead>
+        <tr><th>Título</th><th>Data</th><th>Tipo</th><th>Local</th></tr>
+      </thead>
+      <tbody id="listaEventos"></tbody>
+    </table>
+  </section>
+
+  <div id="toast" class="toast hidden"></div>
+</main>
+
+<script src="/app.js?v=4"></script>
+</body>
+</html>
