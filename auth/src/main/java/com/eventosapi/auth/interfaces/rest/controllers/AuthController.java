@@ -10,6 +10,7 @@ import com.eventosapi.auth.application.services.AuthService;
 import com.eventosapi.auth.interfaces.dtos.AuthRequestDTO;
 import com.eventosapi.auth.interfaces.dtos.AuthResponseDTO;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> autenticar(@RequestBody AuthRequestDTO request) {
+    public ResponseEntity<AuthResponseDTO> autenticar(@Valid @RequestBody AuthRequestDTO request) {
         String token = authService.autenticar(request.toDomain());
         return ResponseEntity.ok(new AuthResponseDTO(token));
     }
