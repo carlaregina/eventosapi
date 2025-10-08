@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 
 import com.eventosapi.auth.application.services.AuthService;
 import com.eventosapi.auth.domain.models.Conta;
