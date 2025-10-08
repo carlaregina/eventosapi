@@ -1,7 +1,6 @@
 package com.eventosapi.evento.application.port;
 
 import com.eventosapi.evento.domain.model.Usuario;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

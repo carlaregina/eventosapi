@@ -13,6 +13,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class EventoService {
 
@@ -99,8 +101,18 @@ public class EventoService {
     }
 
     private void enviarPDFAtualizado(Evento atualizado) {
-        EventoResponseDTO eventoDTO = toResponseDTO(atualizado);
-        eventoPublisherPort.publicarEvento(eventoDTO);
+        List<Inscricao> inscricoes = inscricaoClient.findByEventoId(atualizado.getId());
+
+        for (Inscricao inscricao : inscricoes) {
+            InscricaoDTO dto = new InscricaoDTO();
+            dto.setId(inscricao.getId());
+            dto.setEvento(inscricao.getEvento());
+            dto.setUsuario(inscricao.getUsuario());
+            dto.setData(inscricao.getData());
+            dto.setStatus(inscricao.getStatus());
+
+            eventoPublisherPort.publicarEvento(dto);
+        }
     }
 
     @Transactional

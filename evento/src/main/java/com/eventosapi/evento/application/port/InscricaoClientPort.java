@@ -8,9 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 public interface InscricaoClientPort {
 
     Page<Inscricao> findAll(Long id, String nome, String email, String telefone, TipoUsuario tipo, int pageNumber, int pageSize);
 
     Inscricao findById(Long id);
+
+    List<Inscricao> findByEventoId(Long id);
 }
