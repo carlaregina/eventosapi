@@ -1,4 +1,4 @@
-package com.eventosapi.demo.config;
+package com.eventosapi.evento.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

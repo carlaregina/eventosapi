@@ -1,4 +1,4 @@
-package com.eventosapi.evento.infra.entity;
+package com.eventosapi.evento.domain.enums;
 
 public enum TipoEvento {
     FESTA_SHOW,
@@ -6,5 +6,6 @@ public enum TipoEvento {
     PALESTRA,
     CURSO,
     ESPORTE,
-    PASSEIOS_TOURS
+    PASSEIOS_TOURS;
+
 }

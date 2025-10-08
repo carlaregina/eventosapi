@@ -1,4 +1,4 @@
-package com.eventosapi.demo.config;
+package com.eventosapi.evento.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
     info = @Info(
-        title = "eventos-api",
+        title = "evento",
         version = "1.0",
         description = "Sistema de gerenciamento de eventos."
     )

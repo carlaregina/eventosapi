@@ -1,4 +1,12 @@
 package com.eventosapi.evento.domain.enums;
 
-public class TipoLocal {
+public enum TipoLocal
+{
+    RURAL,
+    PARQUE,
+    COMERCIAL,
+    RESIDENCIAL,
+    TEATRO,
+    PRAIA,
+    OUTROS
 }
