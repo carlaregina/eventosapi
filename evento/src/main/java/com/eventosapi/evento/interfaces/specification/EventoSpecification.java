@@ -1,4 +1,4 @@
-package com.eventosapi.evento.speciffications;
+package com.eventosapi.evento.interfaces.specification;
 
 
 import static org.springframework.util.StringUtils.hasText;
@@ -13,9 +13,10 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class EventoSpecification {
 
-//    public static Specification<Evento> build() {
-//        return Specification.unrestricted();
-//    }
+    public static Specification<Evento> build() {
+        return Specification.where(null);
+    }
+
 
     public static Specification<Evento> comTitulo(String titulo) {
         return (root, query, criteriaBuilder) ->

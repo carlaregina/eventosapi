@@ -1,4 +1,8 @@
 package com.eventosapi.evento.domain.enums;
 
-public class StatusInscricao {
-}
+    public enum StatusInscricao {
+        APROVADO,
+        PENDENTE,
+        CONFIRMADA, CANCELADO
+    }
+
