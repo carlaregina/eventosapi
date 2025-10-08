@@ -17,10 +17,10 @@ import com.eventosapi.auth.domain.models.Usuario;
 @Service
 public class JwtBuilderAdapter implements JwtBuilderPort {
 
-    @Value("${api.security.token.secret}")
+    @Value("${security.token.secret}")
     private String secret;
 
-    @Value("${api.security.token.expiration-time-in-minutes}")
+    @Value("${security.token.expiration-time-in-minutes}")
     private Integer expirationTimeInMinutes;
 
     public String gerarToken(Usuario usuario) {
