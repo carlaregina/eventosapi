@@ -1,9 +1,6 @@
 package com.eventosapi.evento.application.services;
 
-import com.eventosapi.evento.application.port.EventoRepositoryPort;
-import com.eventosapi.evento.application.port.InscricaoClientPort;
-import com.eventosapi.evento.application.port.LocalClientPort;
-import com.eventosapi.evento.application.port.UsuarioClientPort;
+import com.eventosapi.evento.application.port.*;
 import com.eventosapi.evento.domain.model.Evento;
 import com.eventosapi.evento.domain.model.Inscricao;
 import com.eventosapi.evento.domain.model.Local;
@@ -23,12 +20,14 @@ public class EventoService {
     private final UsuarioClientPort usuarioClient;
     private final LocalClientPort localClient;
     private final InscricaoClientPort inscricaoClient;
+    private final EventoPublisherPort eventoPublisherPort;
 
-    public EventoService(EventoRepositoryPort eventoRepositoryPort, UsuarioClientPort usuarioClient, LocalClientPort localClient, InscricaoClientPort inscricaoClient ) {
+    public EventoService(EventoRepositoryPort eventoRepositoryPort, UsuarioClientPort usuarioClient, LocalClientPort localClient, InscricaoClientPort inscricaoClient, EventoPublisherPort eventoPublisherPort) {
         this.repository = eventoRepositoryPort;
         this.usuarioClient = usuarioClient;
         this.localClient = localClient;
         this.inscricaoClient = inscricaoClient;
+        this.eventoPublisherPort = eventoPublisherPort;
     }
 
 
@@ -94,11 +93,15 @@ public class EventoService {
 
         Evento atualizado = repository.save(evento);
 
-//        enviaEmailDeAtualizacao(atualizado);
+        enviarPDFAtualizado(atualizado);
 
         return toResponseDTO(atualizado);
     }
 
+    private void enviarPDFAtualizado(Evento atualizado) {
+        EventoResponseDTO eventoDTO = toResponseDTO(atualizado);
+        eventoPublisherPort.publicarEvento(eventoDTO);
+    }
 
     @Transactional
     public void deletar(Long id) {
