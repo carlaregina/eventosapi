@@ -2,9 +2,9 @@ package com.eventosapi.inscricao.application.services;
 
 import com.eventosapi.inscricao.application.exception.EntidadeNaoEncontradoException;
 import com.eventosapi.inscricao.application.exception.RegraNegocioException;
-import com.eventosapi.inscricao.application.port.EventoReadPort;
+import com.eventosapi.inscricao.application.port.EventoClientPort;
 import com.eventosapi.inscricao.application.port.InscricaoRepositoryPort;
-import com.eventosapi.inscricao.application.port.UsuarioReadPort;
+import com.eventosapi.inscricao.application.port.UsuarioClientPort;
 import com.eventosapi.inscricao.domain.enums.StatusInscricao;
 import com.eventosapi.inscricao.domain.models.Inscricao;
 import com.eventosapi.inscricao.domain.models.EventoResumo;
@@ -34,8 +34,8 @@ import static org.mockito.Mockito.*;
 class InscricaoServiceTest {
 
   @Mock InscricaoRepositoryPort inscricaoRepo;
-  @Mock EventoReadPort eventoPort;
-  @Mock UsuarioReadPort usuarioPort;
+  @Mock EventoClientPort eventoPort;
+  @Mock UsuarioClientPort usuarioPort;
 
   @InjectMocks InscricaoService service;
 

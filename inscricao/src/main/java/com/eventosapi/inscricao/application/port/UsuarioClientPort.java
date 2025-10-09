@@ -3,6 +3,6 @@ package com.eventosapi.inscricao.application.port;
 import com.eventosapi.inscricao.domain.models.UsuarioResumo;
 import java.util.Optional;
 
-public interface UsuarioReadPort {
+public interface UsuarioClientPort {
   Optional<UsuarioResumo> findById(Long id);
 }

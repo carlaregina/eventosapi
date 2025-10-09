@@ -1,6 +1,6 @@
 package com.eventosapi.inscricao.infra.adapters;
 
-import com.eventosapi.inscricao.application.port.EventoReadPort;
+import com.eventosapi.inscricao.application.port.EventoClientPort;
 import com.eventosapi.inscricao.domain.models.EventoResumo;
 import com.eventosapi.inscricao.infra.repositories.EventoJpaRepository;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class EventoReadAdapter implements EventoReadPort {
+public class EventoReadAdapter implements EventoClientPort {
   private final EventoJpaRepository repo;
 
   @Override

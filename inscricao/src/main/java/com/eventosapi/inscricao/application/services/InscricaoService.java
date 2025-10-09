@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.eventosapi.inscricao.application.exception.EntidadeNaoEncontradoException;
 import com.eventosapi.inscricao.application.exception.RegraNegocioException;
-import com.eventosapi.inscricao.application.port.EventoReadPort;
+import com.eventosapi.inscricao.application.port.EventoClientPort;
 import com.eventosapi.inscricao.application.port.InscricaoRepositoryPort;
-import com.eventosapi.inscricao.application.port.UsuarioReadPort;
+import com.eventosapi.inscricao.application.port.UsuarioClientPort;
 import com.eventosapi.inscricao.domain.enums.StatusInscricao;
 import com.eventosapi.inscricao.domain.models.Inscricao;
 import com.eventosapi.inscricao.interfaces.dto.FiltroInscricaoDTO;
@@ -23,8 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class InscricaoService {
 
   private final InscricaoRepositoryPort inscricaoRepo;
-  private final EventoReadPort eventoPort;
-  private final UsuarioReadPort usuarioPort;
+  private final EventoClientPort eventoPort;
+  private final UsuarioClientPort usuarioPort;
 
   public InscricaoResponseDTO criar(InscricaoRequestDTO dto) {
     if (inscricaoRepo.existsByEventoAndUsuario(dto.idEvento(), dto.idUsuario()))
