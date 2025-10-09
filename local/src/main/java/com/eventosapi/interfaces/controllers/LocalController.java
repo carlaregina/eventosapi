@@ -30,7 +30,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/locais")
+@RequestMapping("/api/locais")
 @RequiredArgsConstructor
 @Tag(name = "Locais")
 public class LocalController {  
