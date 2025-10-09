@@ -1,8 +1,24 @@
 spring:
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:jackal.rmq.cloudamqp.com}
+    port: ${SPRING_RABBITMQ_PORT:5672}        # em produção prefira 5671 + ssl.enabled:true
+    username: ${SPRING_RABBITMQ_USERNAME:mgqgopkf}
+    password: ${SPRING_RABBITMQ_PASSWORD:CHANGE_ME}
+    virtual-host: ${SPRING_RABBITMQ_VHOST:mgqgopkf}
+    ssl:
+      enabled: ${SPRING_RABBITMQ_SSL_ENABLED:false}
+    template:
+      mandatory: true
+
   flyway:
     enabled: true
     locations: classpath:db/migration
+
 logging:
   level:
-    org.springdoc: DEBUG    
-  
+    org.springdoc: DEBUG
+
+app:
+  messaging:
+    queues:
+      inscricaoCreated: ${APP_QUEUE_INSCRICAO_CRIADA:inscricao.create.comunicacao}
