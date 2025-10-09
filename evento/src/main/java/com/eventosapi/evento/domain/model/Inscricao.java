@@ -4,29 +4,41 @@ import com.eventosapi.evento.domain.enums.StatusInscricao;
 
 import java.time.LocalDateTime;
 
+
 public class Inscricao {
+
+    private Long id;
+
+    private Long idUsuario;
+
+    private Long idEvento;
+
+    private LocalDateTime data = LocalDateTime.now();
+
+    private StatusInscricao status;
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public Long getIdEvento() {
+        return idEvento;
+    }
+
+    public void setIdEvento(Long idEvento) {
+        this.idEvento = idEvento;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Evento getEvento() {
-        return evento;
-    }
-
-    public void setEvento(Evento evento) {
-        this.evento = evento;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 
     public LocalDateTime getData() {
@@ -45,15 +57,5 @@ public class Inscricao {
         this.status = status;
     }
 
-    private Long id;
 
-     private Evento evento;
-
-
-    private Usuario usuario;
-
-
-    private LocalDateTime data = LocalDateTime.now();
-
-    private StatusInscricao status;
 }

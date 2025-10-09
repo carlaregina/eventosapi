@@ -7,6 +7,7 @@ import com.eventosapi.evento.domain.model.Local;
 import com.eventosapi.evento.domain.model.Usuario;
 import com.eventosapi.evento.interfaces.dto.*;
 import com.eventosapi.evento.interfaces.specification.EventoSpecification;
+import com.eventosapi.evento.interfaces.specification.InscricaoSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -106,8 +107,8 @@ public class EventoService {
         for (Inscricao inscricao : inscricoes) {
             InscricaoDTO dto = new InscricaoDTO();
             dto.setId(inscricao.getId());
-            dto.setEvento(inscricao.getEvento());
-            dto.setUsuario(inscricao.getUsuario());
+            dto.setIdEvento(inscricao.getIdEvento());
+            dto.setIdUsuario(inscricao.getIdUsuario());
             dto.setData(inscricao.getData());
             dto.setStatus(inscricao.getStatus());
 
@@ -133,27 +134,14 @@ public class EventoService {
                 .build();
     }
 
-//    public Page<UsuarioResponseDTO> listarUsuariosPorEvento(Long id, FiltroUsuarioDTO filtro, Pageable pageable) {
-//        Specification<Inscricao> specification = InscricaoSpecification.build()
-//                .and(InscricaoSpecification.comEventoId(id))
-//                .and(InscricaoSpecification.comUsuarioNome(filtro.getNome()))
-//                .and(InscricaoSpecification.comUsuarioEmail(filtro.getEmail()))
-//                .and(InscricaoSpecification.comUsuarioTelefone(filtro.getTelefone()))
-//                .and(InscricaoSpecification.comUsuarioTipo(filtro.getTipo()));
-//
-//        Page<Inscricao> inscricoes = inscricaoClient.findAll(filtro, specification, pageable);
-//
-//        return inscricoes.map(Inscricao::getUsuario)
-//                .map(usuario -> new UsuarioResponseDTO(
-//                        usuario.getNome(),
-//                        usuario.getEmail(),
-//                        usuario.getTelefone(),
-//                        usuario.getTipo()
-//                ));
-//    }
-
     public Page<UsuarioResponseDTO> listarUsuariosPorEvento(Long id, FiltroUsuarioDTO filtro, Pageable pageable) {
-        // Passar os filtros e paginação como parâmetros
+        Specification<Inscricao> specification = InscricaoSpecification.build()
+                .and(InscricaoSpecification.comEventoId(id))
+                .and(InscricaoSpecification.comUsuarioNome(filtro.getNome()))
+                .and(InscricaoSpecification.comUsuarioEmail(filtro.getEmail()))
+                .and(InscricaoSpecification.comUsuarioTelefone(filtro.getTelefone()))
+                .and(InscricaoSpecification.comUsuarioTipo(filtro.getTipo()));
+
         Page<Inscricao> inscricoes = inscricaoClient.findAll(
                 id,
                 filtro.getNome(),
@@ -164,15 +152,14 @@ public class EventoService {
                 pageable.getPageSize()
         );
 
-        return inscricoes.map(Inscricao::getUsuario)
-                .map(usuario -> new UsuarioResponseDTO(
-                        usuario.getNome(),
-                        usuario.getEmail(),
-                        usuario.getTelefone(),
-                        usuario.getTipo()
-                ));
+        return inscricoes.map(inscricao -> {
+            Long usuarioId = inscricao.getIdUsuario();
+            Usuario usuario = usuarioClient.findById(usuarioId);
+            UsuarioResponseDTO usuarioDTO = new UsuarioResponseDTO(usuario.getNome(), usuario.getEmail(), usuario.getTelefone(), usuario.getTipo());
+            return usuarioDTO;
+        });
+
+
     }
-
-
 
 }

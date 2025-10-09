@@ -43,15 +43,15 @@ public class InscricaoClientMock implements InscricaoClientPort {
         // Inscrições mock
         Inscricao i1 = new Inscricao();
         i1.setId(1L);
-        i1.setUsuario(usuario1);
-        i1.setEvento(evento1);
+        i1.setIdUsuario(usuario1.getId());
+        i1.setIdEvento(evento1.getId());
         i1.setData(LocalDateTime.now().minusDays(1));
         i1.setStatus(StatusInscricao.CONFIRMADA);
 
         Inscricao i2 = new Inscricao();
         i2.setId(2L);
-        i2.setUsuario(usuario2);
-        i2.setEvento(evento2);
+        i2.setIdUsuario(usuario2.getId());
+        i2.setIdEvento(evento2.getId());
         i2.setData(LocalDateTime.now());
         i2.setStatus(StatusInscricao.PENDENTE);
 
@@ -72,8 +72,8 @@ public class InscricaoClientMock implements InscricaoClientPort {
 
         Inscricao inscricao = new Inscricao();
         inscricao.setId(id);
-        inscricao.setUsuario(usuario);
-        inscricao.setEvento(evento);
+        inscricao.setIdUsuario(usuario.getId());
+        inscricao.setIdEvento(evento.getId());
         inscricao.setData(LocalDateTime.now());
         inscricao.setStatus(StatusInscricao.CONFIRMADA);
 
@@ -98,15 +98,15 @@ public class InscricaoClientMock implements InscricaoClientPort {
 
         Inscricao i1 = new Inscricao();
         i1.setId(1L);
-        i1.setUsuario(usuario1);
-        i1.setEvento(evento);
+        i1.setIdUsuario(usuario1.getId());
+        i1.setIdEvento(evento.getId());
         i1.setData(LocalDateTime.now().minusDays(1));
         i1.setStatus(StatusInscricao.CONFIRMADA);
 
         Inscricao i2 = new Inscricao();
         i2.setId(2L);
-        i2.setUsuario(usuario2);
-        i2.setEvento(evento);
+        i2.setIdUsuario(usuario2.getId());
+        i2.setIdEvento(evento.getId());
         i2.setData(LocalDateTime.now());
         i2.setStatus(StatusInscricao.PENDENTE);
 

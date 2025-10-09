@@ -17,7 +17,7 @@ import java.util.List;
 @Profile("!mock") // só existe quando não estiver no profile mock
 public interface InscricaoClient extends InscricaoClientPort {
 
-    @GetMapping("/inscricao")
+    @GetMapping
     Page<Inscricao> findAll(
             @RequestParam Long eventoId,
             @RequestParam(required = false) String nome,
@@ -28,10 +28,10 @@ public interface InscricaoClient extends InscricaoClientPort {
             @RequestParam int size
     );
 
-    @GetMapping("/inscricao/{id}")
+    @GetMapping("{id}")
     Inscricao findById(@PathVariable Long id);
 
-    @GetMapping("/inscricao/evento/{id}")
+    @GetMapping("/evento/{id}")
     List<Inscricao> findByEventoId(@PathVariable Long id);
 
 }

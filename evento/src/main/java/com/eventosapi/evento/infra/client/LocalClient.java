@@ -14,10 +14,10 @@ import java.util.List;
 
 public interface LocalClient extends LocalClientPort {
 
-    @GetMapping("/locais/{id}")
+    @GetMapping("/{id}")
     Local findById(@PathVariable Long id);
 
-    @GetMapping("/locais")
+    @GetMapping
     List<Local> findAll();
 
 }
