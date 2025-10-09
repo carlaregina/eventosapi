@@ -18,6 +18,7 @@ import com.eventosapi.domain.models.Local;
 import com.eventosapi.interfaces.dtos.FiltroLocalDTO;
 import com.eventosapi.interfaces.dtos.LocalRequestDTO;
 import com.eventosapi.interfaces.dtos.LocalResponseDTO;
+import static com.eventosapi.interfaces.dtos.LocalResponseDTO.toResponseDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,7 +39,7 @@ public class LocalController {
     @GetMapping
     @Operation(summary = "Listar locais com paginação e filtros")
     public Page<LocalResponseDTO> listar(FiltroLocalDTO filtro, Pageable pageable) {
-        return localService.buscarTodosLocais(filtro, pageable).map(LocalService::toResponseDTO);
+        return localService.buscarTodosLocais(filtro, pageable).map(LocalResponseDTO::toResponseDTO);
     }
 
     @GetMapping("/{id}")
@@ -51,7 +52,7 @@ public class LocalController {
             content = @Content)
     })
     public ResponseEntity<LocalResponseDTO> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(LocalService.toResponseDTO(localService.obterLocalPorId(id)));
+        return ResponseEntity.ok(toResponseDTO(localService.obterLocalPorId(id)));
     }
 
     @PostMapping
@@ -62,7 +63,7 @@ public class LocalController {
             schema = @Schema(implementation = Local.class)) }),
     })
     public ResponseEntity<LocalResponseDTO> salvar(@Valid @RequestBody LocalRequestDTO dto) {
-        LocalResponseDTO localResponseDTO = LocalService.toResponseDTO(localService.cadastrarLocal(LocalService.fromRequestDTO(dto)));
+        LocalResponseDTO localResponseDTO = toResponseDTO(localService.cadastrarLocal(dto.toDomain()));
         return ResponseEntity.status(CREATED).body(localResponseDTO);
     }
 
@@ -76,7 +77,7 @@ public class LocalController {
             content = @Content)
     })
     public ResponseEntity<LocalResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody LocalRequestDTO dto) {
-        LocalResponseDTO localResponseDTO = LocalService.toResponseDTO(localService.atualizarLocal(id, LocalService.fromRequestDTO(dto)));
+        LocalResponseDTO localResponseDTO = toResponseDTO(localService.atualizarLocal(id, dto.toDomain()));
         return ResponseEntity.ok(localResponseDTO);
     }
 

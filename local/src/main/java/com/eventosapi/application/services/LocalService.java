@@ -54,30 +54,4 @@ public class LocalService {
         }
         localRepositoryPort.deletar(id);
     }
-
-    public static LocalResponseDTO toResponseDTO(Local local) {
-        return new LocalResponseDTO(
-            local.getNome(),
-            local.getCep(),
-            local.getLogradouro(),
-            local.getNumero(),
-            local.getBairro(),
-            local.getCidade(),
-            local.getEstado(),
-            local.getTipo()
-        );
-    }
-
-    public static Local fromRequestDTO(LocalRequestDTO dto) {
-        return Local.builder()
-            .nome(dto.nome())
-            .cep(dto.cep())
-            .logradouro(dto.logradouro())
-            .numero(dto.numero())
-            .bairro(dto.bairro())
-            .cidade(dto.cidade())
-            .estado(dto.estado())
-            .tipo(dto.tipo())
-            .build();
-    }
 }

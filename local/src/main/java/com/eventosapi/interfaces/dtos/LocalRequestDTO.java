@@ -2,10 +2,14 @@ package com.eventosapi.interfaces.dtos;
 
 import com.eventosapi.domain.enums.Estado;
 import com.eventosapi.domain.enums.TipoLocal;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.Length;
+
+import com.eventosapi.domain.models.Local;
 
 public record LocalRequestDTO(
     @NotBlank(message = "O nome é obrigatório")
@@ -38,4 +42,17 @@ public record LocalRequestDTO(
     @NotNull(message = "O tipo é obrigatório")
      TipoLocal tipo
 ) {
+    
+    public Local toDomain() {
+        return Local.builder()
+            .nome(this.nome)
+            .cep(this.cep)
+            .logradouro(this.logradouro)
+            .numero(this.numero)
+            .bairro(this.bairro)
+            .cidade(this.cidade)
+            .estado(this.estado)
+            .tipo(this.tipo)
+            .build();
+    }
 }
