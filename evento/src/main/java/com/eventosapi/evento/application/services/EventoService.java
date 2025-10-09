@@ -7,11 +7,14 @@ import com.eventosapi.evento.domain.model.Local;
 import com.eventosapi.evento.domain.model.Usuario;
 import com.eventosapi.evento.interfaces.dto.*;
 import com.eventosapi.evento.interfaces.specification.EventoSpecification;
+import com.eventosapi.evento.interfaces.specification.InscricaoSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class EventoService {
@@ -99,8 +102,18 @@ public class EventoService {
     }
 
     private void enviarPDFAtualizado(Evento atualizado) {
-        EventoResponseDTO eventoDTO = toResponseDTO(atualizado);
-        eventoPublisherPort.publicarEvento(eventoDTO);
+        List<Inscricao> inscricoes = inscricaoClient.findByEventoId(atualizado.getId());
+
+        for (Inscricao inscricao : inscricoes) {
+            InscricaoDTO dto = new InscricaoDTO();
+            dto.setId(inscricao.getId());
+            dto.setIdEvento(inscricao.getIdEvento());
+            dto.setIdUsuario(inscricao.getIdUsuario());
+            dto.setData(inscricao.getData());
+            dto.setStatus(inscricao.getStatus());
+
+            eventoPublisherPort.publicarEvento(dto);
+        }
     }
 
     @Transactional
@@ -121,27 +134,14 @@ public class EventoService {
                 .build();
     }
 
-//    public Page<UsuarioResponseDTO> listarUsuariosPorEvento(Long id, FiltroUsuarioDTO filtro, Pageable pageable) {
-//        Specification<Inscricao> specification = InscricaoSpecification.build()
-//                .and(InscricaoSpecification.comEventoId(id))
-//                .and(InscricaoSpecification.comUsuarioNome(filtro.getNome()))
-//                .and(InscricaoSpecification.comUsuarioEmail(filtro.getEmail()))
-//                .and(InscricaoSpecification.comUsuarioTelefone(filtro.getTelefone()))
-//                .and(InscricaoSpecification.comUsuarioTipo(filtro.getTipo()));
-//
-//        Page<Inscricao> inscricoes = inscricaoClient.findAll(filtro, specification, pageable);
-//
-//        return inscricoes.map(Inscricao::getUsuario)
-//                .map(usuario -> new UsuarioResponseDTO(
-//                        usuario.getNome(),
-//                        usuario.getEmail(),
-//                        usuario.getTelefone(),
-//                        usuario.getTipo()
-//                ));
-//    }
-
     public Page<UsuarioResponseDTO> listarUsuariosPorEvento(Long id, FiltroUsuarioDTO filtro, Pageable pageable) {
-        // Passar os filtros e paginação como parâmetros
+        Specification<Inscricao> specification = InscricaoSpecification.build()
+                .and(InscricaoSpecification.comEventoId(id))
+                .and(InscricaoSpecification.comUsuarioNome(filtro.getNome()))
+                .and(InscricaoSpecification.comUsuarioEmail(filtro.getEmail()))
+                .and(InscricaoSpecification.comUsuarioTelefone(filtro.getTelefone()))
+                .and(InscricaoSpecification.comUsuarioTipo(filtro.getTipo()));
+
         Page<Inscricao> inscricoes = inscricaoClient.findAll(
                 id,
                 filtro.getNome(),
@@ -152,15 +152,14 @@ public class EventoService {
                 pageable.getPageSize()
         );
 
-        return inscricoes.map(Inscricao::getUsuario)
-                .map(usuario -> new UsuarioResponseDTO(
-                        usuario.getNome(),
-                        usuario.getEmail(),
-                        usuario.getTelefone(),
-                        usuario.getTipo()
-                ));
+        return inscricoes.map(inscricao -> {
+            Long usuarioId = inscricao.getIdUsuario();
+            Usuario usuario = usuarioClient.findById(usuarioId);
+            UsuarioResponseDTO usuarioDTO = new UsuarioResponseDTO(usuario.getNome(), usuario.getEmail(), usuario.getTelefone(), usuario.getTipo());
+            return usuarioDTO;
+        });
+
+
     }
-
-
 
 }

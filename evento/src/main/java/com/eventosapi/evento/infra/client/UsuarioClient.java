@@ -15,10 +15,10 @@ import java.util.List;
 public interface UsuarioClient extends UsuarioClientPort {
 
 
-    @GetMapping("/usuarios/{id}")
+    @GetMapping("/{id}")
     Usuario findById(@PathVariable Long id);
 
-    @GetMapping("/usuarios")
+    @GetMapping
     List<Usuario> findAll();
 
 }

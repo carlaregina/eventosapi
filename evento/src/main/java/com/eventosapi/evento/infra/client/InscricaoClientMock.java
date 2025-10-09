@@ -43,15 +43,15 @@ public class InscricaoClientMock implements InscricaoClientPort {
         // Inscrições mock
         Inscricao i1 = new Inscricao();
         i1.setId(1L);
-        i1.setUsuario(usuario1);
-        i1.setEvento(evento1);
+        i1.setIdUsuario(usuario1.getId());
+        i1.setIdEvento(evento1.getId());
         i1.setData(LocalDateTime.now().minusDays(1));
         i1.setStatus(StatusInscricao.CONFIRMADA);
 
         Inscricao i2 = new Inscricao();
         i2.setId(2L);
-        i2.setUsuario(usuario2);
-        i2.setEvento(evento2);
+        i2.setIdUsuario(usuario2.getId());
+        i2.setIdEvento(evento2.getId());
         i2.setData(LocalDateTime.now());
         i2.setStatus(StatusInscricao.PENDENTE);
 
@@ -72,11 +72,44 @@ public class InscricaoClientMock implements InscricaoClientPort {
 
         Inscricao inscricao = new Inscricao();
         inscricao.setId(id);
-        inscricao.setUsuario(usuario);
-        inscricao.setEvento(evento);
+        inscricao.setIdUsuario(usuario.getId());
+        inscricao.setIdEvento(evento.getId());
         inscricao.setData(LocalDateTime.now());
         inscricao.setStatus(StatusInscricao.CONFIRMADA);
 
         return inscricao;
+    }
+
+    @Override
+    public List<Inscricao> findByEventoId(Long eventoId) {
+        Usuario usuario1 = new Usuario();
+        usuario1.setId(1L);
+        usuario1.setNome("Maria Mock");
+        usuario1.setEmail("maria.mock@email.com");
+
+        Usuario usuario2 = new Usuario();
+        usuario2.setId(2L);
+        usuario2.setNome("João Mock");
+        usuario2.setEmail("joao.mock@email.com");
+
+        Evento evento = new Evento();
+        evento.setId(eventoId);
+        evento.setTitulo("Evento Mock " + eventoId);
+
+        Inscricao i1 = new Inscricao();
+        i1.setId(1L);
+        i1.setIdUsuario(usuario1.getId());
+        i1.setIdEvento(evento.getId());
+        i1.setData(LocalDateTime.now().minusDays(1));
+        i1.setStatus(StatusInscricao.CONFIRMADA);
+
+        Inscricao i2 = new Inscricao();
+        i2.setId(2L);
+        i2.setIdUsuario(usuario2.getId());
+        i2.setIdEvento(evento.getId());
+        i2.setData(LocalDateTime.now());
+        i2.setStatus(StatusInscricao.PENDENTE);
+
+        return List.of(i1, i2);
     }
 }

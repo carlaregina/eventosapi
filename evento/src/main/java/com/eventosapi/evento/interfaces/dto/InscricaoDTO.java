@@ -1,37 +1,17 @@
-package com.eventosapi.evento.domain.model;
+package com.eventosapi.evento.interfaces.dto;
 
 import com.eventosapi.evento.domain.enums.StatusInscricao;
+import com.eventosapi.evento.domain.model.Evento;
+import com.eventosapi.evento.domain.model.Usuario;
 
 import java.time.LocalDateTime;
 
-
-public class Inscricao {
-
+public class InscricaoDTO {
     private Long id;
-
-    private Long idUsuario;
-
     private Long idEvento;
-
-    private LocalDateTime data = LocalDateTime.now();
-
+    private Long idUsuario;
     private StatusInscricao status;
-
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public Long getIdEvento() {
-        return idEvento;
-    }
-
-    public void setIdEvento(Long idEvento) {
-        this.idEvento = idEvento;
-    }
+    private LocalDateTime data;
 
     public Long getId() {
         return id;
@@ -57,5 +37,19 @@ public class Inscricao {
         this.status = status;
     }
 
+    public Long getIdEvento() {
+        return idEvento;    }
 
+    public void setIdEvento(Long idEvento) {
+        this.idEvento = idEvento;
+    }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 }
+
