@@ -1,14 +1,11 @@
 package com.eventosapi.inscricao.application.port;
 
-import com.eventosapi.inscricao.domain.enums.StatusInscricao;
-import com.eventosapi.inscricao.domain.models.Inscricao;
-import com.eventosapi.inscricao.infra.entities.InscricaoEntity;
-import org.springframework.data.domain.Page;
-
-import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import com.eventosapi.inscricao.domain.enums.StatusInscricao;
+import com.eventosapi.inscricao.domain.models.Inscricao;
 
 public interface InscricaoRepositoryPort {
 
@@ -28,8 +25,7 @@ public interface InscricaoRepositoryPort {
                           int page,
                           int size);
 
-  List<Inscricao> findByEventoAndStatus(Long eventoId, StatusInscricao status,
-                                        Integer page, Integer size);
+  List<Inscricao> findByEventoAndStatus(Long eventoId, StatusInscricao status, Integer page, Integer size);
 
   void deleteById(Long id);  
 }
