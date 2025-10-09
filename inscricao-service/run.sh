@@ -12,6 +12,25 @@ curl -i -X PUT http://localhost:8081/api/inscricoes/1 \
   -H "Content-Type: application/json" \
   -d '{"idEvento":1,"idUsuario":2,"status":"CANCELADO"}'
 
+# buscar por evento
+curl -G -i http://localhost:8081/api/inscricoes \
+  --data-urlencode "idEvento=1" \
+  --data-urlencode "page=0" \
+  --data-urlencode "size=10"
+
+# buscar por usuario
+
+curl -G -i http://localhost:8081/api/inscricoes \
+  --data-urlencode "idUsuario=2" \
+  --data-urlencode "page=0" \
+  --data-urlencode "size=10"
+
+# buscar por status
+curl -G -i http://localhost:8081/api/inscricoes \
+  --data-urlencode "status=CONFIRMADA" \
+  --data-urlencode "page=0" \
+  --data-urlencode "size=10"
+
 # excluir
 curl -i -X DELETE http://localhost:8081/api/inscricoes/1
 
