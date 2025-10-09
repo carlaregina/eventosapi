@@ -1,31 +1,8 @@
-# server:
-#   port: ${SERVER_PORT:8081}
-
-# spring:
-#   application:
-#     name: inscricao-service
-#   datasource:
-#     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/appdb}
-#     username: ${SPRING_DATASOURCE_USERNAME:app}
-#     password: ${SPRING_DATASOURCE_PASSWORD:app}
-#   jpa:
-#     hibernate:
-#       ddl-auto: validate
-#     open-in-view: false
-#     properties:
-#       hibernate.jdbc.time_zone: UTC
-#   flyway:
-#     enabled: false
-# management:
-#   endpoints:
-#     web:
-#       exposure:
-#         include: health,info
 server:
   port: 8081
 
 spring:
-  application.name: inscricao-service
+  application.name: inscricao
   jpa:
     hibernate.ddl-auto: validate
     open-in-view: false
@@ -36,4 +13,3 @@ spring:
     password: app
   flyway:
     enabled: false
-
