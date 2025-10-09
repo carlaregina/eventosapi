@@ -5,7 +5,7 @@ import lombok.*;
 
 
 @Entity @Table(name = "evento")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class EventoEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_evento")

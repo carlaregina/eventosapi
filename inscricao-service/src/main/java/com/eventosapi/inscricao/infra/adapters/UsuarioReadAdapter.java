@@ -15,6 +15,7 @@ public class UsuarioReadAdapter implements UsuarioReadPort {
 
   @Override
   public Optional<UsuarioResumo> findById(Long id) {
-    return repo.findById(id).map(u -> new UsuarioResumo(u.getId(), u.getNome()));
+    return repo.findById(id)
+    .map(u -> new UsuarioResumo(u.getId(), u.getNome()));
   }
 }

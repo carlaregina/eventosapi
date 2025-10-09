@@ -15,6 +15,7 @@ public class EventoReadAdapter implements EventoReadPort {
 
   @Override
   public Optional<EventoResumo> findById(Long id) {
-    return repo.findById(id).map(e -> new EventoResumo(e.getId(), e.getTitulo(), e.getMaxParticipantes()));
+    return repo.findById(id)
+    .map(e -> new EventoResumo(e.getId(), e.getTitulo(), e.getMaxParticipantes()));
   }
 }

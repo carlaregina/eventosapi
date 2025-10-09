@@ -7,10 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 
 
-public interface InscricaoJpaRepository extends JpaRepository<InscricaoEntity, Long> {
+public interface InscricaoJpaRepository extends JpaRepository<InscricaoEntity, Long>, JpaSpecificationExecutor<InscricaoEntity> {
 
   boolean existsByEventoIdAndUsuarioId(Long eventoId, Long usuarioId);
 
@@ -22,19 +23,20 @@ public interface InscricaoJpaRepository extends JpaRepository<InscricaoEntity, L
 
   long countByEventoIdAndStatus(Long eventoId, StatusInscricao status);
   
-  @Query("""
-     select i from InscricaoEntity i
-     where (:idEvento is null or i.eventoId = :idEvento)
-       and (:idUsuario is null or i.usuarioId = :idUsuario)
-       and (:status is null or i.status = :status)
-       and (:ini is null or i.data >= :ini)
-       and (:fim is null or i.data <= :fim)
-     order by i.id desc
-  """)
-  List<InscricaoEntity> search(@Param("idEvento") Long idEvento,
-                               @Param("idUsuario") Long idUsuario,
-                               @Param("status") StatusInscricao status,
-                               @Param("ini") java.time.LocalDateTime ini,
-                               @Param("fim") java.time.LocalDateTime fim,
-                               Pageable pageable);
+    //  @Query("""
+    //      select i from InscricaoEntity i
+    //      where (:idEvento is null or i.eventoId = :idEvento)
+    //        and (:idUsuario is null or i.usuarioId = :idUsuario)
+    //        and (:status is null or i.status = :status)
+    //        and (:ini is null or i.data >= :ini)
+    //        and (:fim is null or i.data <= :fim)
+    //      order by i.id desc
+    //   """)
+    //   List<InscricaoEntity> search(@Param("idEvento") Long idEvento,
+    //                                @Param("idUsuario") Long idUsuario,
+    //                                @Param("status") StatusInscricao status,
+    //                                @Param("ini") LocalDateTime ini,
+    //                                @Param("fim") LocalDateTime fim,
+    //                                Pageable pageable);
+    // List<InscricaoEntity> findAll(Specification<InscricaoEntity> spec, Pageable pageable);
 }
