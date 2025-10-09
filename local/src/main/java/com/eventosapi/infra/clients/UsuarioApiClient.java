@@ -1,4 +1,4 @@
-package com.eventosapi.infra.client;
+package com.eventosapi.infra.clients;
 
 import java.util.Optional;
 

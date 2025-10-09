@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.eventosapi.infra.client.UsuarioApiClient;
+import com.eventosapi.infra.clients.UsuarioApiClient;
 import com.eventosapi.infra.dtos.UsuarioDTO;
 
 import jakarta.servlet.FilterChain;
