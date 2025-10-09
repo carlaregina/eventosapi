@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/usuarios")
+@RequestMapping("/api/usuarios")
 @Tag(name = "Usuários")
 public class UsuarioController {
     private final UsuarioService usuarioService;   
