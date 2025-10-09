@@ -1,5 +1,10 @@
 package com.eventosapi.inscricao.application.services;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.eventosapi.inscricao.application.exception.EntidadeNaoEncontradoException;
 import com.eventosapi.inscricao.application.exception.RegraNegocioException;
 import com.eventosapi.inscricao.application.port.EventoReadPort;
@@ -8,16 +13,10 @@ import com.eventosapi.inscricao.application.port.UsuarioReadPort;
 import com.eventosapi.inscricao.domain.enums.StatusInscricao;
 import com.eventosapi.inscricao.domain.models.Inscricao;
 import com.eventosapi.inscricao.interfaces.dto.FiltroInscricaoDTO;
-import com.eventosapi.inscricao.interfaces.dto.InscricaoRequestDTO; 
+import com.eventosapi.inscricao.interfaces.dto.InscricaoRequestDTO;
 import com.eventosapi.inscricao.interfaces.dto.InscricaoResponseDTO;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;    
-
-
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +26,6 @@ public class InscricaoService {
   private final EventoReadPort eventoPort;
   private final UsuarioReadPort usuarioPort;
 
-  @Transactional
   public InscricaoResponseDTO criar(InscricaoRequestDTO dto) {
     if (inscricaoRepo.existsByEventoAndUsuario(dto.idEvento(), dto.idUsuario()))
       throw new RegraNegocioException("Usuário já inscrito neste evento.");
@@ -54,7 +52,6 @@ public class InscricaoService {
     );
   }
 
-  @Transactional(readOnly = true)
   public InscricaoResponseDTO buscar(Long id) {
     var i = inscricaoRepo.findById(id)
         .orElseThrow(() -> new EntidadeNaoEncontradoException("Inscrição não encontrada"));
@@ -69,7 +66,6 @@ public class InscricaoService {
     );
   }
 
-  @Transactional(readOnly = true)
   public List<InscricaoResponseDTO> listar(FiltroInscricaoDTO f) {
     var lista = inscricaoRepo.findAll(
         f.idEvento(), f.idUsuario(), f.status(), f.dataInicio(), f.dataFim(),
@@ -88,7 +84,6 @@ public class InscricaoService {
         .toList();
   }
 
-  @Transactional(readOnly = true)
   public List<InscricaoResponseDTO> listarConfirmadasPorEvento(Long eventoId, Integer page, Integer size) {
 
     var lista = inscricaoRepo.findByEventoAndStatus(
@@ -132,7 +127,6 @@ public class InscricaoService {
     );
   }
 
-  @Transactional
   public void excluir(Long id) {
     var existente = inscricaoRepo.findById(id)
         .orElseThrow(() -> new EntidadeNaoEncontradoException("Inscrição não encontrada"));
