@@ -1,6 +1,11 @@
 package com.eventosapi.infra.entities;
 
-import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.eventosapi.domain.enums.TipoUsuario;
 import com.eventosapi.domain.models.Usuario;
@@ -16,7 +21,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "usuario")
-public class UsuarioEntity implements Serializable {
+public class UsuarioEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
@@ -60,4 +65,19 @@ public class UsuarioEntity implements Serializable {
         
         return entity;
     }
+
+	@Override
+	public String getUsername() {
+        return this.email;
+	}
+
+	@Override
+	public String getPassword() {
+        return this.senha;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority(tipo.toString()));
+	}
 }
