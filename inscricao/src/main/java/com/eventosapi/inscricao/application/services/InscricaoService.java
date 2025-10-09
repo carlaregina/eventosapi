@@ -1,5 +1,7 @@
 package com.eventosapi.inscricao.application.services;
 
+import com.eventosapi.inscricao.application.exception.EntidadeNaoEncontradoException;
+import com.eventosapi.inscricao.application.exception.RegraNegocioException;
 import com.eventosapi.inscricao.application.port.EventoReadPort;
 import com.eventosapi.inscricao.application.port.InscricaoRepositoryPort;
 import com.eventosapi.inscricao.application.port.UsuarioReadPort;
@@ -8,9 +10,6 @@ import com.eventosapi.inscricao.domain.models.Inscricao;
 import com.eventosapi.inscricao.interfaces.dto.FiltroInscricaoDTO;
 import com.eventosapi.inscricao.interfaces.dto.InscricaoRequestDTO; 
 import com.eventosapi.inscricao.interfaces.dto.InscricaoResponseDTO;
-import com.eventosapi.inscricao.exception.EntidadeNaoEncontradoException;
-import com.eventosapi.inscricao.exception.RegraNegocioException;    
-
 
 import java.time.LocalDateTime;
 import java.util.List;

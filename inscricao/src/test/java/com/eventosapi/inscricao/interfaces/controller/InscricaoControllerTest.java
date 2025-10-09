@@ -1,10 +1,9 @@
 package com.eventosapi.inscricao.interfaces.controller;
 
+import com.eventosapi.inscricao.application.exception.EntidadeNaoEncontradoException;
 import com.eventosapi.inscricao.application.services.InscricaoService;
 import com.eventosapi.inscricao.domain.enums.StatusInscricao;
 import com.eventosapi.inscricao.exception.GlobalExceptionHandler;
-import com.eventosapi.inscricao.exception.EntidadeNaoEncontradoException;
-
 import com.eventosapi.inscricao.interfaces.dto.FiltroInscricaoDTO;
 import com.eventosapi.inscricao.interfaces.dto.InscricaoRequestDTO;
 import com.eventosapi.inscricao.interfaces.dto.InscricaoResponseDTO;

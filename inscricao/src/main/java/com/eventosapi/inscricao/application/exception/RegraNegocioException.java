@@ -1,6 +1,4 @@
-package com.eventosapi.inscricao.exception;
-
-import org.springframework.web.bind.annotation.ExceptionHandler;
+package com.eventosapi.inscricao.application.exception;
 
 public class RegraNegocioException extends RuntimeException {
     public RegraNegocioException(String message) { super(message); }
