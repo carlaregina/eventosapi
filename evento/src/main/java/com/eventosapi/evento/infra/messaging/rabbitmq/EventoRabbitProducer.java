@@ -1,10 +1,11 @@
 package com.eventosapi.evento.infra.messaging.rabbitmq;
 
-import com.eventosapi.evento.application.port.EventoPublisherPort;
-import com.eventosapi.evento.interfaces.dto.InscricaoDTO;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import com.eventosapi.evento.application.port.EventoPublisherPort;
+import com.eventosapi.evento.interfaces.dto.InscricaoDTO;
 
 @Component
 public class EventoRabbitProducer implements EventoPublisherPort {
