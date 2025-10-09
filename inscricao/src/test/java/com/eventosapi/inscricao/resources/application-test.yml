@@ -1,10 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/appdb
-    username: app
-    password: app
+    url: jdbc:postgresql://localhost:5432/eventos
+    username: postgres
+    password: postgres
   jpa:
-    hibernate.ddl-auto: validate
-  flyway:
-    enabled: true
-    locations: classpath:db/migration
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
