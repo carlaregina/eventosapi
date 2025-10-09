@@ -4,6 +4,7 @@ import com.eventosapi.inscricao.application.services.InscricaoService;
 import com.eventosapi.inscricao.interfaces.dto.FiltroInscricaoDTO;
 import com.eventosapi.inscricao.interfaces.dto.InscricaoRequestDTO;
 import com.eventosapi.inscricao.interfaces.dto.InscricaoResponseDTO;
+import com.eventosapi.inscricao.interfaces.dto.StatusInscricaoDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -53,4 +54,14 @@ public class InscricaoController {
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void excluir(@PathVariable Long id) { service.excluir(id); }
+
+    @PutMapping("/{id}/status")
+  public ResponseEntity<InscricaoResponseDTO> atualizarStatus(
+      @PathVariable Long id,
+      @RequestBody StatusInscricaoDTO body
+  ) {
+    var resp = service.atualizarStatus(id, body.status());
+    return ResponseEntity.ok(resp);
+  }
+
 }

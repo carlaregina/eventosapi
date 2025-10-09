@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 
 public record InscricaoResponseDTO(
     Long id,
+    Long eventoId,
+    Long usuarioId,
     StatusInscricao status,
-    String tituloEvento,
-    String nomeUsuario,
     LocalDateTime data
 ) {}

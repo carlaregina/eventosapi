@@ -26,9 +26,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-
+@ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class InscricaoServiceTest {
 
@@ -38,16 +39,15 @@ class InscricaoServiceTest {
 
   @InjectMocks InscricaoService service;
 
-  @Mock EventoResumo evento;   // <<< tipos reais
-  @Mock UsuarioResumo usuario; // <<< tipos reais
-    @BeforeEach
-    void setUp() {
+  @Mock EventoResumo evento;
+  @Mock UsuarioResumo usuario;
+
+  @BeforeEach
+  void setUp() {
     lenient().when(evento.getId()).thenReturn(1L);
-    lenient().when(evento.getTitulo()).thenReturn("Workshop Java");
     lenient().when(evento.getMaxParticipantes()).thenReturn(3);
     lenient().when(usuario.getId()).thenReturn(2L);
-    lenient().when(usuario.getNome()).thenReturn("Carla");
-    }
+  }
 
   @Test
   void criar_deveSalvarEDevolverDTO_quandoOK() {
@@ -61,16 +61,16 @@ class InscricaoServiceTest {
     ArgumentCaptor<Inscricao> captor = ArgumentCaptor.forClass(Inscricao.class);
     when(inscricaoRepo.save(captor.capture())).thenAnswer(inv -> {
       var i = inv.getArgument(0, Inscricao.class);
-      i.setId(10L);
-      return i;
+      // retorna uma NOVA instância com id preenchido (não depende de setId)
+      return new Inscricao(10L, i.getEventoId(), i.getUsuarioId(), i.getStatus(), i.getData());
     });
 
     InscricaoResponseDTO resp = service.criar(req);
 
     assertThat(resp.id()).isEqualTo(10L);
+    assertThat(resp.eventoId()).isEqualTo(1L);
+    assertThat(resp.usuarioId()).isEqualTo(2L);
     assertThat(resp.status()).isEqualTo(StatusInscricao.CONFIRMADA);
-    assertThat(resp.tituloEvento()).isEqualTo("Workshop Java");
-    assertThat(resp.nomeUsuario()).isEqualTo("Carla");
 
     var salvo = captor.getValue();
     assertThat(salvo.getEventoId()).isEqualTo(1L);
@@ -87,8 +87,7 @@ class InscricaoServiceTest {
     when(inscricaoRepo.countConfirmadasByEvento(1L)).thenReturn(0L);
     when(inscricaoRepo.save(any())).thenAnswer(inv -> {
       var i = inv.getArgument(0, Inscricao.class);
-      i.setId(11L);
-      return i;
+      return new Inscricao(11L, i.getEventoId(), i.getUsuarioId(), i.getStatus(), i.getData());
     });
 
     var resp = service.criar(req);
@@ -125,13 +124,14 @@ class InscricaoServiceTest {
   void buscar_deveRetornarDTO_quandoExiste() {
     var insc = new Inscricao(10L, 1L, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
     when(inscricaoRepo.findById(10L)).thenReturn(Optional.of(insc));
-    when(eventoPort.findById(1L)).thenReturn(Optional.of(evento));
-    when(usuarioPort.findById(2L)).thenReturn(Optional.of(usuario));
 
     var resp = service.buscar(10L);
+
     assertThat(resp.id()).isEqualTo(10L);
-    assertThat(resp.tituloEvento()).isEqualTo("Workshop Java");
-    assertThat(resp.nomeUsuario()).isEqualTo("Carla");
+    assertThat(resp.eventoId()).isEqualTo(1L);
+    assertThat(resp.usuarioId()).isEqualTo(2L);
+    assertThat(resp.status()).isEqualTo(StatusInscricao.CONFIRMADA);
+    assertThat(resp.data()).isNotNull();
   }
 
   @Test
@@ -142,29 +142,32 @@ class InscricaoServiceTest {
   }
 
   @Test
-  void listar_deveRetornarDTOs_eConsultarEventoUsuario() {
+  void listar_deveRetornarDTOs_semNecessidadeDeConsultarEventoUsuario() {
     var i1 = new Inscricao(10L, 1L, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
     var i2 = new Inscricao(11L, 1L, 2L, StatusInscricao.PENDENTE, LocalDateTime.now());
     when(inscricaoRepo.findAll(null, null, null, null, null, 0, 10)).thenReturn(List.of(i1, i2));
-    when(eventoPort.findById(1L)).thenReturn(Optional.of(evento));
-    when(usuarioPort.findById(2L)).thenReturn(Optional.of(usuario));
 
     var lista = service.listar(new FiltroInscricaoDTO(null, null, null, null, null, 0, 10));
+
     assertThat(lista).hasSize(2);
-    assertThat(lista.get(0).tituloEvento()).isEqualTo("Workshop Java");
-    assertThat(lista.get(1).nomeUsuario()).isEqualTo("Carla");
+    assertThat(lista.get(0).id()).isEqualTo(10L);
+    assertThat(lista.get(1).status()).isEqualTo(StatusInscricao.PENDENTE);
+
+    verifyNoInteractions(eventoPort, usuarioPort);
   }
 
   @Test
   void atualizarStatus_deveAlterarParaCancelado() {
     var existente = new Inscricao(10L, 1L, 2L, StatusInscricao.PENDENTE, LocalDateTime.now());
     when(inscricaoRepo.findById(10L)).thenReturn(Optional.of(existente));
-    when(inscricaoRepo.save(any())).thenAnswer(inv -> inv.getArgument(0, Inscricao.class));
-    when(eventoPort.findById(1L)).thenReturn(Optional.of(evento));
-    when(usuarioPort.findById(2L)).thenReturn(Optional.of(usuario));
+    when(inscricaoRepo.save(any())).thenAnswer(inv -> {
+      var i = inv.getArgument(0, Inscricao.class);
+      return new Inscricao(i.getId(), i.getEventoId(), i.getUsuarioId(), i.getStatus(), i.getData());
+    });
 
     var resp = service.atualizarStatus(10L, StatusInscricao.CANCELADO);
     assertThat(resp.status()).isEqualTo(StatusInscricao.CANCELADO);
+    verifyNoInteractions(eventoPort, usuarioPort);
   }
 
   @Test
@@ -177,5 +180,6 @@ class InscricaoServiceTest {
     ArgumentCaptor<Inscricao> captor = ArgumentCaptor.forClass(Inscricao.class);
     verify(inscricaoRepo).save(captor.capture());
     assertThat(captor.getValue().getStatus()).isEqualTo(StatusInscricao.CANCELADO);
+    verifyNoInteractions(eventoPort, usuarioPort);
   }
 }

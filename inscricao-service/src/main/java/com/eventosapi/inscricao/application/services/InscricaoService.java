@@ -46,9 +46,11 @@ public class InscricaoService {
     var nova = Inscricao.nova(evento.getId(), usuario.getId(), status, LocalDateTime.now());
     var saved = inscricaoRepo.save(nova);
 
-    return new InscricaoResponseDTO(
-        saved.getId(), saved.getStatus(),
-        evento.getTitulo(), usuario.getNome(),
+   return new InscricaoResponseDTO(
+        saved.getId(),
+        saved.getEventoId(),
+        saved.getUsuarioId(),
+        saved.getStatus(),
         saved.getData()
     );
   }
@@ -58,13 +60,18 @@ public class InscricaoService {
     var i = inscricaoRepo.findById(id)
         .orElseThrow(() -> new EntidadeNaoEncontradoException("Inscrição não encontrada"));
 
-    var evento = eventoPort.findById(i.getEventoId())
-        .orElseThrow(() -> new EntidadeNaoEncontradoException("Evento não encontrado"));
-    var usuario = usuarioPort.findById(i.getUsuarioId())
-        .orElseThrow(() -> new EntidadeNaoEncontradoException("Usuário não encontrado"));
+    // var evento = eventoPort.findById(i.getEventoId())
+    //     .orElseThrow(() -> new EntidadeNaoEncontradoException("Evento não encontrado"));
+    // var usuario = usuarioPort.findById(i.getUsuarioId())
+    //     .orElseThrow(() -> new EntidadeNaoEncontradoException("Usuário não encontrado"));
 
-    return new InscricaoResponseDTO(i.getId(), i.getStatus(),
-        evento.getTitulo(), usuario.getNome(), i.getData());
+     return new InscricaoResponseDTO(
+        i.getId(),
+        i.getEventoId(),
+        i.getUsuarioId(),
+        i.getStatus(),
+        i.getData()
+    );
   }
 
   @Transactional(readOnly = true)
@@ -74,33 +81,54 @@ public class InscricaoService {
         f.page() == null ? 0 : f.page(), f.size() == null ? 10 : f.size()
     );
 
-    // carrega nomes/títulos em lote? simples aqui, resolve 1 a 1
-    return lista.stream().map(i -> {
-      var ev = eventoPort.findById(i.getEventoId()).orElseThrow();
-      var us = usuarioPort.findById(i.getUsuarioId()).orElseThrow();
-      return new InscricaoResponseDTO(i.getId(), i.getStatus(), ev.getTitulo(), us.getNome(), i.getData());
-    }).toList();
+   
+     return lista.stream()
+        .map(i -> new InscricaoResponseDTO(
+            i.getId(),
+            i.getEventoId(),
+            i.getUsuarioId(),
+            i.getStatus(),
+            i.getData()
+        ))
+        .toList();
   }
 
-  @Transactional
-  public InscricaoResponseDTO atualizarStatus(Long id, StatusInscricao novo) {
-    var i = inscricaoRepo.findById(id)
+  public InscricaoResponseDTO atualizarStatus(Long id, StatusInscricao novoStatus) {
+    var existente = inscricaoRepo.findById(id)
         .orElseThrow(() -> new EntidadeNaoEncontradoException("Inscrição não encontrada"));
-    i.alterarStatus(novo);
-    var saved = inscricaoRepo.save(i);
 
-    var ev = eventoPort.findById(saved.getEventoId()).orElseThrow();
-    var us = usuarioPort.findById(saved.getUsuarioId()).orElseThrow();
+    var atualizado = new Inscricao(
+        existente.getId(),
+        existente.getEventoId(),
+        existente.getUsuarioId(),
+        novoStatus,
+        existente.getData()
+    );
 
-    return new InscricaoResponseDTO(saved.getId(), saved.getStatus(), ev.getTitulo(), us.getNome(), saved.getData());
+    var saved = inscricaoRepo.save(atualizado);
+
+    return new InscricaoResponseDTO(
+        saved.getId(),
+        saved.getEventoId(),
+        saved.getUsuarioId(),
+        saved.getStatus(),
+        saved.getData()
+    );
   }
 
   @Transactional
   public void excluir(Long id) {
-    var i = inscricaoRepo.findById(id)
+    var existente = inscricaoRepo.findById(id)
         .orElseThrow(() -> new EntidadeNaoEncontradoException("Inscrição não encontrada"));
-    // como o port não tem delete, persistimos "exclusão" salvando estado? Se quiser físico, adicione delete(id) no port + adapter
-    // por enquanto, implementa no Adapter usando JpaRepository.deleteById(id)
-    inscricaoRepo.save(new Inscricao(i.getId(), i.getEventoId(), i.getUsuarioId(), StatusInscricao.CANCELADO, i.getData()));
+
+    var cancelado = new Inscricao(
+        existente.getId(),
+        existente.getEventoId(),
+        existente.getUsuarioId(),
+        StatusInscricao.CANCELADO,
+        existente.getData()
+    );
+
+    inscricaoRepo.save(cancelado);
   }
 }
