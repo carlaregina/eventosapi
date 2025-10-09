@@ -1,21 +1,24 @@
 package com.eventosapi.inscricao.infra.adapters;
 
+import static com.eventosapi.inscricao.infra.specifications.InscricaoSpecs.byDataFim;
+import static com.eventosapi.inscricao.infra.specifications.InscricaoSpecs.byDataIni;
+import static com.eventosapi.inscricao.infra.specifications.InscricaoSpecs.byIdEvento;
+import static com.eventosapi.inscricao.infra.specifications.InscricaoSpecs.byIdUsuario;
+import static com.eventosapi.inscricao.infra.specifications.InscricaoSpecs.byStatus;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Repository;
+
 import com.eventosapi.inscricao.application.port.InscricaoRepositoryPort;
 import com.eventosapi.inscricao.domain.enums.StatusInscricao;
 import com.eventosapi.inscricao.domain.models.Inscricao;
 import com.eventosapi.inscricao.infra.entities.InscricaoEntity;
 import com.eventosapi.inscricao.infra.repositories.InscricaoJpaRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Repository;
-
-
-import static com.eventosapi.inscricao.infra.specifications.InscricaoSpecs.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class InscricaoRepositoryAdapter implements InscricaoRepositoryPort {

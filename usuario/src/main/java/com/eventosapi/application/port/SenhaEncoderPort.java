@@ -1,5 +1,5 @@
 package com.eventosapi.application.port;
 
-public interface SenhaEncodePort {
+public interface SenhaEncoderPort {
     String encode(String senha);
 }
