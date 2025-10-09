@@ -22,4 +22,4 @@ security:
 # APIs
 api:
   usuario:
-    list-url: ${API_USUARIO_LIST_URL:http://localhost:8080/usuarios}
+    list-url: ${API_USUARIO_LIST_URL:http://localhost:8080/api/usuarios}
