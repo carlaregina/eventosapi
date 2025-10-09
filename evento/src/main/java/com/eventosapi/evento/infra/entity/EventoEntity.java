@@ -1,16 +1,22 @@
 package com.eventosapi.evento.infra.entity;
 
+import java.time.LocalDateTime;
+
 import com.eventosapi.evento.domain.enums.TipoEvento;
 import com.eventosapi.evento.domain.model.Evento;
-import com.eventosapi.evento.domain.model.Local;
-import com.eventosapi.evento.domain.model.Usuario;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Builder
 @Entity

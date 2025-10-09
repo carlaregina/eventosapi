@@ -1,10 +1,8 @@
 package com.eventosapi.evento.interfaces.dto;
 
-import com.eventosapi.evento.domain.enums.StatusInscricao;
-import com.eventosapi.evento.domain.model.Evento;
-import com.eventosapi.evento.domain.model.Usuario;
-
 import java.time.LocalDateTime;
+
+import com.eventosapi.evento.domain.enums.StatusInscricao;
 
 public class InscricaoDTO {
     private Long id;

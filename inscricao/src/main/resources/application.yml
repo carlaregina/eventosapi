@@ -9,8 +9,6 @@ spring:
     properties.hibernate.jdbc.time_zone: UTC
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://localhost:5432/eventos
-    username: postgres
-    password: postgres
-  flyway:
-    enabled: false
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DB:eventos}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
