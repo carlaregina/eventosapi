@@ -1,6 +1,7 @@
 package com.eventosapi.interfaces.dtos;
 
 import com.eventosapi.domain.enums.TipoUsuario;
+import com.eventosapi.domain.models.Usuario;
 
 public record UsuarioResponseDTO(
     String nome,
@@ -10,4 +11,13 @@ public record UsuarioResponseDTO(
     String telefone,
 
     TipoUsuario tipo
-) {}
+) {
+    public static UsuarioResponseDTO toResponseDTO(Usuario usuario) {
+        return new UsuarioResponseDTO(
+            usuario.getNome(),
+            usuario.getEmail(),
+            usuario.getTelefone(),
+            usuario.getTipo()
+        );
+    }
+}

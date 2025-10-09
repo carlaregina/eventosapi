@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import com.eventosapi.domain.models.Usuario;
 
 public record UsuarioRequestDTO( 
     @NotBlank(message = "O nome é obrigatório.")
@@ -21,6 +22,20 @@ public record UsuarioRequestDTO(
     @Size(max = 20, message = "O telefone deve ter no máximo 20 caracteres.")
     String telefone,
 
+    @NotBlank(message = "A senha é obrigatória.")
+    @Size(min = 6, max = 20, message = "A senha deve ter entre 6 e 20 caracteres.")
+    String senha,
+
     @NotNull(message = "O tipo de usuário é obrigatório.")
     TipoUsuario tipo) {
+
+    public Usuario toDomain() {
+        return Usuario.builder()
+            .nome(this.nome)
+            .email(this.email)
+            .telefone(this.telefone)
+            .senha(this.senha)
+            .tipo(this.tipo)
+            .build();
+    }
 }

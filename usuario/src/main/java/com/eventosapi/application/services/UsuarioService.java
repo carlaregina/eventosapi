@@ -6,24 +6,27 @@ import org.springframework.stereotype.Service;
 
 import com.eventosapi.application.exceptions.DuplicidadeEmailUsuarioException;
 import com.eventosapi.application.exceptions.EntidadeNaoEncontradoException;
+import com.eventosapi.application.port.SenhaEncodePort;
 import com.eventosapi.application.port.UsuarioRepositoryPort;
 import com.eventosapi.domain.models.Usuario;
 import com.eventosapi.interfaces.dtos.FiltroUsuarioDTO;
-import com.eventosapi.interfaces.dtos.UsuarioRequestDTO;
-import com.eventosapi.interfaces.dtos.UsuarioResponseDTO;
 
 @Service
 public class UsuarioService {
     private final UsuarioRepositoryPort usuarioRepositoryPort;
+    private final SenhaEncodePort senhaEncodePort;
 
-    public UsuarioService(UsuarioRepositoryPort usuarioRepositoryPort) {
+    public UsuarioService(UsuarioRepositoryPort usuarioRepositoryPort, SenhaEncodePort senhaEncodePort) {
         this.usuarioRepositoryPort = usuarioRepositoryPort;
+        this.senhaEncodePort = senhaEncodePort;
     }
 
     public Usuario cadastrarUsuario(Usuario usuario){
         if(usuarioRepositoryPort.existeEmail(usuario.getEmail())){
             throw new DuplicidadeEmailUsuarioException("Já existe um usuário cadastrado com o email: " + usuario.getEmail());
         }
+        usuario.setSenha(senhaEncodePort.encode(usuario.getSenha()));
+
         return usuarioRepositoryPort.salvar(usuario);
     }
 
@@ -55,21 +58,4 @@ public class UsuarioService {
         return usuarioRepositoryPort.buscarTodos(filtroUsuarioDTO, pageable);
     }
 
-    public static UsuarioResponseDTO toResponseDTO(Usuario usuario) {
-        return new UsuarioResponseDTO(
-            usuario.getNome(),
-            usuario.getEmail(),
-            usuario.getTelefone(),
-            usuario.getTipo()
-        );
-    }
-
-    public static Usuario fromRequestDTO(UsuarioRequestDTO dto) {
-        return Usuario.builder()
-            .nome(dto.nome())
-            .email(dto.email())
-            .telefone(dto.telefone())
-            .tipo(dto.tipo())
-            .build();
-    }
 }

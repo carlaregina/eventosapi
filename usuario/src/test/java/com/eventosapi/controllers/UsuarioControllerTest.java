@@ -48,12 +48,14 @@ class UsuarioControllerTest {
                 .nome("José Vitor")
                 .email("jose.vitor@example.com")
                 .telefone("11999999999")
+                .senha("senhaSegura123")
                 .tipo(TipoUsuario.STAFF)
                 .build();
 
         usuarioRequestDTO = new UsuarioRequestDTO(
                 "José Vitor",
                 "jose.vitor@example.com",
+                "senhaSegura123",
                 "11999999999",
                 TipoUsuario.STAFF
         );

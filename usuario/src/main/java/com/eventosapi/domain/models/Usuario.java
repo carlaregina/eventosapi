@@ -1,10 +1,11 @@
 package com.eventosapi.domain.models;
 
+import com.eventosapi.domain.enums.TipoUsuario;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.eventosapi.domain.enums.TipoUsuario;
 
 @Data
 @NoArgsConstructor
@@ -15,5 +16,6 @@ public class Usuario {
     private String nome;
     private String email;
     private String telefone;
+    private String senha;
     private TipoUsuario tipo;
 }

@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eventosapi.application.services.UsuarioService;
+import com.eventosapi.domain.models.Usuario;
 import com.eventosapi.interfaces.dtos.FiltroUsuarioDTO;
 import com.eventosapi.interfaces.dtos.UsuarioRequestDTO;
 import com.eventosapi.interfaces.dtos.UsuarioResponseDTO;
+import static com.eventosapi.interfaces.dtos.UsuarioResponseDTO.toResponseDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,7 +37,7 @@ public class UsuarioController {
     @GetMapping
     @Operation(summary = "Listar todos os usuários com paginação e filtros")
     public Page<UsuarioResponseDTO> buscarTodosUsuarios(FiltroUsuarioDTO filtroUsuarioDTO, Pageable pageable){ 
-        return usuarioService.buscarTodosUsuarios(filtroUsuarioDTO, pageable).map(UsuarioService::toResponseDTO);
+        return usuarioService.buscarTodosUsuarios(filtroUsuarioDTO, pageable).map(UsuarioResponseDTO::toResponseDTO);
     }
 
     @GetMapping("/{id}")
@@ -48,7 +50,7 @@ public class UsuarioController {
             content = @Content)
     })
     public ResponseEntity<UsuarioResponseDTO> obterPorId(@PathVariable Long id){
-        return ResponseEntity.ok(UsuarioService.toResponseDTO(usuarioService.obterUsuarioPorId(id)));
+        return ResponseEntity.ok(toResponseDTO(usuarioService.obterUsuarioPorId(id)));
     }
 
     @PostMapping
@@ -59,7 +61,7 @@ public class UsuarioController {
             schema = @Schema(implementation = UsuarioResponseDTO.class)) }),
     })
     public ResponseEntity<UsuarioResponseDTO> cadastrar(@RequestBody UsuarioRequestDTO usuarioRequestDTO){
-        UsuarioResponseDTO usuarioResponseDTO = UsuarioService.toResponseDTO(usuarioService.cadastrarUsuario(UsuarioService.fromRequestDTO(usuarioRequestDTO)));
+        UsuarioResponseDTO usuarioResponseDTO = toResponseDTO(usuarioService.cadastrarUsuario(usuarioRequestDTO.toDomain()));
         return ResponseEntity.ok(usuarioResponseDTO);
     }
 
@@ -74,7 +76,7 @@ public class UsuarioController {
     })
     public ResponseEntity<UsuarioResponseDTO> atualizar(@PathVariable Long id, 
                                                                       @RequestBody UsuarioRequestDTO usuarioRequestDTO){
-        UsuarioResponseDTO usuarioResponseDTO = UsuarioService.toResponseDTO(usuarioService.atualizarUsuario(id, UsuarioService.fromRequestDTO(usuarioRequestDTO)));
+        UsuarioResponseDTO usuarioResponseDTO = toResponseDTO(usuarioService.atualizarUsuario(id, usuarioRequestDTO.toDomain()));
         return ResponseEntity.ok(usuarioResponseDTO);
     }
 

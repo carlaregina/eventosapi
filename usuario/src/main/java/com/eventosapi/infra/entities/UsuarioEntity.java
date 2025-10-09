@@ -1,9 +1,18 @@
 package com.eventosapi.infra.entities;
 
+import java.io.Serializable;
+
 import com.eventosapi.domain.enums.TipoUsuario;
 import com.eventosapi.domain.models.Usuario;
-import java.io.Serializable;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "usuario")
@@ -22,6 +31,9 @@ public class UsuarioEntity implements Serializable {
     @Column(name = "telefone", nullable = false, length = 20)
     private String telefone;
 
+    @Column(name = "senha", nullable = false, length = 255)
+    private String senha;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", length = 255)
     private TipoUsuario tipo;
@@ -32,6 +44,7 @@ public class UsuarioEntity implements Serializable {
                 .nome(this.nome)
                 .email(this.email)
                 .telefone(this.telefone)
+                .senha(this.senha)
                 .tipo(this.tipo)
                 .build();
     }
@@ -42,6 +55,7 @@ public class UsuarioEntity implements Serializable {
         entity.nome = usuario.getNome();
         entity.email = usuario.getEmail();
         entity.telefone = usuario.getTelefone();
+        entity.senha = usuario.getSenha();
         entity.tipo = usuario.getTipo();
         
         return entity;
