@@ -12,3 +12,9 @@ spring:
     url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DB:eventos}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
+
+# Security
+security:
+  token:
+    secret: ${JWT_SECRET:eventos}
+    expiration-time-in-minutes: ${JWT_EXPIRATION_IN_MINUTES:60}
