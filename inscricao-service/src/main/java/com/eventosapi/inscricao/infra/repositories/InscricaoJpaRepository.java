@@ -2,7 +2,9 @@ package com.eventosapi.inscricao.infra.repositories;
 
 import com.eventosapi.inscricao.domain.enums.StatusInscricao;
 import com.eventosapi.inscricao.infra.entities.InscricaoEntity;
+import com.eventosapi.inscricao.domain.models.Inscricao;
 import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,28 +17,9 @@ public interface InscricaoJpaRepository extends JpaRepository<InscricaoEntity, L
 
   boolean existsByEventoIdAndUsuarioId(Long eventoId, Long usuarioId);
 
-//   @Query("""
-//       select count(i) from InscricaoEntity i
-//       where i.eventoId = :idEvento and i.status = com.eventosapi.inscricao.domain.models.StatusInscricao.CONFIRMADA
-//   """)
-//   long countConfirmadasByEvento(@Param("idEvento") Long idEvento);
-
   long countByEventoIdAndStatus(Long eventoId, StatusInscricao status);
   
-    //  @Query("""
-    //      select i from InscricaoEntity i
-    //      where (:idEvento is null or i.eventoId = :idEvento)
-    //        and (:idUsuario is null or i.usuarioId = :idUsuario)
-    //        and (:status is null or i.status = :status)
-    //        and (:ini is null or i.data >= :ini)
-    //        and (:fim is null or i.data <= :fim)
-    //      order by i.id desc
-    //   """)
-    //   List<InscricaoEntity> search(@Param("idEvento") Long idEvento,
-    //                                @Param("idUsuario") Long idUsuario,
-    //                                @Param("status") StatusInscricao status,
-    //                                @Param("ini") LocalDateTime ini,
-    //                                @Param("fim") LocalDateTime fim,
-    //                                Pageable pageable);
-    // List<InscricaoEntity> findAll(Specification<InscricaoEntity> spec, Pageable pageable);
+  Page<Inscricao> findByEventoIdAndStatus(Long eventoId, StatusInscricao status,
+                                       Pageable pageable);
+                                            
 }

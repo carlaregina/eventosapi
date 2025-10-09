@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
@@ -55,12 +56,22 @@ public class InscricaoController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void excluir(@PathVariable Long id) { service.excluir(id); }
 
-    @PutMapping("/{id}/status")
+  @PutMapping("/{id}/status")
   public ResponseEntity<InscricaoResponseDTO> atualizarStatus(
       @PathVariable Long id,
       @RequestBody StatusInscricaoDTO body
   ) {
     var resp = service.atualizarStatus(id, body.status());
+    return ResponseEntity.ok(resp);
+  }
+
+  @GetMapping("/eventos/{eventoId}/confirmadas")
+  public ResponseEntity<List<InscricaoResponseDTO>> listarConfirmadasPorEvento(
+      @PathVariable Long eventoId,
+      @RequestParam(defaultValue = "0") Integer page,
+      @RequestParam(defaultValue = "10") Integer size
+  ) {
+    var resp = service.listarConfirmadasPorEvento(eventoId, page, size);
     return ResponseEntity.ok(resp);
   }
 

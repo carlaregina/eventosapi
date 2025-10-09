@@ -182,4 +182,55 @@ class InscricaoServiceTest {
     assertThat(captor.getValue().getStatus()).isEqualTo(StatusInscricao.CANCELADO);
     verifyNoInteractions(eventoPort, usuarioPort);
   }
+
+
+  @Test
+  void listarConfirmadasPorEvento_deveRetornarSomenteConfirmadas() {
+    Long eventoId = 1L;
+    var i1 = new Inscricao(10L, eventoId, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
+    var i2 = new Inscricao(11L, eventoId, 3L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
+
+    when(inscricaoRepo.findByEventoAndStatus(eventoId, StatusInscricao.CONFIRMADA, 0, 10))
+        .thenReturn(List.of(i1, i2));
+
+    List<InscricaoResponseDTO> resp = service.listarConfirmadasPorEvento(eventoId, 0, 10);
+
+    assertThat(resp).hasSize(2);
+    assertThat(resp).allSatisfy(dto -> {
+      assertThat(dto.eventoId()).isEqualTo(eventoId);
+      assertThat(dto.status()).isEqualTo(StatusInscricao.CONFIRMADA);
+      assertThat(dto.data()).isNotNull();
+    });
+
+    // Não deve consultar outros ports
+    verifyNoInteractions(eventoPort, usuarioPort);
+  }
+
+  @Test
+  void listarConfirmadasPorEvento_deveRetornarVazio_quandoNaoHaRegistros() {
+    Long eventoId = 2L;
+
+    when(inscricaoRepo.findByEventoAndStatus(eventoId, StatusInscricao.CONFIRMADA, 0, 10))
+        .thenReturn(List.of());
+
+    var resp = service.listarConfirmadasPorEvento(eventoId, 0, 10);
+
+    assertThat(resp).isEmpty();
+    verifyNoInteractions(eventoPort, usuarioPort);
+  }
+
+  @Test
+  void listarConfirmadasPorEvento_deveUsarPaginacaoDefault_quandoNulos() {
+    Long eventoId = 3L;
+    // O service deve traduzir page=null/size=null para 0/10 antes de chamar o repo (conforme sua implementação)
+    when(inscricaoRepo.findByEventoAndStatus(eventoId, StatusInscricao.CONFIRMADA, 0, 10))
+        .thenReturn(List.of());
+
+    var resp = service.listarConfirmadasPorEvento(eventoId, null, null);
+
+    assertThat(resp).isEmpty();
+    verify(inscricaoRepo).findByEventoAndStatus(eventoId, StatusInscricao.CONFIRMADA, 0, 10);
+    verifyNoInteractions(eventoPort, usuarioPort);
+  }
+
 }

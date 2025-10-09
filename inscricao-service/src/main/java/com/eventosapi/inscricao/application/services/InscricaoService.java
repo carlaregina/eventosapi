@@ -60,10 +60,6 @@ public class InscricaoService {
     var i = inscricaoRepo.findById(id)
         .orElseThrow(() -> new EntidadeNaoEncontradoException("Inscrição não encontrada"));
 
-    // var evento = eventoPort.findById(i.getEventoId())
-    //     .orElseThrow(() -> new EntidadeNaoEncontradoException("Evento não encontrado"));
-    // var usuario = usuarioPort.findById(i.getUsuarioId())
-    //     .orElseThrow(() -> new EntidadeNaoEncontradoException("Usuário não encontrado"));
 
      return new InscricaoResponseDTO(
         i.getId(),
@@ -83,6 +79,27 @@ public class InscricaoService {
 
    
      return lista.stream()
+        .map(i -> new InscricaoResponseDTO(
+            i.getId(),
+            i.getEventoId(),
+            i.getUsuarioId(),
+            i.getStatus(),
+            i.getData()
+        ))
+        .toList();
+  }
+
+  @Transactional(readOnly = true)
+  public List<InscricaoResponseDTO> listarConfirmadasPorEvento(Long eventoId, Integer page, Integer size) {
+
+    var lista = inscricaoRepo.findByEventoAndStatus(
+        eventoId,
+        StatusInscricao.CONFIRMADA,
+        page == null ? 0 : page,
+        size == null ? 10 : size
+    );
+
+    return lista.stream()
         .map(i -> new InscricaoResponseDTO(
             i.getId(),
             i.getEventoId(),
@@ -131,4 +148,7 @@ public class InscricaoService {
 
     inscricaoRepo.save(cancelado);
   }
+
+
+
 }

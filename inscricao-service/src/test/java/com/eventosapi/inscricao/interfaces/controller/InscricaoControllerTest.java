@@ -3,6 +3,8 @@ package com.eventosapi.inscricao.interfaces.controller;
 import com.eventosapi.inscricao.application.services.InscricaoService;
 import com.eventosapi.inscricao.domain.enums.StatusInscricao;
 import com.eventosapi.inscricao.exception.GlobalExceptionHandler;
+import com.eventosapi.inscricao.exception.EntidadeNaoEncontradoException;
+
 import com.eventosapi.inscricao.interfaces.dto.FiltroInscricaoDTO;
 import com.eventosapi.inscricao.interfaces.dto.InscricaoRequestDTO;
 import com.eventosapi.inscricao.interfaces.dto.InscricaoResponseDTO;
@@ -133,4 +135,49 @@ class InscricaoControllerTest {
     mockMvc.perform(delete("/api/inscricoes/10"))
         .andExpect(status().isNoContent());
   }
+
+  @Test
+  void deveListarConfirmadasPorEvento_comSucesso() throws Exception {
+    long eventoId = 1L;
+    var item = new InscricaoResponseDTO(
+        10L, eventoId, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now()
+    );
+    when(service.listarConfirmadasPorEvento(eq(eventoId), eq(0), eq(10)))
+        .thenReturn(List.of(item));
+
+    mockMvc.perform(get("/api/inscricoes/eventos/{eventoId}/confirmadas?page=0&size=10", eventoId)
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].id").value(10))
+        .andExpect(jsonPath("$[0].eventoId").value(1))
+        .andExpect(jsonPath("$[0].usuarioId").value(2))
+        .andExpect(jsonPath("$[0].status").value("CONFIRMADA"))
+        .andExpect(jsonPath("$[0].data").exists());
+  }
+
+  @Test
+  void deveRetornarListaVazia_quandoNaoHaConfirmadas() throws Exception {
+    long eventoId = 2L;
+    when(service.listarConfirmadasPorEvento(eq(eventoId), eq(0), eq(10)))
+        .thenReturn(List.of());
+
+    mockMvc.perform(get("/api/inscricoes/eventos/{eventoId}/confirmadas?page=0&size=10", eventoId)
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.length()").value(0));
+  }
+
+  @Test
+  void deveRetornar404_quandoEventoNaoEncontrado() throws Exception {
+    long eventoId = 999L;
+    when(service.listarConfirmadasPorEvento(eq(eventoId), eq(0), eq(10)))
+        .thenThrow(new EntidadeNaoEncontradoException("Evento não encontrado"));
+
+    mockMvc.perform(get("/api/inscricoes/eventos/{eventoId}/confirmadas?page=0&size=10", eventoId)
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
+  }
+
+
 }
