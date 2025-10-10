@@ -1,4 +1,4 @@
-package com.eventosapi.inscricao.infra.clients;
+package com.eventosapi.inscricao.infra.adapters;
 
 import static java.util.Collections.singletonList;
 import static org.springframework.http.HttpMethod.GET;
@@ -11,21 +11,36 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import com.eventosapi.inscricao.application.port.UsuarioClientPort;
 import com.eventosapi.inscricao.infra.dtos.UsuarioDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
-public class UsuarioApiClient {
+public class UsuarioApiClientAdapter implements UsuarioClientPort {
 
     @Value("${api.usuario.list-url}")
     private String usuarioApiUrl;
     
     private RestTemplate restTemplate = new RestTemplate();
+
+	@Override
+	public Boolean existsById(Long id) {
+        try {
+            String token = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+            URI uri = URI.create(usuarioApiUrl + "/" + id);
+            ResponseEntity<String> response = restTemplate.exchange(uri, GET, getHeaders(token), String.class);
+            return response.getStatusCode().is2xxSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+	}
 
     public Optional<UsuarioDTO> buscarPorEmail(String token, String email) {
         try {

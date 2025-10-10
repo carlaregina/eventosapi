@@ -5,13 +5,16 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 
+import com.eventosapi.inscricao.application.exception.EntidadeNaoEncontradoException;
+import com.eventosapi.inscricao.application.exception.RegraNegocioException;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    
-    @ExceptionHandler(EntidadeNaoEncontradoException.class)
+
+  @ExceptionHandler(EntidadeNaoEncontradoException.class)
   public ResponseEntity<?> notFound(EntidadeNaoEncontradoException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)
         .body(err("NOT_FOUND", ex.getMessage()));
@@ -34,7 +37,7 @@ public class GlobalExceptionHandler {
         .body(err("INTERNAL_ERROR", "Erro inesperado."));
   }
 
-  private Map<String,Object> err(String code, String msg) {
+  private Map<String, Object> err(String code, String msg) {
     return Map.of("timestamp", OffsetDateTime.now().toString(), "code", code, "error", msg);
   }
 
