@@ -1,10 +1,11 @@
 package com.eventosapi.application.port;
 
 import java.util.Optional;
-import com.eventosapi.domain.models.Usuario;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
+
+import com.eventosapi.domain.models.Usuario;
 import com.eventosapi.interfaces.dtos.FiltroUsuarioDTO;
 
 public interface UsuarioRepositoryPort {

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.eventosapi.application.exceptions.DuplicidadeEmailUsuarioException;
 import com.eventosapi.application.exceptions.EntidadeNaoEncontradoException;
-import com.eventosapi.application.port.SenhaEncodePort;
+import com.eventosapi.application.port.SenhaEncoderPort;
 import com.eventosapi.application.port.UsuarioRepositoryPort;
 import com.eventosapi.domain.models.Usuario;
 import com.eventosapi.interfaces.dtos.FiltroUsuarioDTO;
@@ -14,9 +14,9 @@ import com.eventosapi.interfaces.dtos.FiltroUsuarioDTO;
 @Service
 public class UsuarioService {
     private final UsuarioRepositoryPort usuarioRepositoryPort;
-    private final SenhaEncodePort senhaEncodePort;
+    private final SenhaEncoderPort senhaEncodePort;
 
-    public UsuarioService(UsuarioRepositoryPort usuarioRepositoryPort, SenhaEncodePort senhaEncodePort) {
+    public UsuarioService(UsuarioRepositoryPort usuarioRepositoryPort, SenhaEncoderPort senhaEncodePort) {
         this.usuarioRepositoryPort = usuarioRepositoryPort;
         this.senhaEncodePort = senhaEncodePort;
     }

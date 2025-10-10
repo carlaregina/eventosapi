@@ -1,38 +1,63 @@
 #!/bin/bash
 
-# Script para testar endpoints principais da eventosapi
+export TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJldmVudG9zIiwic3ViIjoidml0b3IuZW5nZW5oYXJpYXByb0BnbWFpbC5jb20iLCJleHAiOjE3NjAwNzA5OTB9.IlHsoqVEPWKW65Gg9u5Q3LDHZXkwEdOqUqFGoWQP-XQ
 
-echo "== Testando criação =="
-curl -s -X POST "http://localhost:8080/api/inscricoes" \
+curl -X POST "http://localhost:8082/api/usuarios" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer ${TOKEN}" \
+    -d '{
+        "nome": "Vitor",
+        "email": "vitor.engenhariapro@gmail.com",
+        "telefone": "99999999",
+        "tipo": "OUTROS",
+        "senha": "123456"
+    }' | jq
+
+curl -X POST "http://localhost:8081/api/auth/login" \
     -H "Content-Type: application/json" \
     -d '{
-        "idEvento": 2,
-        "idUsuario": 5,
-        "data": "2024-10-01T10:00:00",
-        "status": "CONFIRMADA"
+        "email": "vitor.engenhariapro@gmail.com",
+        "senha": "123456"
+    }' | jq
+
+echo "== Testando criação =="
+curl -X POST "http://localhost:8084/api/inscricoes" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer ${TOKEN}" \
+    -d '{
+        "nome": "Auditório Central",
+        "cep": "58000-000",
+        "logradouro": "Av. Principal",
+        "numero": "100",
+        "bairro": "Centro",
+        "cidade": "João Pessoa",
+        "estado": "PB",
+        "tipo": "TEATRO"
     }' | jq
 
 echo "== Testando listagem paginada =="
-curl -s "http://localhost:8080/api/inscricoes?page=0&size=5" | jq
+curl "http://localhost:8084/api/inscricoes?page=0&size=5" -H "Authorization: Bearer ${TOKEN}" | jq
 
 echo "== Testando atualização =="
-curl -s -X PUT "http://localhost:8080/api/eventos/2" \
+curl -X PUT "http://localhost:8084/api/inscricoes/1" \
+    -H "Authorization: Bearer ${TOKEN}" \
     -H "Content-Type: application/json" \
     -d '{
-        "titulo": "Workshop de Planejamento de Projetos - Atualizado",
-        "descricao": "Aprenda a planejar seus projetos de forma eficaz e eficiente.",
-        "data": "2025-11-28T14:30:00",
-        "tipo": "CURSO",
-        "maxParticipantes": 40,
-        "organizadorId": 3,
-        "localId": 2
+        "nome": "Auditório Central Attualizado",
+        "cep": "58000-000",
+        "logradouro": "Av. Principal Attualizado",
+        "numero": "100",
+        "bairro": "Centro Attualizado",
+        "cidade": "João Pessoa Attualizado",
+        "estado": "SP",
+        "tipo": "PRAIA"
     }' | jq
 
 echo "== Testando busca por ID =="
-curl -s "http://localhost:8080/api/inscricoes/1" | jq
+curl "http://localhost:8084/api/inscricoes/1" -H "Authorization: Bearer ${TOKEN}" | jq
 
 echo "== Testando remoção =="
-curl -s -X DELETE "http://localhost:8080/api/inscricoes/1"
+curl -X DELETE "http://localhost:8084/api/inscricoes/1" -H "Authorization: Bearer ${TOKEN}"
 
 echo "== Testando busca por ID após remoção =="
-curl -s "http://localhost:8080/api/inscricoes/1" | jq
+curl "http://localhost:8084/api/inscricoes/1" -H "Authorization: Bearer ${TOKEN}" | jq
