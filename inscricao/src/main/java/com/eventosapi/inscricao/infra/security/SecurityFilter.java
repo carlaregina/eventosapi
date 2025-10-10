@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.eventosapi.inscricao.infra.clients.UsuarioApiClient;
+import com.eventosapi.inscricao.infra.adapters.UsuarioApiClientAdapter;
 import com.eventosapi.inscricao.infra.dtos.UsuarioDTO;
 
 import jakarta.servlet.FilterChain;
@@ -22,14 +22,14 @@ import lombok.RequiredArgsConstructor;
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final JwtValidator jwtBuilder;
-    private final UsuarioApiClient usuarioApiClient;
+    private final UsuarioApiClientAdapter usuarioApiClient;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Optional<String> token = this.recoverToken(request);
         Optional<UsuarioDTO> user = this.recoverTokenOwner(token);
         if(user.isPresent()) {
-            var authentication = new UsernamePasswordAuthenticationToken(user,  null, user.get().getAuthorities());
+            var authentication = new UsernamePasswordAuthenticationToken(user,  token.get(), user.get().getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

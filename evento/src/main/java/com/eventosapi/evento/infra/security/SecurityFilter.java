@@ -29,7 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         Optional<String> token = this.recoverToken(request);
         Optional<UsuarioDTO> user = this.recoverTokenOwner(token);
         if(user.isPresent()) {
-            var authentication = new UsernamePasswordAuthenticationToken(user,  null, user.get().getAuthorities());
+            var authentication = new UsernamePasswordAuthenticationToken(user,  token, user.get().getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
