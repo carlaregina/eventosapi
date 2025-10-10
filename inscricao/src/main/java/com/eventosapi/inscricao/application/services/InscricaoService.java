@@ -1,14 +1,18 @@
 package com.eventosapi.inscricao.application.services;
 
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.eventosapi.inscricao.application.dtos.EmailDTO;
 import com.eventosapi.inscricao.application.dtos.FiltroInscricaoDTO;
 import com.eventosapi.inscricao.application.exception.EntidadeNaoEncontradoException;
 import com.eventosapi.inscricao.application.exception.RegraNegocioException;
 import com.eventosapi.inscricao.application.port.EventoClientPort;
 import com.eventosapi.inscricao.application.port.InscricaoRepositoryPort;
+import com.eventosapi.inscricao.application.port.MailClientPort;
 import com.eventosapi.inscricao.application.port.UsuarioClientPort;
 import com.eventosapi.inscricao.domain.enums.StatusInscricao;
 import com.eventosapi.inscricao.domain.models.Inscricao;
@@ -22,6 +26,7 @@ public class InscricaoService {
     private final InscricaoRepositoryPort inscricaoRepo;
     private final EventoClientPort eventoPort;
     private final UsuarioClientPort usuarioPort;
+    private final MailClientPort mailClient;
 
     public Inscricao salvar(Inscricao inscricao) {
         if (inscricaoRepo.existsByEventoAndUsuario(inscricao.getEventoId(), inscricao.getUsuarioId())) {
@@ -31,17 +36,26 @@ public class InscricaoService {
         var confirmadas = inscricaoRepo.countConfirmadasByEvento(inscricao.getEventoId());
         var evento = eventoPort.findById(inscricao.getEventoId())
             .orElseThrow(() -> new EntidadeNaoEncontradoException("Evento não encontrado"));
-        
+
+        var usuario = usuarioPort.findById(inscricao.getUsuarioId())
+            .orElseThrow(() -> new EntidadeNaoEncontradoException("Usuário não encontrado"));
         
         if (confirmadas >= evento.getMaxParticipantes()) {
             throw new RegraNegocioException("Capacidade esgotada.");
         }
-            
-        if(!usuarioPort.existsById(inscricao.getUsuarioId())) {
-            throw new EntidadeNaoEncontradoException("Usuário não encontrado");
-        }
 
-        return inscricaoRepo.save(inscricao);
+        inscricaoRepo.save(inscricao);
+
+        EmailDTO email = new EmailDTO(
+            usuario.getNome(),
+            "Confirmação de Inscrição",
+            "Olá " + usuario.getNome() + ", segue seu voucher em anexo.",
+            Map.of("voucher.pdf", new byte[] {0})
+        );
+
+        mailClient.send(email);
+
+        return inscricao;
     }
 
     public Page<Inscricao> listar(FiltroInscricaoDTO filtro, Pageable pageable) {

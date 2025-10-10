@@ -32,6 +32,7 @@ import com.eventosapi.inscricao.application.exception.EntidadeNaoEncontradoExcep
 import com.eventosapi.inscricao.application.exception.RegraNegocioException;
 import com.eventosapi.inscricao.application.port.EventoClientPort;
 import com.eventosapi.inscricao.application.port.InscricaoRepositoryPort;
+import com.eventosapi.inscricao.application.port.MailClientPort;
 import com.eventosapi.inscricao.application.port.UsuarioClientPort;
 import com.eventosapi.inscricao.domain.enums.StatusInscricao;
 import com.eventosapi.inscricao.domain.models.Evento;
@@ -44,10 +45,15 @@ class InscricaoServiceTest {
 
 	@Mock
 	InscricaoRepositoryPort inscricaoRepo;
+
 	@Mock
 	EventoClientPort eventoPort;
+
 	@Mock
 	UsuarioClientPort usuarioPort;
+
+	@Mock
+	MailClientPort mailClientPort;
 
 	@InjectMocks
 	InscricaoService service;
@@ -68,10 +74,11 @@ class InscricaoServiceTest {
 	void criar_deveSalvarEDevolverDTO_quandoOK() {
 		var now = LocalDateTime.now();
 		var inscricao = new Inscricao(1L, 1L, 2L, StatusInscricao.CONFIRMADA, now);
+		var usuario = new Usuario(2L, "Usuario", "usuario@mail");
 
 		when(inscricaoRepo.existsByEventoAndUsuario(1L, 2L)).thenReturn(false);
 		when(eventoPort.findById(1L)).thenReturn(Optional.of(evento));
-		when(usuarioPort.existsById(2L)).thenReturn(true);
+		when(usuarioPort.findById(2L)).thenReturn(Optional.of(usuario));
 		when(inscricaoRepo.countConfirmadasByEvento(1L)).thenReturn(0L);
 		when(inscricaoRepo.save(any(Inscricao.class))).thenReturn(inscricao);
 
@@ -99,10 +106,11 @@ class InscricaoServiceTest {
 	@Test
 	void criar_deveFalhar_quandoCapacidadeEsgotada() {
 		var inscricao = new Inscricao(1L, 1L, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
+		var usuario = new Usuario(2L, "Usuario", "usuario@mail");
 
 		when(inscricaoRepo.existsByEventoAndUsuario(1L, 2L)).thenReturn(false);
 		when(eventoPort.findById(1L)).thenReturn(Optional.of(evento));
-		when(usuarioPort.existsById(2L)).thenReturn(true);
+		when(usuarioPort.findById(2L)).thenReturn(Optional.of(usuario));
 		when(inscricaoRepo.countConfirmadasByEvento(1L)).thenReturn(3L);
 
 		assertThatThrownBy(() -> service.salvar(inscricao))

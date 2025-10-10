@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.eventosapi.inscricao.application.port.UsuarioClientPort;
+import com.eventosapi.inscricao.domain.models.Usuario;
 import com.eventosapi.inscricao.infra.dtos.UsuarioDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -30,16 +31,19 @@ public class UsuarioApiClientAdapter implements UsuarioClientPort {
     private RestTemplate restTemplate = new RestTemplate();
 
 	@Override
-	public Boolean existsById(Long id) {
+	public Optional<Usuario> findById(Long id) {
         try {
             String token = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
             URI uri = URI.create(usuarioApiUrl + "/" + id);
             ResponseEntity<String> response = restTemplate.exchange(uri, GET, getHeaders(token), String.class);
-            return response.getStatusCode().is2xxSuccessful();
+            if (response.getStatusCode().is2xxSuccessful()) {
+                String json = response.getBody();
+                return converterJsonParaUsuario(json).map(UsuarioDTO::toDomain);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return Optional.empty();
 	}
 
     public Optional<UsuarioDTO> buscarPorEmail(String token, String email) {

@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.eventosapi.inscricao.domain.enums.TipoUsuario;
+import com.eventosapi.inscricao.domain.models.Usuario;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UsuarioDTO implements UserDetails {
 
+	private String nome;
     private String email;
     private TipoUsuario tipo;
 
@@ -30,12 +32,15 @@ public class UsuarioDTO implements UserDetails {
 
 	@Override
 	public String getPassword() {
-        
         return null;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority(tipo.toString()));
+	}
+
+	public Usuario toDomain() {
+		return new Usuario(null, nome, this.email);
 	}
 }
