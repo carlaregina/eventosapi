@@ -3,7 +3,8 @@
         "nome": "Vitor",
         "email": "vitor.engenhariapro@gmail.com",
         "telefone": "99999999",
-        "tipo": "OUTROS"
+        "tipo": "OUTROS",
+        "senha": "123456"
     },
     "Local": {
         "nome": "Auditório Central",

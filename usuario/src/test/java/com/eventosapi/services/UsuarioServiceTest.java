@@ -18,7 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import com.eventosapi.application.port.SenhaEncodePort;
+import com.eventosapi.application.port.SenhaEncoderPort;
 import com.eventosapi.application.port.UsuarioRepositoryPort;
 import com.eventosapi.application.services.UsuarioService;
 import com.eventosapi.domain.enums.TipoUsuario;
@@ -28,7 +28,7 @@ import com.eventosapi.interfaces.dtos.FiltroUsuarioDTO;
 class UsuarioServiceTest {
 
     private UsuarioRepositoryPort usuarioRepository;
-    private SenhaEncodePort senhaEncodePort;
+    private SenhaEncoderPort senhaEncodePort;
     private UsuarioService usuarioService;
 
     private Usuario usuario;
@@ -36,7 +36,7 @@ class UsuarioServiceTest {
     @BeforeEach
     void setup() {
         usuarioRepository = mock(UsuarioRepositoryPort.class);
-        senhaEncodePort = mock(SenhaEncodePort.class);
+        senhaEncodePort = mock(SenhaEncoderPort.class);
         when(senhaEncodePort.encode(any(String.class))).thenAnswer(invocation -> "encoded_" + invocation.getArgument(0));
         usuarioService = new UsuarioService(usuarioRepository, senhaEncodePort);
         

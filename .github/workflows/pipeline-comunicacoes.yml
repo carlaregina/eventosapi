@@ -1,0 +1,45 @@
+name: Build Serviço de Comunicações
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'comunicacoes/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'comunicacoes/**'
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: comunicacoes-api
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: Run tests
+      working-directory: ./comunicacoes
+      run: ./mvnw clean test
+    
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      with:
+        context: ./comunicacoes
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest

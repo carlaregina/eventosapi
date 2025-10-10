@@ -37,7 +37,6 @@ class UsuarioControllerTest {
 
     private Usuario usuario;
     private UsuarioRequestDTO usuarioRequestDTO;
-    private UsuarioResponseDTO usuarioResponseDTO;
 
     @BeforeEach
     void setUp() {
@@ -56,13 +55,6 @@ class UsuarioControllerTest {
                 "José Vitor",
                 "jose.vitor@example.com",
                 "senhaSegura123",
-                "11999999999",
-                TipoUsuario.STAFF
-        );
-
-        usuarioResponseDTO = new UsuarioResponseDTO(
-                "José Vitor",
-                "jose.vitor@example.com",
                 "11999999999",
                 TipoUsuario.STAFF
         );

@@ -1,9 +1,8 @@
 package com.eventosapi.evento.application.port;
 
-import com.eventosapi.evento.domain.model.Local;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
+
+import com.eventosapi.evento.domain.model.Local;
 
 public interface LocalClientPort {
     List<Local> findAll();

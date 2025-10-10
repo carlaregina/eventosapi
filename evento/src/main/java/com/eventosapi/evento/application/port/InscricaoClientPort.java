@@ -1,14 +1,11 @@
 package com.eventosapi.evento.application.port;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import com.eventosapi.evento.domain.enums.TipoUsuario;
 import com.eventosapi.evento.domain.model.Inscricao;
-import com.eventosapi.evento.interfaces.dto.FiltroUsuarioDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 public interface InscricaoClientPort {
 

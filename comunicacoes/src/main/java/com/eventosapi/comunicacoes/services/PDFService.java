@@ -31,12 +31,6 @@ public class PDFService {
     private final UsuarioClientPort usuarioClient;
     private final EventoClientPort eventoClient;
 
-//    public byte[] geraRelatorioPDF(Long idInscricao) {
-//        Inscricao inscricao = inscricaoRepository.findById(idInscricao)
-//                .orElseThrow(() -> new EntidadeNaoEncontradoException("Inscrição não encontrada"));
-//        return geraRelatorioPDF(inscricao);
-//    }
-
     public byte[] geraRelatorioPDF(InscricaoDTO inscricao) {
         try (InputStream jasperTemplate = getClass().getResourceAsStream("/relatorios/input/Inscricao.jrxml")) {
             if (jasperTemplate == null) {

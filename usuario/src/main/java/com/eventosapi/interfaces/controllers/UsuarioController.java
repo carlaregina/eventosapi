@@ -1,5 +1,7 @@
 package com.eventosapi.interfaces.controllers;
 
+import static com.eventosapi.interfaces.dtos.UsuarioResponseDTO.toResponseDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eventosapi.application.services.UsuarioService;
-import com.eventosapi.domain.models.Usuario;
 import com.eventosapi.interfaces.dtos.FiltroUsuarioDTO;
 import com.eventosapi.interfaces.dtos.UsuarioRequestDTO;
 import com.eventosapi.interfaces.dtos.UsuarioResponseDTO;
-import static com.eventosapi.interfaces.dtos.UsuarioResponseDTO.toResponseDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
