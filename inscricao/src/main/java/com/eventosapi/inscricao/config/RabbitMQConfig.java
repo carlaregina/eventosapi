@@ -7,17 +7,20 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.amqp.core.Queue;
+import org.springframework.beans.factory.annotation.Value;
+
 
 @Configuration
 public class RabbitMQConfig {
 
-//    @Value("${inscricao.create.comunicacoes}")
-//     private String eventoAtualizar;
+   @Value("${inscricao.create.comunicacoes}")
+    private String eventoAtualizar;
 
-//     @Bean
-//     public Queue queueEventoAtualizar() {
-//         return new Queue(eventoAtualizar, true);
-//     }  
+    @Bean
+    public Queue queueEventoAtualizar() {
+        return new Queue(eventoAtualizar, true);
+    }  
 
   @Bean
   Jackson2JsonMessageConverter jacksonMessageConverter(ObjectMapper mapper) {
