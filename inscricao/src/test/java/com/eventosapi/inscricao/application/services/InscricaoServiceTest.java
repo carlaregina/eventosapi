@@ -1,236 +1,183 @@
-// package com.eventosapi.inscricao.application.services;
+package com.eventosapi.inscricao.application.services;
 
-// import com.eventosapi.inscricao.application.exception.EntidadeNaoEncontradoException;
-// import com.eventosapi.inscricao.application.exception.RegraNegocioException;
-// import com.eventosapi.inscricao.application.port.EventoClientPort;
-// import com.eventosapi.inscricao.application.port.InscricaoRepositoryPort;
-// import com.eventosapi.inscricao.application.port.UsuarioClientPort;
-// import com.eventosapi.inscricao.domain.enums.StatusInscricao;
-// import com.eventosapi.inscricao.domain.models.Inscricao;
-// import com.eventosapi.inscricao.domain.models.EventoResumo;
-// import com.eventosapi.inscricao.domain.models.UsuarioResumo;
-// import com.eventosapi.inscricao.interfaces.dto.FiltroInscricaoDTO;
-// import com.eventosapi.inscricao.interfaces.dto.InscricaoRequestDTO;
-// import com.eventosapi.inscricao.interfaces.dto.InscricaoResponseDTO;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.junit.jupiter.api.extension.ExtendWith;
-// import org.mockito.*;
-// import org.mockito.junit.jupiter.MockitoExtension;
-// import org.mockito.junit.jupiter.MockitoSettings;
-// import org.mockito.quality.Strictness;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
-// import java.time.LocalDateTime;
-// import java.util.List;
-// import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-// import static org.assertj.core.api.Assertions.*;
-// import static org.mockito.ArgumentMatchers.*;
-// import static org.mockito.Mockito.*;
+import com.eventosapi.inscricao.application.dtos.FiltroInscricaoDTO;
+import com.eventosapi.inscricao.application.exception.EntidadeNaoEncontradoException;
+import com.eventosapi.inscricao.application.exception.RegraNegocioException;
+import com.eventosapi.inscricao.application.port.EventoClientPort;
+import com.eventosapi.inscricao.application.port.InscricaoRepositoryPort;
+import com.eventosapi.inscricao.application.port.UsuarioClientPort;
+import com.eventosapi.inscricao.domain.enums.StatusInscricao;
+import com.eventosapi.inscricao.domain.models.Evento;
+import com.eventosapi.inscricao.domain.models.Inscricao;
+import com.eventosapi.inscricao.domain.models.Usuario;
 
-// @ExtendWith(MockitoExtension.class)
-// @MockitoSettings(strictness = Strictness.LENIENT)
-// class InscricaoServiceTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class InscricaoServiceTest {
 
-//   @Mock InscricaoRepositoryPort inscricaoRepo;
-//   @Mock EventoClientPort eventoPort;
-//   @Mock UsuarioClientPort usuarioPort;
+	@Mock
+	InscricaoRepositoryPort inscricaoRepo;
+	@Mock
+	EventoClientPort eventoPort;
+	@Mock
+	UsuarioClientPort usuarioPort;
 
-//   @InjectMocks InscricaoService service;
+	@InjectMocks
+	InscricaoService service;
 
-//   @Mock EventoResumo evento;
-//   @Mock UsuarioResumo usuario;
+	@Mock
+	Evento evento;
+	@Mock
+	Usuario usuario;
 
-//   @BeforeEach
-//   void setUp() {
-//     lenient().when(evento.getId()).thenReturn(1L);
-//     lenient().when(evento.getMaxParticipantes()).thenReturn(3);
-//     lenient().when(usuario.getId()).thenReturn(2L);
-//   }
+	@BeforeEach
+	void setUp() {
+		lenient().when(evento.getId()).thenReturn(1L);
+		lenient().when(evento.getMaxParticipantes()).thenReturn(3);
+		lenient().when(usuario.getId()).thenReturn(2L);
+	}
 
-//   @Test
-//   void criar_deveSalvarEDevolverDTO_quandoOK() {
-//     var req = new InscricaoRequestDTO(1L, 2L, StatusInscricao.CONFIRMADA);
+	@Test
+	void criar_deveSalvarEDevolverDTO_quandoOK() {
+		var now = LocalDateTime.now();
+		var inscricao = new Inscricao(1L, 1L, 2L, StatusInscricao.CONFIRMADA, now);
 
-//     when(inscricaoRepo.existsByEventoAndUsuario(1L, 2L)).thenReturn(false);
-//     when(eventoPort.findById(1L)).thenReturn(Optional.of(evento));
-//     when(usuarioPort.findById(2L)).thenReturn(Optional.of(usuario));
-//     when(inscricaoRepo.countConfirmadasByEvento(1L)).thenReturn(0L);
+		when(inscricaoRepo.existsByEventoAndUsuario(1L, 2L)).thenReturn(false);
+		when(eventoPort.findById(1L)).thenReturn(Optional.of(evento));
+		when(usuarioPort.existsById(2L)).thenReturn(true);
+		when(inscricaoRepo.countConfirmadasByEvento(1L)).thenReturn(0L);
+		when(inscricaoRepo.save(any(Inscricao.class))).thenReturn(inscricao);
 
-//     ArgumentCaptor<Inscricao> captor = ArgumentCaptor.forClass(Inscricao.class);
-//     when(inscricaoRepo.save(captor.capture())).thenAnswer(inv -> {
-//       var i = inv.getArgument(0, Inscricao.class);
-//       // retorna uma NOVA instância com id preenchido (não depende de setId)
-//       return new Inscricao(10L, i.getEventoId(), i.getUsuarioId(), i.getStatus(), i.getData());
-//     });
+		Inscricao saved = service.salvar(inscricao);
 
-//     InscricaoResponseDTO resp = service.criar(req);
+		assertThat(saved.getId()).isEqualTo(1L);
+		assertThat(saved.getEventoId()).isEqualTo(1L);
+		assertThat(saved.getUsuarioId()).isEqualTo(2L);
+		assertThat(saved.getStatus()).isEqualTo(StatusInscricao.CONFIRMADA);
+		assertThat(saved.getData()).isEqualTo(now);
+	}
 
-//     assertThat(resp.id()).isEqualTo(10L);
-//     assertThat(resp.eventoId()).isEqualTo(1L);
-//     assertThat(resp.usuarioId()).isEqualTo(2L);
-//     assertThat(resp.status()).isEqualTo(StatusInscricao.CONFIRMADA);
+	@Test
+	void criar_deveFalhar_quandoDuplicado() {
+		var inscricao = new Inscricao(1L, 1L, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
 
-//     var salvo = captor.getValue();
-//     assertThat(salvo.getEventoId()).isEqualTo(1L);
-//     assertThat(salvo.getUsuarioId()).isEqualTo(2L);
-//   }
+		when(inscricaoRepo.existsByEventoAndUsuario(1L, 2L)).thenReturn(true);
 
-//   @Test
-//   void criar_deveUsarStatusPENDENTE_quandoStatusNulo() {
-//     var req = new InscricaoRequestDTO(1L, 2L, null);
+		assertThatThrownBy(() -> service.salvar(inscricao))
+				.isInstanceOf(RegraNegocioException.class)
+				.hasMessageContaining("já inscrito");
+		verifyNoMoreInteractions(eventoPort, usuarioPort);
+	}
 
-//     when(inscricaoRepo.existsByEventoAndUsuario(1L, 2L)).thenReturn(false);
-//     when(eventoPort.findById(1L)).thenReturn(Optional.of(evento));
-//     when(usuarioPort.findById(2L)).thenReturn(Optional.of(usuario));
-//     when(inscricaoRepo.countConfirmadasByEvento(1L)).thenReturn(0L);
-//     when(inscricaoRepo.save(any())).thenAnswer(inv -> {
-//       var i = inv.getArgument(0, Inscricao.class);
-//       return new Inscricao(11L, i.getEventoId(), i.getUsuarioId(), i.getStatus(), i.getData());
-//     });
+	@Test
+	void criar_deveFalhar_quandoCapacidadeEsgotada() {
+		var inscricao = new Inscricao(1L, 1L, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
 
-//     var resp = service.criar(req);
-//     assertThat(resp.id()).isEqualTo(11L);
-//     assertThat(resp.status()).isEqualTo(StatusInscricao.PENDENTE);
-//   }
+		when(inscricaoRepo.existsByEventoAndUsuario(1L, 2L)).thenReturn(false);
+		when(eventoPort.findById(1L)).thenReturn(Optional.of(evento));
+		when(usuarioPort.existsById(2L)).thenReturn(true);
+		when(inscricaoRepo.countConfirmadasByEvento(1L)).thenReturn(3L);
 
-//   @Test
-//   void criar_deveFalhar_quandoDuplicado() {
-//     var req = new InscricaoRequestDTO(1L, 2L, StatusInscricao.CONFIRMADA);
-//     when(inscricaoRepo.existsByEventoAndUsuario(1L, 2L)).thenReturn(true);
+		assertThatThrownBy(() -> service.salvar(inscricao))
+				.isInstanceOf(RegraNegocioException.class)
+				.hasMessageContaining("Capacidade esgotada");
+		verify(inscricaoRepo, never()).save(any());
+	}
 
-//     assertThatThrownBy(() -> service.criar(req))
-//         .isInstanceOf(RegraNegocioException.class)
-//         .hasMessageContaining("já inscrito");
-//     verifyNoMoreInteractions(eventoPort, usuarioPort);
-//   }
+	@Test
+	void buscar_deveRetornarDTO_quandoExiste() {
+		var inscricao = new Inscricao(10L, 1L, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
 
-//   @Test
-//   void criar_deveFalhar_quandoCapacidadeEsgotada() {
-//     var req = new InscricaoRequestDTO(1L, 2L, StatusInscricao.CONFIRMADA);
-//     when(inscricaoRepo.existsByEventoAndUsuario(1L, 2L)).thenReturn(false);
-//     when(eventoPort.findById(1L)).thenReturn(Optional.of(evento));
-//     when(usuarioPort.findById(2L)).thenReturn(Optional.of(usuario));
-//     when(inscricaoRepo.countConfirmadasByEvento(1L)).thenReturn(3L);
+		when(inscricaoRepo.findById(10L)).thenReturn(Optional.of(inscricao));
 
-//     assertThatThrownBy(() -> service.criar(req))
-//         .isInstanceOf(RegraNegocioException.class)
-//         .hasMessageContaining("Capacidade esgotada");
-//     verify(inscricaoRepo, never()).save(any());
-//   }
+		var result = service.buscarPorId(10L);
 
-//   @Test
-//   void buscar_deveRetornarDTO_quandoExiste() {
-//     var insc = new Inscricao(10L, 1L, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
-//     when(inscricaoRepo.findById(10L)).thenReturn(Optional.of(insc));
+		assertThat(result.getId()).isEqualTo(10L);
+		assertThat(result.getEventoId()).isEqualTo(1L);
+		assertThat(result.getUsuarioId()).isEqualTo(2L);
+		assertThat(result.getStatus()).isEqualTo(StatusInscricao.CONFIRMADA);
+		assertThat(result.getData()).isNotNull();
+	}
 
-//     var resp = service.buscar(10L);
+	@Test
+	void buscar_deveFalhar_quandoNaoExiste() {
+		when(inscricaoRepo.findById(999L)).thenReturn(Optional.empty());
+		assertThatThrownBy(() -> service.buscarPorId(999L))
+				.isInstanceOf(EntidadeNaoEncontradoException.class);
+	}
 
-//     assertThat(resp.id()).isEqualTo(10L);
-//     assertThat(resp.eventoId()).isEqualTo(1L);
-//     assertThat(resp.usuarioId()).isEqualTo(2L);
-//     assertThat(resp.status()).isEqualTo(StatusInscricao.CONFIRMADA);
-//     assertThat(resp.data()).isNotNull();
-//   }
+	@Test
+	void listar_deveRetornarDTOs_semNecessidadeDeConsultarEventoUsuario() {
+		var filtro = new FiltroInscricaoDTO(null, null, null, null, null);
+		var i1 = new Inscricao(10L, 1L, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
+		var i2 = new Inscricao(11L, 1L, 2L, StatusInscricao.PENDENTE, LocalDateTime.now());
+		
+		when(inscricaoRepo.findAll(any(FiltroInscricaoDTO.class), any(Pageable.class)))
+			.thenReturn(new PageImpl<>(List.of(i1, i2)));
 
-//   @Test
-//   void buscar_deveFalhar_quandoNaoExiste() {
-//     when(inscricaoRepo.findById(999L)).thenReturn(Optional.empty());
-//     assertThatThrownBy(() -> service.buscar(999L))
-//         .isInstanceOf(EntidadeNaoEncontradoException.class);
-//   }
+		var page = service.listar(filtro, PageRequest.of(0, 10));
 
-//   @Test
-//   void listar_deveRetornarDTOs_semNecessidadeDeConsultarEventoUsuario() {
-//     var i1 = new Inscricao(10L, 1L, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
-//     var i2 = new Inscricao(11L, 1L, 2L, StatusInscricao.PENDENTE, LocalDateTime.now());
-//     when(inscricaoRepo.findAll(null, null, null, null, null, 0, 10)).thenReturn(List.of(i1, i2));
+		assertThat(page).hasSize(2);
+		assertThat(page.getContent().get(0).getId()).isEqualTo(10L);
+		assertThat(page.getContent().get(0).getStatus()).isEqualTo(StatusInscricao.CONFIRMADA);
+		assertThat(page.getContent().get(1).getId()).isEqualTo(11L);
+		assertThat(page.getContent().get(1).getStatus()).isEqualTo(StatusInscricao.PENDENTE);
 
-//     var lista = service.listar(new FiltroInscricaoDTO(null, null, null, null, null, 0, 10));
+		verifyNoInteractions(eventoPort, usuarioPort);
+	}
 
-//     assertThat(lista).hasSize(2);
-//     assertThat(lista.get(0).id()).isEqualTo(10L);
-//     assertThat(lista.get(1).status()).isEqualTo(StatusInscricao.PENDENTE);
+	@Test
+	void atualizarStatus_deveAlterarParaCancelado() {
+		var existente = new Inscricao(10L, 1L, 2L, StatusInscricao.PENDENTE, LocalDateTime.now());
 
-//     verifyNoInteractions(eventoPort, usuarioPort);
-//   }
+		when(inscricaoRepo.findById(10L)).thenReturn(Optional.of(existente));
+		when(inscricaoRepo.save(any())).thenReturn(existente);
 
-//   @Test
-//   void atualizarStatus_deveAlterarParaCancelado() {
-//     var existente = new Inscricao(10L, 1L, 2L, StatusInscricao.PENDENTE, LocalDateTime.now());
-//     when(inscricaoRepo.findById(10L)).thenReturn(Optional.of(existente));
-//     when(inscricaoRepo.save(any())).thenAnswer(inv -> {
-//       var i = inv.getArgument(0, Inscricao.class);
-//       return new Inscricao(i.getId(), i.getEventoId(), i.getUsuarioId(), i.getStatus(), i.getData());
-//     });
+		var result = service.atualizarStatus(10L, StatusInscricao.CANCELADO);
 
-//     var resp = service.atualizarStatus(10L, StatusInscricao.CANCELADO);
-//     assertThat(resp.status()).isEqualTo(StatusInscricao.CANCELADO);
-//     verifyNoInteractions(eventoPort, usuarioPort);
-//   }
+		assertThat(result.getStatus()).isEqualTo(StatusInscricao.CANCELADO);
+		verifyNoInteractions(eventoPort, usuarioPort);
+	}
 
-//   @Test
-//   void excluir_deveMarcarCanceladoESalvar() {
-//     var existente = new Inscricao(10L, 1L, 2L, StatusInscricao.PENDENTE, LocalDateTime.now());
-//     when(inscricaoRepo.findById(10L)).thenReturn(Optional.of(existente));
+	@Test
+	void excluir_deveMarcarCanceladoESalvar() {
+		var existente = new Inscricao(10L, 1L, 2L, StatusInscricao.PENDENTE, LocalDateTime.now());
+		
+		when(inscricaoRepo.findById(10L)).thenReturn(Optional.of(existente));
 
-//     service.excluir(10L);
+		service.excluir(10L);
 
-//     ArgumentCaptor<Inscricao> captor = ArgumentCaptor.forClass(Inscricao.class);
-//     verify(inscricaoRepo).save(captor.capture());
-//     assertThat(captor.getValue().getStatus()).isEqualTo(StatusInscricao.CANCELADO);
-//     verifyNoInteractions(eventoPort, usuarioPort);
-//   }
+		ArgumentCaptor<Inscricao> captor = ArgumentCaptor.forClass(Inscricao.class);
+		verify(inscricaoRepo).save(captor.capture());
+		assertThat(captor.getValue().getStatus()).isEqualTo(StatusInscricao.CANCELADO);
+		verifyNoInteractions(eventoPort, usuarioPort);
+	}
 
-
-//   @Test
-//   void listarConfirmadasPorEvento_deveRetornarSomenteConfirmadas() {
-//     Long eventoId = 1L;
-//     var i1 = new Inscricao(10L, eventoId, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
-//     var i2 = new Inscricao(11L, eventoId, 3L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
-
-//     when(inscricaoRepo.findByEventoAndStatus(eventoId, StatusInscricao.CONFIRMADA, 0, 10))
-//         .thenReturn(List.of(i1, i2));
-
-//     List<InscricaoResponseDTO> resp = service.listarConfirmadasPorEvento(eventoId, 0, 10);
-
-//     assertThat(resp).hasSize(2);
-//     assertThat(resp).allSatisfy(dto -> {
-//       assertThat(dto.eventoId()).isEqualTo(eventoId);
-//       assertThat(dto.status()).isEqualTo(StatusInscricao.CONFIRMADA);
-//       assertThat(dto.data()).isNotNull();
-//     });
-
-//     // Não deve consultar outros ports
-//     verifyNoInteractions(eventoPort, usuarioPort);
-//   }
-
-//   @Test
-//   void listarConfirmadasPorEvento_deveRetornarVazio_quandoNaoHaRegistros() {
-//     Long eventoId = 2L;
-
-//     when(inscricaoRepo.findByEventoAndStatus(eventoId, StatusInscricao.CONFIRMADA, 0, 10))
-//         .thenReturn(List.of());
-
-//     var resp = service.listarConfirmadasPorEvento(eventoId, 0, 10);
-
-//     assertThat(resp).isEmpty();
-//     verifyNoInteractions(eventoPort, usuarioPort);
-//   }
-
-//   @Test
-//   void listarConfirmadasPorEvento_deveUsarPaginacaoDefault_quandoNulos() {
-//     Long eventoId = 3L;
-//     // O service deve traduzir page=null/size=null para 0/10 antes de chamar o repo (conforme sua implementação)
-//     when(inscricaoRepo.findByEventoAndStatus(eventoId, StatusInscricao.CONFIRMADA, 0, 10))
-//         .thenReturn(List.of());
-
-//     var resp = service.listarConfirmadasPorEvento(eventoId, null, null);
-
-//     assertThat(resp).isEmpty();
-//     verify(inscricaoRepo).findByEventoAndStatus(eventoId, StatusInscricao.CONFIRMADA, 0, 10);
-//     verifyNoInteractions(eventoPort, usuarioPort);
-//   }
-
-// }
+}

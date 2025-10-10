@@ -1,10 +1,10 @@
 package com.eventosapi.inscricao.domain.models;
 
-public class UsuarioResumo {
+public class Usuario {
   private final Long id;
   private final String nome;
 
-  public UsuarioResumo(Long id, String nome) {
+  public Usuario(Long id, String nome) {
     this.id = id;
     this.nome = nome;
   }
