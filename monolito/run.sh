@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJldmVudG9zIiwic3ViIjoidml0b3IuZW5nZW5oYXJpYXByb0BnbWFpbC5jb20iLCJleHAiOjE3NjAwNjEwMzZ9.VSPh6LcuWlr5F7U3trejKM3mqQN1D5cUUM-YhxuNmaU
+export TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJldmVudG9zIiwic3ViIjoidml0b3IuZW5nZW5oYXJpYXByb0BnbWFpbC5jb20iLCJleHAiOjE3NjAwNzA5OTB9.IlHsoqVEPWKW65Gg9u5Q3LDHZXkwEdOqUqFGoWQP-XQ
 
 curl -X POST "http://localhost:8082/api/usuarios" \
     -H "Content-Type: application/json" \
