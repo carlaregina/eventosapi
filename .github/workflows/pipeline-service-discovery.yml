@@ -1,4 +1,4 @@
-name: Build Auth Service
+name: Build Service Discovery
 
 on:
   push:
