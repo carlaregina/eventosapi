@@ -26,7 +26,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/usuarios")
@@ -37,6 +39,7 @@ public class UsuarioController {
     @GetMapping
     @Operation(summary = "Listar todos os usuários com paginação e filtros")
     public Page<UsuarioResponseDTO> buscarTodosUsuarios(FiltroUsuarioDTO filtroUsuarioDTO, Pageable pageable){ 
+        log.info("Listando usuários com filtros: {} e paginação: {}", filtroUsuarioDTO, pageable);
         return usuarioService.buscarTodosUsuarios(filtroUsuarioDTO, pageable).map(UsuarioResponseDTO::toResponseDTO);
     }
 
@@ -50,6 +53,7 @@ public class UsuarioController {
             content = @Content)
     })
     public ResponseEntity<UsuarioResponseDTO> obterPorId(@PathVariable Long id){
+        log.info("Buscando usuário com ID: {}", id);
         return ResponseEntity.ok(toResponseDTO(usuarioService.obterUsuarioPorId(id)));
     }
 
@@ -61,6 +65,7 @@ public class UsuarioController {
             schema = @Schema(implementation = UsuarioResponseDTO.class)) }),
     })
     public ResponseEntity<UsuarioResponseDTO> cadastrar(@RequestBody UsuarioRequestDTO usuarioRequestDTO){
+        log.info("Criando novo usuário: {}", usuarioRequestDTO);
         UsuarioResponseDTO usuarioResponseDTO = toResponseDTO(usuarioService.cadastrarUsuario(usuarioRequestDTO.toDomain()));
         return ResponseEntity.ok(usuarioResponseDTO);
     }
@@ -76,6 +81,7 @@ public class UsuarioController {
     })
     public ResponseEntity<UsuarioResponseDTO> atualizar(@PathVariable Long id, 
                                                                       @RequestBody UsuarioRequestDTO usuarioRequestDTO){
+        log.info("Atualizando usuário ID: {} com dados: {}", id, usuarioRequestDTO);
         UsuarioResponseDTO usuarioResponseDTO = toResponseDTO(usuarioService.atualizarUsuario(id, usuarioRequestDTO.toDomain()));
         return ResponseEntity.ok(usuarioResponseDTO);
     }
@@ -89,6 +95,7 @@ public class UsuarioController {
             content = @Content)
     })
     public ResponseEntity<Void> deletar(@PathVariable Long id){
+        log.info("Deletando usuário com ID: {}", id);
         usuarioService.deletarUsuario(id);
         return ResponseEntity.noContent().build();
     }

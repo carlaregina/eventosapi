@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/eventos")
@@ -28,6 +30,7 @@ public class EventoController {
     @GetMapping
     @Operation(summary = "Listar evntos com paginação e filtros")
     public ResponseEntity<Page<EventoResponseDTO>> listarTodos(@ModelAttribute FiltroEventoDTO filtro, Pageable pageable) {
+        log.info("Listando eventos com filtros: {} e paginação: {}", filtro, pageable);
         Page<EventoResponseDTO> eventos = eventoService.listar(filtro, pageable);
         return ResponseEntity.ok(eventos);
     }
@@ -42,6 +45,7 @@ public class EventoController {
                     content = @Content)
     })
     public ResponseEntity<EventoResponseDTO> buscarPorId(@PathVariable Long id) {
+        log.info("Buscando evento com ID: {}", id);
         EventoResponseDTO evento = eventoService.buscarPorId(id);
         return ResponseEntity.ok(evento);
     }
@@ -54,6 +58,7 @@ public class EventoController {
                             schema = @Schema(implementation = EventoResponseDTO.class)) }),
     })
     public ResponseEntity<EventoResponseDTO> criar(@RequestBody EventoRequestDTO dto) {
+        log.info("Criando novo evento: {}", dto);
         EventoResponseDTO eventoCriado = eventoService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(eventoCriado);
     }
@@ -70,6 +75,7 @@ public class EventoController {
     })
     public ResponseEntity<EventoResponseDTO> atualizar(@PathVariable Long id,
                                                        @RequestBody EventoRequestDTO dto) {
+        log.info("Atualizando evento com ID: {} com dados: {}", id, dto);
         EventoResponseDTO eventoAtualizado = eventoService.atualizar(id, dto);
         return ResponseEntity.ok(eventoAtualizado);
     }
@@ -83,6 +89,7 @@ public class EventoController {
                     content = @Content)
     })
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        log.info("Deletando evento com ID: {}", id);
         eventoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
@@ -97,12 +104,12 @@ public class EventoController {
             @RequestParam(required = false) TipoUsuario tipo,
             Pageable pageable
     ) {
+        log.info("Listando participantes do evento ID: {} com filtros - nome: {}, email: {}, telefone: {}, tipo: {} e paginação: {}", id, nome, email, telefone, tipo, pageable);
         FiltroUsuarioDTO filtro = new FiltroUsuarioDTO();
         filtro.setNome(nome);
         filtro.setEmail(email);
         filtro.setTelefone(telefone);
         filtro.setTipo(tipo);
-
         return eventoService.listarUsuariosPorEvento(id, filtro, pageable);
     }
 
