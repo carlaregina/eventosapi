@@ -7,10 +7,12 @@ services:
     environment:
       SERVER_PORT: 8080
       POSTGRES_HOST: postgres
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
     ports:
       - "8081:8080"
     depends_on:
       - postgres
+      - service-discovery
 
   usuario-api:
     build:
@@ -20,10 +22,12 @@ services:
     environment:
       SERVER_PORT: 8080
       POSTGRES_HOST: postgres
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
     ports:
       - "8082:8080"
     depends_on:
       - postgres
+      - service-discovery
 
   local-api:
     build:
@@ -33,11 +37,13 @@ services:
     environment:
       SERVER_PORT: 8080
       POSTGRES_HOST: postgres
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
       API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
     ports:
       - "8083:8080"
     depends_on:
       - postgres
+      - service-discovery
       - usuario-api
 
   evento-api:
@@ -48,11 +54,13 @@ services:
     environment:
       SERVER_PORT: 8080
       POSTGRES_HOST: postgres
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
       API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
     ports:
       - "8084:8080"
     depends_on:
       - postgres
+      - service-discovery
       - usuario-api
 
   inscricao-api:
@@ -63,14 +71,55 @@ services:
     environment:
       SERVER_PORT: 8080
       POSTGRES_HOST: postgres
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
       API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
       API_EVENTO_LIST_URL: http://evento-api:8080/api/eventos
     ports:
       - "8085:8080"
     depends_on:
       - postgres
+      - service-discovery
       - evento-api
       - usuario-api
+
+  comunicacao-api:
+    build:
+      context: ./comunicacoes/.
+      dockerfile: Dockerfile
+    container_name: comunicacao-api
+    environment:
+      SERVER_PORT: 8080
+      POSTGRES_HOST: postgres
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
+      API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      MAIL_USERNAME: mailhog
+      MAIL_PASSWORD: mailhog
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: admin
+      RABBITMQ_PASSWORD: admin
+      RABBITMQ_SSL_ENABLED: false
+      BROKER_QUEUE_EVENTO_ATUALIZAR: evento.atualizar
+    ports:
+      - "8086:8080"
+    depends_on:
+      - postgres
+      - mailhog
+      - rabbitmq
+      - service-discovery
+      - usuario-api
+
+  service-discovery:
+    build:
+      context: ./service-discovery/.
+      dockerfile: Dockerfile
+    container_name: service-discovery
+    environment:
+      SERVER_PORT: 8761
+    ports:
+      - "8761:8761"   
   
   postgres:
     image: postgres:17-alpine3.21
@@ -82,4 +131,22 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql    
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
