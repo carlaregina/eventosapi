@@ -1,9 +1,9 @@
 <configuration>
-    <contextName>usuario-api</contextName>
+    <contextName>local-api</contextName>
 
     <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
         <labels>
-            <label>app=usuario-api</label>
+            <label>app=local-api</label>
             <label>host=${HOSTNAME}</label>
             <label>level=%level</label>
         </labels>
