@@ -20,7 +20,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -43,6 +45,7 @@ public class AuthController {
             schema = @Schema(implementation = Map.class)) }),
     })
     public ResponseEntity<AuthResponseDTO> autenticar(@Valid @RequestBody AuthRequestDTO request) {
+        log.info("Iniciando processo de autenticação para o usuário: {}", request.getEmail());
         String token = authService.autenticar(request.toDomain());
         return ResponseEntity.ok(new AuthResponseDTO(token));
     }

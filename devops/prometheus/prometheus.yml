@@ -1,0 +1,42 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'auth-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['auth-api:8080']
+
+  - job_name: 'usuario-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['usuario-api:8080']
+
+  - job_name: 'local-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['local-api:8080']
+
+  - job_name: 'evento-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['evento-api:8080']
+
+  - job_name: 'inscricao-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['inscricao-api:8080']
+
+  - job_name: 'comunicacao-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['comunicacao-api:8080']
+
+  - job_name: 'service-discovery'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['service-discovery:8761']
