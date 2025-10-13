@@ -1,13 +1,10 @@
 <configuration>
-    <contextName>${APP_NAME}</contextName>
+    <contextName>auth-api</contextName>
 
     <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
-        <http>
-            <url>${LOKI_URL}</url>
-        </http>
 
         <labels>
-            <label>app=${APP_NAME}</label>
+            <label>app=auth-api</label>
             <label>host=${HOSTNAME}</label>
             <label>level=%level</label>
         </labels>

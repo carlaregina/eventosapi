@@ -1,13 +1,9 @@
 <configuration>
-    <contextName>${APP_NAME}</contextName>
+    <contextName>local-api</contextName>
 
     <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
-        <http>
-            <url>${LOKI_URL}</url>
-        </http>
-
         <labels>
-            <label>app=${APP_NAME}</label>
+            <label>app=local-api</label>
             <label>host=${HOSTNAME}</label>
             <label>level=%level</label>
         </labels>
@@ -25,7 +21,7 @@
         </encoder>
     </appender>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="LOKI" />
         <appender-ref ref="STDOUT" />
     </root>
