@@ -29,7 +29,7 @@ jobs:
     
     - name: Run tests
       working-directory: ./comunicacoes
-      run: mvn clean test
+      run: mvn clean test -Djava.awt.headless=true
     
     - name: Log in to Docker Hub
       uses: docker/login-action@v3
