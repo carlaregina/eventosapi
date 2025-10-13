@@ -8,6 +8,8 @@ services:
       SERVER_PORT: 8080
       POSTGRES_HOST: postgres
       EUREKA_SERVER_URL: http://service-discovery:8761/eureka
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: auth-api
     ports:
       - "8081:8080"
     healthcheck:
@@ -17,6 +19,7 @@ services:
       retries: 3
       start_period: 10s
     depends_on:
+      - loki
       - postgres
       - service-discovery
 
@@ -29,6 +32,8 @@ services:
       SERVER_PORT: 8080
       POSTGRES_HOST: postgres
       EUREKA_SERVER_URL: http://service-discovery:8761/eureka
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: usuario-api
     ports:
       - "8082:8080"
     healthcheck:
@@ -38,6 +43,7 @@ services:
       retries: 3
       start_period: 10s
     depends_on:
+      - loki
       - postgres
       - service-discovery
 
@@ -51,6 +57,8 @@ services:
       POSTGRES_HOST: postgres
       EUREKA_SERVER_URL: http://service-discovery:8761/eureka
       API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: local-api
     ports:
       - "8083:8080"
     healthcheck:
@@ -60,6 +68,7 @@ services:
       retries: 3
       start_period: 10s
     depends_on:
+      - loki
       - postgres
       - service-discovery
       - usuario-api
@@ -74,6 +83,8 @@ services:
       POSTGRES_HOST: postgres
       EUREKA_SERVER_URL: http://service-discovery:8761/eureka
       API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: evento-api
     ports:
       - "8084:8080"
     healthcheck:
@@ -83,6 +94,7 @@ services:
       retries: 3
       start_period: 10s
     depends_on:
+      - loki
       - postgres
       - service-discovery
       - usuario-api
@@ -98,6 +110,8 @@ services:
       EUREKA_SERVER_URL: http://service-discovery:8761/eureka
       API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
       API_EVENTO_LIST_URL: http://evento-api:8080/api/eventos
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: inscricao-api
     ports:
       - "8085:8080"
     healthcheck:
@@ -107,6 +121,7 @@ services:
       retries: 3
       start_period: 10s
     depends_on:
+      - loki
       - postgres
       - service-discovery
       - evento-api
@@ -131,6 +146,8 @@ services:
       RABBITMQ_PASSWORD: admin
       RABBITMQ_SSL_ENABLED: false
       BROKER_QUEUE_EVENTO_ATUALIZAR: evento.atualizar
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: comunicacao-api
     ports:
       - "8086:8080"
     healthcheck:
@@ -140,6 +157,7 @@ services:
       retries: 3
       start_period: 10s
     depends_on:
+      - loki
       - postgres
       - mailhog
       - rabbitmq
@@ -152,6 +170,8 @@ services:
     container_name: service-discovery
     environment:
       SERVER_PORT: 8761
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: service-discovery
     ports:
       - "8761:8761"
     healthcheck:
@@ -160,6 +180,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+    depends_on:
+      - loki
   
   postgres:
     image: postgres:17-alpine3.21
@@ -209,6 +231,13 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+  
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
 
   grafana:
     image: grafana/grafana
@@ -222,6 +251,7 @@ services:
       - grafana-storage:/var/lib/grafana
     depends_on:
       - prometheus
+      - loki
 
 volumes:
   grafana-storage:
