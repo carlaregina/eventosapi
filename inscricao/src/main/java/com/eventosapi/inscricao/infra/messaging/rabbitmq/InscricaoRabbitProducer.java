@@ -1,9 +1,9 @@
 package com.eventosapi.inscricao.infra.messaging.rabbitmq;
 
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.eventosapi.inscricao.application.dto.InscricaoResponseDTO;
+import com.eventosapi.inscricao.interfaces.dto.InscricaoVoucherDTO;
 import com.eventosapi.inscricao.application.port.InscricaoPublisherPort;
 
 @Component
@@ -11,17 +11,16 @@ public class InscricaoRabbitProducer implements InscricaoPublisherPort {
 
     private final RabbitTemplate rabbitTemplate;
 
-
-        @Value("${inscricao.create.comunicacoes}")
+    @Value("${broker.queue.inscricao.criada}")
     private String routingKey;
 
-    public InscricaoRabbitProducer(RabbitTemplate rabbitTemplate, Queue queueEventoAtualizar) {
+    public InscricaoRabbitProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
-    public void publicarInscricaoCriada(InscricaoResponseDTO inscricao) {
+    public void publicarInscricaoCriada(InscricaoVoucherDTO inscricao) {
         rabbitTemplate.convertAndSend(routingKey, inscricao);
     }
-    
+
 }

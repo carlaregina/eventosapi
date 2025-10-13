@@ -1,37 +1,38 @@
 package com.eventosapi.inscricao.config;
 
-import org.springframework.context.annotation.Configuration;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.context.annotation.Bean;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
 
-   @Value("${inscricao.create.comunicacoes}")
-    private String eventoAtualizar;
+    @Value("${broker.queue.inscricao.criada}")
+    private String inscricaoCriada;
 
     @Bean
-    public Queue queueEventoAtualizar() {
-        return new Queue(eventoAtualizar, true);
-    }  
+    public Queue queueInscricaoCriada() {
+        return new Queue(inscricaoCriada, true);
+    }
 
-  @Bean
-  Jackson2JsonMessageConverter jacksonMessageConverter(ObjectMapper mapper) {
-    return new Jackson2JsonMessageConverter(mapper);
-  }
+    @Bean
+    public Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        return new Jackson2JsonMessageConverter(objectMapper);
+    }
 
-  @Bean
-  RabbitTemplate rabbitTemplate(ConnectionFactory cf, Jackson2JsonMessageConverter conv) {
-    RabbitTemplate tpl = new RabbitTemplate(cf);
-    tpl.setMessageConverter(conv);
-    return tpl;
-  }
-    
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        template.setMessageConverter(jackson2JsonMessageConverter());
+        return template;
+    }
+
 }

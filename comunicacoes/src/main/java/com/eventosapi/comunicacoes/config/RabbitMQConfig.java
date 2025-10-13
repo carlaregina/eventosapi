@@ -17,9 +17,17 @@ public class RabbitMQConfig {
     @Value("${broker.queue.evento.atualizar}")
     private String eventoAtualizar;
 
+    @Value("${broker.queue.inscricao.criada}")
+    private String inscricaoCriada;
+
     @Bean
     public Queue queueEventoAtualizar() {
         return new Queue(eventoAtualizar, true);
+    }
+
+    @Bean
+    public Queue queueInscricaoCriada() {
+        return new Queue(inscricaoCriada, true);
     }
 
     @Bean

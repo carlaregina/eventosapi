@@ -10,10 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.eventosapi.evento.infra.feign.FeignAuthConfig;
 
 import java.util.List;
 
-@FeignClient(name = "inscricao-api", url = "${servicos.inscricao.url}",fallback = InscricaoClientMock.class)
+@FeignClient(name = "inscricao-api", url = "${servicos.inscricao.url}",fallback = InscricaoClientMock.class,
+ configuration = FeignAuthConfig.class)
 @Profile("!mock") // só existe quando não estiver no profile mock
 public interface InscricaoClient extends InscricaoClientPort {
 

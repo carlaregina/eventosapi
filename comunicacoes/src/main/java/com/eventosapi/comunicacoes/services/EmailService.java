@@ -5,7 +5,9 @@ import com.eventosapi.comunicacoes.domain.model.Inscricao;
 import com.eventosapi.comunicacoes.domain.model.Usuario;
 import com.eventosapi.comunicacoes.infra.client.UsuarioClient;
 import com.eventosapi.comunicacoes.interfaces.dto.InscricaoDTO;
+import com.eventosapi.comunicacoes.interfaces.dto.InscricaoVoucherDTO;
 import com.eventosapi.comunicacoes.services.PDFService;
+import com.eventosapi.comunicacoes.domain.enums.StatusInscricao;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -52,6 +54,42 @@ public class EmailService {
 
         } catch (MessagingException e) {
             throw new RuntimeException("Erro ao enviar e-mail", e);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public void enviarVoucherInscricao(InscricaoVoucherDTO inscricaoVoucher) {
+        // Converter InscricaoVoucherDTO para InscricaoDTO para reutilizar o PDF service
+        InscricaoDTO inscricaoDTO = new InscricaoDTO();
+        inscricaoDTO.setId(inscricaoVoucher.getId());
+        inscricaoDTO.setIdEvento(inscricaoVoucher.getIdEvento());
+        inscricaoDTO.setIdUsuario(inscricaoVoucher.getIdUsuario());
+        inscricaoDTO.setData(inscricaoVoucher.getData());
+      inscricaoDTO.setStatus(StatusInscricao.valueOf(inscricaoVoucher.getStatus()));
+
+        byte[] pdf = pdfService.geraRelatorioPDF(inscricaoDTO);
+        Usuario usuario = usuarioClient.findById(inscricaoVoucher.getIdUsuario());
+        String email = usuario.getEmail();
+
+        String assunto = "Bem-vindo! Sua inscrição foi confirmada";
+        String corpo = "Parabéns! Sua inscrição foi realizada com sucesso. Segue em anexo seu voucher de inscrição em PDF.";
+
+        try {
+            MimeMessage mensagem = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mensagem, true);
+
+            helper.setTo(email);
+            helper.setSubject(assunto);
+            helper.setText(corpo);
+            helper.addAttachment("voucher-inscricao.pdf", new ByteArrayResource(pdf));
+
+            mailSender.send(mensagem);
+
+            Thread.sleep(1000);
+
+        } catch (MessagingException e) {
+            throw new RuntimeException("Erro ao enviar e-mail de inscrição", e);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
         }

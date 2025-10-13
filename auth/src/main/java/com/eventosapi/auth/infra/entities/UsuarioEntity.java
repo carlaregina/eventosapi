@@ -44,10 +44,12 @@ public class UsuarioEntity implements UserDetails {
     @Column(name = "tipo", length = 255)
     private TipoUsuario tipo;
 
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(tipo.toString()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + tipo.name()));
     }
+
 
     @Override
     public String getUsername() {

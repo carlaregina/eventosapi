@@ -1,9 +1,9 @@
 package com.eventosapi.inscricao.application.port;
 
-import com.eventosapi.inscricao.application.dto.InscricaoResponseDTO;
+import com.eventosapi.inscricao.interfaces.dto.InscricaoVoucherDTO;
 
 public interface InscricaoPublisherPort {
 
-    void publicarInscricaoCriada(InscricaoResponseDTO inscricao);
-    
+    void publicarInscricaoCriada(InscricaoVoucherDTO inscricao);
+
 }

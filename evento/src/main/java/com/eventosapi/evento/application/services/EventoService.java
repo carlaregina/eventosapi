@@ -53,13 +53,19 @@ public class EventoService {
 
     @Transactional(readOnly = true)
     public EventoResponseDTO buscarPorId(Long id) {
+        System.out.println("ID do evento recebido no service: " + id);
+       
         Evento evento = repository.findById(id);
         return toResponseDTO(evento);
     }
 
     @Transactional
     public EventoResponseDTO criar(EventoRequestDTO dto) {
+
+            System.out.println("ID do OOORRGANIZAAAADOOOORRRRRR recebido: " + dto.getOrganizadorId());
+
         Usuario organizador = usuarioClient.findById(dto.getOrganizadorId());
+    
         Local local = localClient.findById(dto.getLocalId());
 
         if (local == null) {
@@ -72,8 +78,8 @@ public class EventoService {
         evento.setData(dto.getData());
         evento.setMaxParticipantes(dto.getMaxParticipantes());
         evento.setTipo(dto.getTipo());
-        evento.setOrganizadorId(organizador.getId());
-        evento.setLocalId(local.getId());
+        evento.setOrganizadorId(dto.getOrganizadorId());
+        evento.setLocalId(dto.getLocalId());
 
         Evento salvo = repository.save(evento);
         return toResponseDTO(salvo);
@@ -93,6 +99,8 @@ public class EventoService {
         evento.setMaxParticipantes(dto.getMaxParticipantes());
         evento.setOrganizadorId(organizador.getId());
         evento.setLocalId(local.getId());
+        System.out.println("Organizador ID: " + evento.getOrganizadorId());
+System.out.println("Local ID: " + evento.getLocalId());
 
         Evento atualizado = repository.save(evento);
 

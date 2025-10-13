@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +43,8 @@ public class EventoController {
                     content = @Content)
     })
     public ResponseEntity<EventoResponseDTO> buscarPorId(@PathVariable Long id) {
+        System.out.println("ID do evento recebido no controller: " + id);
+        
         EventoResponseDTO evento = eventoService.buscarPorId(id);
         return ResponseEntity.ok(evento);
     }
@@ -53,7 +56,8 @@ public class EventoController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = EventoResponseDTO.class)) }),
     })
-    public ResponseEntity<EventoResponseDTO> criar(@RequestBody EventoRequestDTO dto) {
+    public ResponseEntity<EventoResponseDTO> criar(@Valid @RequestBody EventoRequestDTO dto) {
+        System.out.println(     "ID do ORganizador recebido no controller: " + dto.getOrganizadorId());
         EventoResponseDTO eventoCriado = eventoService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(eventoCriado);
     }
