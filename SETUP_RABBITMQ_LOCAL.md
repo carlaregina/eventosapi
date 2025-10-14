@@ -91,14 +91,14 @@ mvn spring-boot:run -DskipTests
 ```
 INFO  - RabbitMQ Host: localhost
 INFO  - RabbitMQ connected successfully
-INFO  - Queue created: inscricao.criada.comunicacoes
+INFO  - Queue created: inscricao.criada
 INFO  - Started InscricaoApplication
 ```
 
 **COMUNICACOES-SERVICE:**
 ```
 INFO  - RabbitMQ Host: localhost
-INFO  - Queue created: inscricao.criada.comunicacoes
+INFO  - Queue created: inscricao.criada
 INFO  - Queue created: evento.att.comunicacoes
 INFO  - RabbitListener containers started
 INFO  - Started ComunicacoesApplication
@@ -114,7 +114,7 @@ INFO  - Started EventoApplication
 ### **2. Management UI (http://localhost:15672):**
 
 **Queues Tab:**
-- ✅ `inscricao.criada.comunicacoes` (durável)
+- ✅ `inscricao.criada` (durável)
 - ✅ `evento.att.comunicacoes` (durável)
 
 **Connections Tab:**
@@ -133,7 +133,7 @@ curl -X POST http://localhost:8085/api/inscricoes \
 ```
 
 **Verificar no Management UI:**
-- Ir em **Queues** → `inscricao.criada.comunicacoes`
+- Ir em **Queues** → `inscricao.criada`
 - Deve aparecer **1 message** (temporariamente)
 - Message rate deve mostrar atividade
 
@@ -186,7 +186,7 @@ grep -r "rabbitmq" */src/main/resources/application.properties
 - **Virtual Host:** /
 
 ### **Filas Configuradas:**
-- `inscricao.criada.comunicacoes` (nova funcionalidade)
+- `inscricao.criada` (nova funcionalidade)
 - `evento.att.comunicacoes` (existente)
 
 ### **Management UI:**

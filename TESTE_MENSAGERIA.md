@@ -28,7 +28,7 @@ InscricaoController.criar()
     → InscricaoService.salvar()
     → enviarVoucherPorEmail() (linha 55-65)
     → InscricaoPublisherPort.publicarInscricaoCriada()
-    → RabbitMQ (fila: inscricao.criada.comunicacoes)
+    → RabbitMQ (fila: inscricao.criada)
     → InscricaoRabbitConsumer.receberInscricaoCriada()
     → EmailService.enviarVoucherInscricao()
 ```
@@ -89,14 +89,14 @@ mvn spring-boot:run
 
 **No INSCRICAO-SERVICE, procure por:**
 ```
-INFO  - Created queue: inscricao.criada.comunicacoes
+INFO  - Created queue: inscricao.criada
 INFO  - RabbitMQ connection established
 INFO  - Started InscricaoApplication
 ```
 
 **No COMUNICACAO-SERVICE, procure por:**
 ```
-INFO  - Created queue: inscricao.criada.comunicacoes
+INFO  - Created queue: inscricao.criada
 INFO  - Created queue: evento.att.comunicacoes
 INFO  - Started ComunicacoesApplication
 ```
@@ -121,13 +121,13 @@ curl -X POST http://localhost:8085/api/inscricoes \
 **INSCRICAO-SERVICE:**
 ```
 INFO  - Inscricão criada: ID=123, EventoId=1, UsuarioId=1
-INFO  - Enviando mensagem para fila: inscricao.criada.comunicacoes
+INFO  - Enviando mensagem para fila: inscricao.criada
 INFO  - Mensagem publicada com sucesso
 ```
 
 **COMUNICACAO-SERVICE:**
 ```
-INFO  - Mensagem recebida da fila: inscricao.criada.comunicacoes
+INFO  - Mensagem recebida da fila: inscricao.criada
 INFO  - Processando inscrição: ID=123
 INFO  - Gerando PDF para usuário: 1
 INFO  - Email enviado com sucesso para: usuario@email.com
@@ -197,8 +197,8 @@ telnet jackal.rmq.cloudamqp.com 5672
 grep "broker.queue" */src/main/resources/application.properties
 
 # Deve retornar:
-# inscricao/src/main/resources/application.properties:broker.queue.inscricao.criada=inscricao.criada.comunicacoes
-# comunicacoes/src/main/resources/application.properties:broker.queue.inscricao.criada=inscricao.criada.comunicacoes
+# inscricao/src/main/resources/application.properties:broker.queue.inscricao.criada=inscricao.criada
+# comunicacoes/src/main/resources/application.properties:broker.queue.inscricao.criada=inscricao.criada
 ```
 
 ### **Problema: Mensagem não processada**
@@ -264,7 +264,7 @@ O sistema agora suporta:
 2. ✅ **Envio de atualização** quando evento é modificado (já existia)
 
 **Total de filas RabbitMQ:** 2
-- `inscricao.criada.comunicacoes` [NOVA]
+- `inscricao.criada` [NOVA]
 - `evento.att.comunicacoes` [EXISTENTE]
 
 🚀 **Pronto para produção!**
