@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 
 import com.eventosapi.comunicacoes.application.port.InscricaoClientPort;
 import com.eventosapi.comunicacoes.domain.model.Inscricao;
-import com.eventosapi.comunicacoes.infra.clients.InscricaoFeignClient;
+import com.eventosapi.comunicacoes.infra.entities.InscricaoEntity;
+import com.eventosapi.comunicacoes.infra.repositories.InscricaoJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class InscricaoClientAdapter implements InscricaoClientPort {
 
-    private final InscricaoFeignClient feignClient;
+    private final InscricaoJpaRepository repository;
 
     @Override
     public Optional<Inscricao> findById(Long id) {
         try {
-            return Optional.ofNullable(feignClient.findById(id).getBody());
+            return repository.findById(id).map(InscricaoEntity::toDomain);
         } catch (Exception e) {
             log.error("Erro ao buscar inscrição com id {}: {}", id, e.getMessage());
             return Optional.empty();
