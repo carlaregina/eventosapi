@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 
 import com.eventosapi.comunicacoes.application.dtos.InscricaoDTO;
 import com.eventosapi.comunicacoes.application.port.EventoClientPort;
+import com.eventosapi.comunicacoes.application.port.LocalClientPort;
 import com.eventosapi.comunicacoes.application.port.UsuarioClientPort;
 import com.eventosapi.comunicacoes.domain.model.Email;
 import com.eventosapi.comunicacoes.domain.model.Evento;
 import com.eventosapi.comunicacoes.domain.model.Inscricao;
+import com.eventosapi.comunicacoes.domain.model.Local;
 import com.eventosapi.comunicacoes.domain.model.Usuario;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class VoucherService {
     
     private final PDFService pdfService;
     private final EmailService emailService;
+    private final LocalClientPort localClient;
     private final EventoClientPort eventoClient;
     private final UsuarioClientPort usuarioClient;
 
@@ -40,6 +43,8 @@ public class VoucherService {
     private Inscricao from(InscricaoDTO dto) {
         Evento evento = buscarEventoPorId(dto.getIdEvento());
         Usuario usuario = buscarUsuarioPorId(dto.getIdUsuario());
+        Local local = buscarLocalPorId(evento.getLocal().getId());
+        evento.setLocal(local);
         return new Inscricao(dto.getId(), evento, usuario, dto.getData(), dto.getStatus());
     }
 
@@ -51,5 +56,10 @@ public class VoucherService {
     private Evento buscarEventoPorId(Long id) {
         return eventoClient.findById(id)
             .orElseThrow(() -> new RuntimeException("Evento não encontrado com ID: " + id));
+    }
+
+    private Local buscarLocalPorId(Long id) {
+        return localClient.findById(id)
+            .orElseThrow(() -> new RuntimeException("Local não encontrado com ID: " + id));
     }
 }
