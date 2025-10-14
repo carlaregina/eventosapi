@@ -3,8 +3,8 @@ package com.eventosapi.comunicacoes.infra.messaging.rabbitmq;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import com.eventosapi.comunicacoes.application.dtos.InscricaoDTO;
 import com.eventosapi.comunicacoes.application.services.VoucherService;
-import com.eventosapi.comunicacoes.interfaces.dto.InscricaoDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

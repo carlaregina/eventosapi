@@ -4,13 +4,13 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.eventosapi.comunicacoes.application.dtos.InscricaoDTO;
 import com.eventosapi.comunicacoes.application.port.EventoClientPort;
 import com.eventosapi.comunicacoes.application.port.UsuarioClientPort;
 import com.eventosapi.comunicacoes.domain.model.Email;
 import com.eventosapi.comunicacoes.domain.model.Evento;
 import com.eventosapi.comunicacoes.domain.model.Inscricao;
 import com.eventosapi.comunicacoes.domain.model.Usuario;
-import com.eventosapi.comunicacoes.interfaces.dto.InscricaoDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
