@@ -1,20 +1,28 @@
 package com.eventosapi.evento.application.services;
 
-import com.eventosapi.evento.application.port.*;
-import com.eventosapi.evento.domain.model.Evento;
-import com.eventosapi.evento.domain.model.Inscricao;
-import com.eventosapi.evento.domain.model.Local;
-import com.eventosapi.evento.domain.model.Usuario;
-import com.eventosapi.evento.interfaces.dto.*;
-import com.eventosapi.evento.interfaces.specification.EventoSpecification;
-import com.eventosapi.evento.interfaces.specification.InscricaoSpecification;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.eventosapi.evento.application.port.EventoPublisherPort;
+import com.eventosapi.evento.application.port.EventoRepositoryPort;
+import com.eventosapi.evento.application.port.InscricaoClientPort;
+import com.eventosapi.evento.application.port.LocalClientPort;
+import com.eventosapi.evento.application.port.UsuarioClientPort;
+import com.eventosapi.evento.domain.model.Evento;
+import com.eventosapi.evento.domain.model.Inscricao;
+import com.eventosapi.evento.interfaces.dto.EventoRequestDTO;
+import com.eventosapi.evento.interfaces.dto.EventoResponseDTO;
+import com.eventosapi.evento.interfaces.dto.FiltroEventoDTO;
+import com.eventosapi.evento.interfaces.dto.FiltroUsuarioDTO;
+import com.eventosapi.evento.interfaces.dto.InscricaoDTO;
+import com.eventosapi.evento.interfaces.dto.UsuarioResponseDTO;
+import com.eventosapi.evento.interfaces.specification.EventoSpecification;
+import com.eventosapi.evento.interfaces.specification.InscricaoSpecification;
 
 @Service
 public class EventoService {
@@ -61,14 +69,11 @@ public class EventoService {
 
     @Transactional
     public EventoResponseDTO criar(EventoRequestDTO dto) {
-
-            System.out.println("ID do OOORRGANIZAAAADOOOORRRRRR recebido: " + dto.getOrganizadorId());
-
-        Usuario organizador = usuarioClient.findById(dto.getOrganizadorId());
+        if (!usuarioClient.existsById(dto.getOrganizadorId())) {
+            throw new IllegalArgumentException("Organizador não encontrado para o id: " + dto.getOrganizadorId());
+        }
     
-        Local local = localClient.findById(dto.getLocalId());
-
-        if (local == null) {
+        if (!localClient.existsById(dto.getLocalId())) {
             throw new IllegalArgumentException("Local não encontrado para o id: " + dto.getLocalId());
         }
 
@@ -87,20 +92,22 @@ public class EventoService {
 
     @Transactional
     public EventoResponseDTO atualizar(Long id, EventoRequestDTO dto) {
+        if (!usuarioClient.existsById(dto.getOrganizadorId())) {
+            throw new IllegalArgumentException("Organizador não encontrado para o id: " + dto.getOrganizadorId());
+        }
+    
+        if (!localClient.existsById(dto.getLocalId())) {
+            throw new IllegalArgumentException("Local não encontrado para o id: " + dto.getLocalId());
+        }
+
         Evento evento = repository.findById(id);
-
-        Usuario organizador = usuarioClient.findById(dto.getOrganizadorId());
-        Local local = localClient.findById(dto.getLocalId());
-
         evento.setTitulo(dto.getTitulo());
         evento.setDescricao(dto.getDescricao());
         evento.setData(dto.getData());
         evento.setTipo(dto.getTipo());
         evento.setMaxParticipantes(dto.getMaxParticipantes());
-        evento.setOrganizadorId(organizador.getId());
-        evento.setLocalId(local.getId());
-        System.out.println("Organizador ID: " + evento.getOrganizadorId());
-System.out.println("Local ID: " + evento.getLocalId());
+        evento.setOrganizadorId(dto.getOrganizadorId());
+        evento.setLocalId(dto.getLocalId());
 
         Evento atualizado = repository.save(evento);
 
@@ -160,14 +167,10 @@ System.out.println("Local ID: " + evento.getLocalId());
                 pageable.getPageSize()
         );
 
-        return inscricoes.map(inscricao -> {
-            Long usuarioId = inscricao.getIdUsuario();
-            Usuario usuario = usuarioClient.findById(usuarioId);
-            UsuarioResponseDTO usuarioDTO = new UsuarioResponseDTO(usuario.getNome(), usuario.getEmail(), usuario.getTelefone(), usuario.getTipo());
-            return usuarioDTO;
-        });
-
-
+        return inscricoes
+            .map(Inscricao::getIdUsuario)
+            .map(usuarioId -> usuarioClient.findById(usuarioId).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado para o id: " + usuarioId)))
+            .map(usuario -> new UsuarioResponseDTO(usuario.getNome(), usuario.getEmail(), usuario.getTelefone(), usuario.getTipo()));
     }
 
 }
