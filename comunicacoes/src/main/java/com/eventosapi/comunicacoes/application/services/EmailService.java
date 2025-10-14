@@ -13,20 +13,16 @@ import com.eventosapi.comunicacoes.interfaces.dto.InscricaoVoucherDTO;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 
 
 @Service
+@RequiredArgsConstructor
 public class EmailService {
 
     private final JavaMailSender mailSender;
     private final PDFService pdfService;
     private final UsuarioClientPort usuarioClient;
-
-    public EmailService(JavaMailSender mailSender, PDFService pdfService, UsuarioClientPort usuarioClient) {
-        this.mailSender = mailSender;
-        this.pdfService = pdfService;
-        this.usuarioClient = usuarioClient;
-    }
 
     public void enviarComAnexo(InscricaoDTO inscricao) {
         byte[] pdf = pdfService.geraRelatorioPDF(inscricao);
