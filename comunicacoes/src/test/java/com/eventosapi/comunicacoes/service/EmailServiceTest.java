@@ -17,10 +17,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.mail.javamail.JavaMailSender;
 
 import com.eventosapi.comunicacoes.application.port.UsuarioClientPort;
+import com.eventosapi.comunicacoes.application.services.EmailService;
+import com.eventosapi.comunicacoes.application.services.PDFService;
 import com.eventosapi.comunicacoes.domain.model.Usuario;
 import com.eventosapi.comunicacoes.interfaces.dto.InscricaoDTO;
-import com.eventosapi.comunicacoes.services.EmailService;
-import com.eventosapi.comunicacoes.services.PDFService;
 
 import jakarta.mail.internet.MimeMessage;
 

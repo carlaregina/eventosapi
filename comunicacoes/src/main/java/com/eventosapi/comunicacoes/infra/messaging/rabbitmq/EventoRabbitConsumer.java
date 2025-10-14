@@ -1,7 +1,7 @@
 package com.eventosapi.comunicacoes.infra.messaging.rabbitmq;
 
+import com.eventosapi.comunicacoes.application.services.EmailService;
 import com.eventosapi.comunicacoes.interfaces.dto.InscricaoDTO;
-import com.eventosapi.comunicacoes.services.EmailService;
 
 import lombok.extern.slf4j.Slf4j;
 

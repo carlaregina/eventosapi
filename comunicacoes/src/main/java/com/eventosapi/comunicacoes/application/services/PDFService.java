@@ -1,4 +1,4 @@
-package com.eventosapi.comunicacoes.services;
+package com.eventosapi.comunicacoes.application.services;
 
 
 import java.io.IOException;

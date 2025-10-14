@@ -2,11 +2,11 @@ package com.eventosapi.comunicacoes.service;
 
 import com.eventosapi.comunicacoes.application.port.EventoClientPort;
 import com.eventosapi.comunicacoes.application.port.UsuarioClientPort;
+import com.eventosapi.comunicacoes.application.services.PDFService;
 import com.eventosapi.comunicacoes.domain.model.Evento;
 import com.eventosapi.comunicacoes.domain.model.Usuario;
 import com.eventosapi.comunicacoes.interfaces.dto.InscricaoDTO;
 
-import com.eventosapi.comunicacoes.services.PDFService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
