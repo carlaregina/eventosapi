@@ -1,7 +1,9 @@
 package com.eventosapi.comunicacoes.application.port;
 
+import java.util.Optional;
+
 import com.eventosapi.comunicacoes.domain.model.Evento;
 
 public interface EventoClientPort {
-    Evento findById(Long id);
+    Optional<Evento> findById(Long id);
 }
