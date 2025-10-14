@@ -66,6 +66,6 @@ public class PDFService {
     }
 
     private String localEvento(Inscricao inscricao) {
-        return "Local: " + inscricao.getEvento().getLocal();
+        return "Local: " + inscricao.getEvento().getLocal().toFormattedString();
     }
 }
