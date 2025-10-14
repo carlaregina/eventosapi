@@ -1,22 +1,19 @@
-package com.eventosapi.evento.infra.client;
+package com.eventosapi.evento.infra.clients;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.eventosapi.evento.application.port.InscricaoClientPort;
 import com.eventosapi.evento.domain.enums.TipoUsuario;
 import com.eventosapi.evento.domain.model.Inscricao;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.context.annotation.Profile;
-import org.springframework.data.domain.Page;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import com.eventosapi.evento.infra.feign.FeignAuthConfig;
 
-import java.util.List;
-
-@FeignClient(name = "inscricao-api", url = "${servicos.inscricao.url}",fallback = InscricaoClientMock.class,
- configuration = FeignAuthConfig.class)
-@Profile("!mock") // só existe quando não estiver no profile mock
+@FeignClient(name = "inscricao-api", configuration = FeignAuthConfig.class)
 public interface InscricaoClient extends InscricaoClientPort {
 
     @GetMapping
