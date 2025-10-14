@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.eventosapi.comunicacoes.domain.model.Inscricao;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -19,6 +20,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PDFService {
@@ -30,7 +32,7 @@ public class PDFService {
             }
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperTemplate);
             JasperPrint jasperprint = JasperFillManager.fillReport(jasperReport, criaParametros(inscricao), new JREmptyDataSource());
-            System.out.println("PDF gerado");
+            log.info("PDF gerado");
             return JasperExportManager.exportReportToPdf(jasperprint);
         } catch (JRException | IOException e) {
             throw new RuntimeException("Erro ao gerar voucher", e);
