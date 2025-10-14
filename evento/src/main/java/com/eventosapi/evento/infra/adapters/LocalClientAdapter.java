@@ -1,6 +1,5 @@
 package com.eventosapi.evento.infra.adapters;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
@@ -18,11 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 public class LocalClientAdapter implements LocalClientPort {
 
     private final LocalFeignClient feignClient;
-
-    @Override
-    public List<Local> findAll() {
-        return feignClient.findAll().getContent();
-    }
 
     @Override
     public Boolean existsById(Long id) {
