@@ -26,7 +26,8 @@ public class EmailService {
 
     public void enviarComAnexo(InscricaoDTO inscricao) {
         byte[] pdf = pdfService.geraRelatorioPDF(inscricao);
-        Usuario usuario = usuarioClient.findById(inscricao.getIdUsuario());
+        Usuario usuario = usuarioClient.findById(inscricao.getIdUsuario())
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + inscricao.getIdUsuario()));
         String email = usuario.getEmail();
 
         String assunto = "Confira os detalhes do seu evento";
@@ -62,7 +63,8 @@ public class EmailService {
       inscricaoDTO.setStatus(StatusInscricao.valueOf(inscricaoVoucher.getStatus()));
 
         byte[] pdf = pdfService.geraRelatorioPDF(inscricaoDTO);
-        Usuario usuario = usuarioClient.findById(inscricaoVoucher.getIdUsuario());
+        Usuario usuario = usuarioClient.findById(inscricaoVoucher.getIdUsuario())
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + inscricaoVoucher.getIdUsuario()));
         String email = usuario.getEmail();
 
         String assunto = "Bem-vindo! Sua inscrição foi confirmada";

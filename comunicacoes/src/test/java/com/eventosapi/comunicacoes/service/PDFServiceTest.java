@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,12 +50,12 @@ public class PDFServiceTest {
 
         Usuario usuario = new Usuario();
         usuario.setNome("Tatiana");
-        when(usuarioClient.findById(2L)).thenReturn(usuario);
+        when(usuarioClient.findById(2L)).thenReturn(Optional.of(usuario));
 
         Evento evento = new Evento();
         evento.setTitulo("Evento Teste");
         evento.setData(LocalDateTime.of(2025, 10, 9, 15, 30));
-        when(eventoClient.findById(3L)).thenReturn(evento);
+        when(eventoClient.findById(3L)).thenReturn(Optional.of(evento));
 
         Map<String, Object> parametros = pdfService.criaParametros(inscricao);
 
@@ -77,12 +78,12 @@ public class PDFServiceTest {
 
         Usuario usuario = new Usuario();
         usuario.setNome("Tatiana");
-        when(usuarioClient.findById(2L)).thenReturn(usuario);
+        when(usuarioClient.findById(2L)).thenReturn(Optional.of(usuario));
 
         Evento evento = new Evento();
         evento.setTitulo("Evento Teste");
         evento.setData(LocalDateTime.of(2025, 10, 9, 15, 30));
-        when(eventoClient.findById(3L)).thenReturn(evento);
+        when(eventoClient.findById(3L)).thenReturn(Optional.of(evento));
 
         assertDoesNotThrow(() -> {
             byte[] pdf = pdfService.geraRelatorioPDF(inscricao);

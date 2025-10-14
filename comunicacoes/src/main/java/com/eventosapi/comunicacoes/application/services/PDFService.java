@@ -55,7 +55,8 @@ public class PDFService {
     }
 
     private String saudacaoUsuario(InscricaoDTO inscricao) {
-        Usuario usuario = usuarioClient.findById(inscricao.getIdUsuario());
+        Usuario usuario = usuarioClient.findById(inscricao.getIdUsuario())
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + inscricao.getIdUsuario()));
         return "Olá, "+ usuario.getNome() + ", sua inscrição foi confirmada. Observe os detalhes do evento: ";
     }
 
@@ -81,6 +82,7 @@ public class PDFService {
     }
 
     private Evento recuperaEvento(Long eventoId) {
-       return eventoClient.findById(eventoId);
+        return eventoClient.findById(eventoId)
+            .orElseThrow(() -> new RuntimeException("Evento não encontrado com ID: " + eventoId));
     }
 }

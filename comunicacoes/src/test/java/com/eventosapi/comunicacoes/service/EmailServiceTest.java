@@ -7,6 +7,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -53,7 +55,7 @@ public class EmailServiceTest {
 
         Usuario usuario = new Usuario();
         usuario.setEmail("teste@dominio.com");
-        when(usuarioClient.findById(anyLong())).thenReturn(usuario);
+        when(usuarioClient.findById(anyLong())).thenReturn(Optional.of(usuario));
 
         MimeMessage mimeMessage = mock(MimeMessage.class);
         when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
