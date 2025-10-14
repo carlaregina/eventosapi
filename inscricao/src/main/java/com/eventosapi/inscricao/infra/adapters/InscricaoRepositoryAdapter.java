@@ -48,11 +48,11 @@ public class InscricaoRepositoryAdapter implements InscricaoRepositoryPort {
 	@Override
 	public Page<Inscricao> findAll(FiltroInscricaoDTO filtro, Pageable pageable) {
 		Specification<InscricaoEntity> specification = InscricaoSpecification.build()
-            .and(InscricaoSpecification.comDataMaiorOuIgualQue(filtro.dataInicio()))
-            .and(InscricaoSpecification.comDataMenorOuIgualQue(filtro.dataFim()))
-            .and(InscricaoSpecification.comStatus(filtro.status() == null ? null : List.of(filtro.status())))
-            .and(InscricaoSpecification.comUsuarioId(filtro.usuarioId()))
-            .and(InscricaoSpecification.comEventoId(filtro.eventoId()));
+            .and(InscricaoSpecification.comDataMaiorOuIgualQue(filtro.getDataInicio()))
+            .and(InscricaoSpecification.comDataMenorOuIgualQue(filtro.getDataFim()))
+            .and(InscricaoSpecification.comStatus(filtro.getStatus() == null ? null : List.of(filtro.getStatus())))
+            .and(InscricaoSpecification.comUsuarioId(filtro.getUsuarioId()))
+            .and(InscricaoSpecification.comEventoId(filtro.getEventoId()));
 		return repository.findAll(specification, pageable).map(InscricaoEntity::toDomain);
 	}
 }
