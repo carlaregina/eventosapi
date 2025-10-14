@@ -18,13 +18,14 @@ import com.eventosapi.evento.domain.model.Inscricao;
 import com.eventosapi.evento.interfaces.dto.EventoRequestDTO;
 import com.eventosapi.evento.interfaces.dto.EventoResponseDTO;
 import com.eventosapi.evento.interfaces.dto.FiltroEventoDTO;
-import com.eventosapi.evento.interfaces.dto.FiltroUsuarioDTO;
 import com.eventosapi.evento.interfaces.dto.InscricaoDTO;
 import com.eventosapi.evento.interfaces.dto.UsuarioResponseDTO;
 import com.eventosapi.evento.interfaces.specification.EventoSpecification;
-import com.eventosapi.evento.interfaces.specification.InscricaoSpecification;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class EventoService {
 
     private final EventoRepositoryPort repository;
@@ -32,15 +33,6 @@ public class EventoService {
     private final LocalClientPort localClient;
     private final InscricaoClientPort inscricaoClient;
     private final EventoPublisherPort eventoPublisherPort;
-
-    public EventoService(EventoRepositoryPort eventoRepositoryPort, UsuarioClientPort usuarioClient, LocalClientPort localClient, InscricaoClientPort inscricaoClient, EventoPublisherPort eventoPublisherPort) {
-        this.repository = eventoRepositoryPort;
-        this.usuarioClient = usuarioClient;
-        this.localClient = localClient;
-        this.inscricaoClient = inscricaoClient;
-        this.eventoPublisherPort = eventoPublisherPort;
-    }
-
 
     @Transactional(readOnly = true)
     public Page<EventoResponseDTO> listar(FiltroEventoDTO filtro, Pageable pageable) {
@@ -117,7 +109,7 @@ public class EventoService {
     }
 
     private void enviarPDFAtualizado(Evento atualizado) {
-        List<Inscricao> inscricoes = inscricaoClient.findByEventoId(atualizado.getId());
+        List<Inscricao> inscricoes = inscricaoClient.findAllByEventoId(atualizado.getId());
 
         for (Inscricao inscricao : inscricoes) {
             InscricaoDTO dto = new InscricaoDTO();
@@ -149,24 +141,8 @@ public class EventoService {
                 .build();
     }
 
-    public Page<UsuarioResponseDTO> listarUsuariosPorEvento(Long id, FiltroUsuarioDTO filtro, Pageable pageable) {
-        Specification<Inscricao> specification = InscricaoSpecification.build()
-                .and(InscricaoSpecification.comEventoId(id))
-                .and(InscricaoSpecification.comUsuarioNome(filtro.getNome()))
-                .and(InscricaoSpecification.comUsuarioEmail(filtro.getEmail()))
-                .and(InscricaoSpecification.comUsuarioTelefone(filtro.getTelefone()))
-                .and(InscricaoSpecification.comUsuarioTipo(filtro.getTipo()));
-
-        Page<Inscricao> inscricoes = inscricaoClient.findAll(
-                id,
-                filtro.getNome(),
-                filtro.getEmail(),
-                filtro.getTelefone(),
-                filtro.getTipo(),
-                pageable.getPageNumber(),
-                pageable.getPageSize()
-        );
-
+    public Page<UsuarioResponseDTO> listarUsuariosPorEvento(Long id, Pageable pageable) {
+        Page<Inscricao> inscricoes = inscricaoClient.findAllByEventoId(id, pageable);
         return inscricoes
             .map(Inscricao::getIdUsuario)
             .map(usuarioId -> usuarioClient.findById(usuarioId).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado para o id: " + usuarioId)))

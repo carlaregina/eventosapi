@@ -110,21 +110,9 @@ public class EventoController {
 
     @GetMapping("/{id}/participantes")
     @Operation(summary = "Listar participantes do evento com paginação e filtros")
-    public Page<UsuarioResponseDTO> listarParticipantes(
-            @PathVariable Long id,
-            @RequestParam(required = false) String nome,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String telefone,
-            @RequestParam(required = false) TipoUsuario tipo,
-            Pageable pageable
-    ) {
-        log.info("Listando participantes do evento ID: {} com filtros - nome: {}, email: {}, telefone: {}, tipo: {} e paginação: {}", id, nome, email, telefone, tipo, pageable);
-        FiltroUsuarioDTO filtro = new FiltroUsuarioDTO();
-        filtro.setNome(nome);
-        filtro.setEmail(email);
-        filtro.setTelefone(telefone);
-        filtro.setTipo(tipo);
-        return eventoService.listarUsuariosPorEvento(id, filtro, pageable);
+    public Page<UsuarioResponseDTO> listarParticipantes(@PathVariable Long id, Pageable pageable) {
+        log.info("Listando participantes do evento ID: {} com paginação: {}", id, pageable);
+        return eventoService.listarUsuariosPorEvento(id, pageable);
     }
 
 }
