@@ -1,8 +1,8 @@
 package com.eventosapi.inscricao.application.port;
 
-import com.eventosapi.inscricao.domain.models.Evento;
 import java.util.Optional;
+import com.eventosapi.inscricao.domain.models.Evento;
 
 public interface EventoClientPort {
-  Optional<Evento> findById(Long id);
+    Optional<Evento> findById(Long id);
 }

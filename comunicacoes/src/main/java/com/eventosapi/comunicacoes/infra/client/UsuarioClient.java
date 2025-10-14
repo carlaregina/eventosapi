@@ -11,12 +11,11 @@ import java.util.List;
 
 @FeignClient(name = "usuarios-api", url = "${servicos.usuarios.url}",  fallback = UsuarioClientMock.class)
 @Profile("!mock") // só existe quando não estiver no profile mock
-
 public interface UsuarioClient extends UsuarioClientPort {
 
 
-    @GetMapping("{/id}")
-    Usuario findById(@PathVariable Long id);
+    @GetMapping("/{id}")
+    Usuario findById(@PathVariable("id") Long id);
 
     @GetMapping
     List<Usuario> findAll();

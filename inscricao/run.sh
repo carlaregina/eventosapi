@@ -1,4 +1,4 @@
-# Rodar o serviço de inscrição com o perfil de desenvolvimento
+docker# Rodar o serviço de inscrição com o perfil de desenvolvimento
 mvn -Dspring-boot.run.profiles=dev spring-boot:run
 
 # buscar por ID (ajuste se o id mudou)
@@ -47,3 +47,13 @@ curl -i -X POST http://localhost:8081/api/inscricoes \
 
 
 
+
+
+curl -i -X POST http://localhost:8083/api/locais \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJldmVudG9zIiwic3ViIjoiYWRtaW5AZW1haWwuY29tIiwiZXhwIjoxNzYwMjUzNjUyfQ.gYWR6vo3YTJOkY0g8-UGqMUy_sYJw1_ga9JWA7NrOiI" \
+  -d '{
+    "nome": "Auditório Central",
+    "endereco": "Rua Exemplo, 123",
+    "categoria": "INTERNO"
+  }'

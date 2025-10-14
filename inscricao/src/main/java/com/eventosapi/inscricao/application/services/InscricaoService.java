@@ -8,10 +8,12 @@ import com.eventosapi.inscricao.application.dtos.FiltroInscricaoDTO;
 import com.eventosapi.inscricao.application.exception.EntidadeNaoEncontradoException;
 import com.eventosapi.inscricao.application.exception.RegraNegocioException;
 import com.eventosapi.inscricao.application.port.EventoClientPort;
+import com.eventosapi.inscricao.application.port.InscricaoPublisherPort;
 import com.eventosapi.inscricao.application.port.InscricaoRepositoryPort;
 import com.eventosapi.inscricao.application.port.UsuarioClientPort;
 import com.eventosapi.inscricao.domain.enums.StatusInscricao;
 import com.eventosapi.inscricao.domain.models.Inscricao;
+import com.eventosapi.inscricao.interfaces.dto.InscricaoVoucherDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +24,7 @@ public class InscricaoService {
     private final InscricaoRepositoryPort inscricaoRepo;
     private final EventoClientPort eventoPort;
     private final UsuarioClientPort usuarioPort;
+    private final InscricaoPublisherPort inscricaoPublisherPort;
 
     public Inscricao salvar(Inscricao inscricao) {
         if (inscricaoRepo.existsByEventoAndUsuario(inscricao.getEventoId(), inscricao.getUsuarioId())) {
@@ -29,19 +32,38 @@ public class InscricaoService {
         }
 
         var confirmadas = inscricaoRepo.countConfirmadasByEvento(inscricao.getEventoId());
+
+        System.out.println("inscricao.getEventoId(): " + inscricao.getEventoId());
         var evento = eventoPort.findById(inscricao.getEventoId())
             .orElseThrow(() -> new EntidadeNaoEncontradoException("Evento não encontrado"));
-        
-        
+
+
         if (confirmadas >= evento.getMaxParticipantes()) {
             throw new RegraNegocioException("Capacidade esgotada.");
         }
-            
+
         if(!usuarioPort.existsById(inscricao.getUsuarioId())) {
             throw new EntidadeNaoEncontradoException("Usuário não encontrado");
         }
 
-        return inscricaoRepo.save(inscricao);
+        Inscricao inscricaoSalva = inscricaoRepo.save(inscricao);
+
+        // Enviar voucher por email via mensageria
+        enviarVoucherPorEmail(inscricaoSalva);
+
+        return inscricaoSalva;
+    }
+
+    private void enviarVoucherPorEmail(Inscricao inscricao) {
+        InscricaoVoucherDTO dto = InscricaoVoucherDTO.builder()
+                .id(inscricao.getId())
+                .idEvento(inscricao.getEventoId())
+                .idUsuario(inscricao.getUsuarioId())
+                .data(inscricao.getData())
+                .status(inscricao.getStatus().name())
+                .build();
+
+        inscricaoPublisherPort.publicarInscricaoCriada(dto);
     }
 
     public Page<Inscricao> listar(FiltroInscricaoDTO filtro, Pageable pageable) {

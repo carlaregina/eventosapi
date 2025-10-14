@@ -47,7 +47,7 @@ public class EventoEntity {
     @Column(name = "max_participantes", nullable = false)
     private Integer maxParticipantes;
 
-    @Column(name = "organizador")
+    @Column(name = "organizador", nullable = false)
     private Long organizadorId;
 
     @Column(name = "id_local", nullable = false)
