@@ -12,11 +12,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAll(Exception ex) {
+        log.error("Erro interno: ", ex);
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", System.currentTimeMillis());
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -27,6 +31,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> handleAll(RuntimeException ex){
+        log.error("Erro interno: ", ex);
         Map<String, Object> body =  new HashMap<>();
         body.put("timestamp", System.currentTimeMillis());
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -37,6 +42,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentials(BadCredentialsException ex){
+        log.error("Erro de credenciais inválidas: ", ex);
         Map<String, Object> body =  new HashMap<>();
         body.put("timestamp", System.currentTimeMillis());
         body.put("status", HttpStatus.UNAUTHORIZED.value());
@@ -47,6 +53,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex){
+        log.error("Erro de validação: ", ex);
         Map<String, String> erros =  new HashMap<>();
         for(FieldError fe : ex.getBindingResult().getFieldErrors()){
             erros.put(fe.getField(), fe.getDefaultMessage());

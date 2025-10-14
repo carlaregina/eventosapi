@@ -1,21 +1,28 @@
 package com.eventosapi.comunicacoes.service;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.mail.javamail.JavaMailSender;
+
 import com.eventosapi.comunicacoes.application.port.UsuarioClientPort;
 import com.eventosapi.comunicacoes.domain.model.Usuario;
 import com.eventosapi.comunicacoes.interfaces.dto.InscricaoDTO;
 import com.eventosapi.comunicacoes.services.EmailService;
 import com.eventosapi.comunicacoes.services.PDFService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.*;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 import jakarta.mail.internet.MimeMessage;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 public class EmailServiceTest {
 

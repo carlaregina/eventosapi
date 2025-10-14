@@ -28,7 +28,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/locais")
 @RequiredArgsConstructor
@@ -39,6 +41,7 @@ public class LocalController {
     @GetMapping
     @Operation(summary = "Listar locais com paginação e filtros")
     public Page<LocalResponseDTO> listar(FiltroLocalDTO filtro, Pageable pageable) {
+        log.info("Listando locais com filtros: {} e paginação: {}", filtro, pageable);
         return localService.buscarTodosLocais(filtro, pageable).map(LocalResponseDTO::toResponseDTO);
     }
 
@@ -52,6 +55,7 @@ public class LocalController {
             content = @Content)
     })
     public ResponseEntity<LocalResponseDTO> buscarPorId(@PathVariable Long id) {
+        log.info("Buscando local com ID: {}", id);
         return ResponseEntity.ok(toResponseDTO(localService.obterLocalPorId(id)));
     }
 
@@ -63,6 +67,7 @@ public class LocalController {
             schema = @Schema(implementation = Local.class)) }),
     })
     public ResponseEntity<LocalResponseDTO> salvar(@Valid @RequestBody LocalRequestDTO dto) {
+        log.info("Criando novo local: {}", dto);
         LocalResponseDTO localResponseDTO = toResponseDTO(localService.cadastrarLocal(dto.toDomain()));
         return ResponseEntity.status(CREATED).body(localResponseDTO);
     }
@@ -77,6 +82,7 @@ public class LocalController {
             content = @Content)
     })
     public ResponseEntity<LocalResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody LocalRequestDTO dto) {
+        log.info("Atualizando local ID: {} com dados: {}", id, dto);
         LocalResponseDTO localResponseDTO = toResponseDTO(localService.atualizarLocal(id, dto.toDomain()));
         return ResponseEntity.ok(localResponseDTO);
     }
@@ -90,6 +96,7 @@ public class LocalController {
             content = @Content)
     })
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        log.info("Deletando local com ID: {}", id);
         localService.deletarLocal(id);
         return ResponseEntity.noContent().build();
     }

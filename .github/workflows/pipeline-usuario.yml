@@ -1,4 +1,4 @@
-name: Build Serviço de Local
+name: Build Serviço de Usuário
 
 on:
   push:

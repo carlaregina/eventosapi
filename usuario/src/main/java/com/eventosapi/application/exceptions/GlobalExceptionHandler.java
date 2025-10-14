@@ -11,11 +11,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAll(Exception ex){
+        log.error("Erro interno: ", ex);
         Map<String, String> body =  new HashMap<>();
         body.put("message","Erro interno: "+ ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
@@ -30,6 +34,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicidadeEmailUsuarioException.class)
     public ResponseEntity<?> handleDuplicidadeEmailUsuarioException(DuplicidadeEmailUsuarioException ex){
+        log.error("Erro de duplicidade: ", ex);
         Map<String, Object> body =  new HashMap<>();
         body.put("timestamp", System.currentTimeMillis());
         body.put("status", HttpStatus.CONFLICT.value());
@@ -40,6 +45,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex){
+        log.error("Erro de validação: ", ex);
         Map<String, String> erros =  new HashMap<>();
         for(FieldError fe : ex.getBindingResult().getFieldErrors()){
             erros.put(fe.getField(), fe.getDefaultMessage());
@@ -49,6 +55,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntidadeNaoEncontradoException.class)
     public ResponseEntity<?> handleEntidadeNaoEncontradoException(EntidadeNaoEncontradoException ex){
+        log.error("Erro de entidade não encontrada: ", ex);
         Map<String, Object> body =  new HashMap<>();
         body.put("timestamp", System.currentTimeMillis());
         body.put("status", HttpStatus.NOT_FOUND.value());

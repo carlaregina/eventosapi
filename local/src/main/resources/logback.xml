@@ -1,0 +1,32 @@
+<configuration>
+    <contextName>${APP_NAME}</contextName>
+
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>${LOKI_URL}</url>
+        </http>
+
+        <labels>
+            <label>app=${APP_NAME}</label>
+            <label>host=${HOSTNAME}</label>
+            <label>level=%level</label>
+        </labels>
+
+        <format>
+            <message>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+            </message>
+        </format>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="LOKI" />
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
