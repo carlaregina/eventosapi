@@ -7,9 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.eventosapi.evento.application.dtos.FiltroInscricaoDTO;
 import com.eventosapi.evento.infra.dtos.InscricaoResponseDTO;
 import com.eventosapi.evento.infra.feign.FeignAuthConfig;
-import com.eventosapi.evento.interfaces.dto.FiltroInscricaoDTO;
 
 @FeignClient(name = "inscricao-api", url = "${servicos.inscricao.url}", configuration = FeignAuthConfig.class)
 public interface InscricaoFeignClient {

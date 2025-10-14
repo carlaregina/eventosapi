@@ -1,4 +1,4 @@
-package com.eventosapi.evento.interfaces.dto;
+package com.eventosapi.evento.application.dtos;
 
 import java.time.LocalDateTime;
 
