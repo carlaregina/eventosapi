@@ -1,4 +1,4 @@
-package com.eventosapi.comunicacoes.infra.client;
+package com.eventosapi.comunicacoes.infra.clients;
 
 import java.util.List;
 

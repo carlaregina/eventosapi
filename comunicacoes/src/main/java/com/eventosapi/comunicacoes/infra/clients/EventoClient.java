@@ -1,4 +1,4 @@
-package com.eventosapi.comunicacoes.infra.client;
+package com.eventosapi.comunicacoes.infra.clients;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Profile;
