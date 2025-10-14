@@ -1,13 +1,14 @@
 package com.eventosapi.comunicacoes.infra.client;
 
+import java.util.List;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
 import com.eventosapi.comunicacoes.application.port.LocalClientPort;
 import com.eventosapi.comunicacoes.domain.enums.Estado;
 import com.eventosapi.comunicacoes.domain.enums.TipoLocal;
 import com.eventosapi.comunicacoes.domain.model.Local;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @Profile("mock") // ativa só com profile "mock"

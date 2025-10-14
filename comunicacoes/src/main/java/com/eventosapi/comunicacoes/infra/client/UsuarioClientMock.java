@@ -1,12 +1,13 @@
 package com.eventosapi.comunicacoes.infra.client;
 
-import com.eventosapi.comunicacoes.application.port.UsuarioClientPort;
-import com.eventosapi.comunicacoes.domain.enums.TipoUsuario;
-import com.eventosapi.comunicacoes.domain.model.Usuario;
+import java.util.List;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.eventosapi.comunicacoes.application.port.UsuarioClientPort;
+import com.eventosapi.comunicacoes.domain.enums.TipoUsuario;
+import com.eventosapi.comunicacoes.domain.model.Usuario;
 
 @Component
 @Profile("mock")

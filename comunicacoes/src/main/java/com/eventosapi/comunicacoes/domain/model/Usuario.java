@@ -1,10 +1,8 @@
 package com.eventosapi.comunicacoes.domain.model;
 
-
 import com.eventosapi.comunicacoes.domain.enums.TipoUsuario;
 
 public class Usuario {
-
 
     private Long id;
 

@@ -1,17 +1,15 @@
 package com.eventosapi.comunicacoes.infra.client;
 
+import java.time.LocalDateTime;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
 import com.eventosapi.comunicacoes.application.port.InscricaoClientPort;
 import com.eventosapi.comunicacoes.domain.enums.StatusInscricao;
-import com.eventosapi.comunicacoes.domain.enums.TipoUsuario;
 import com.eventosapi.comunicacoes.domain.model.Evento;
 import com.eventosapi.comunicacoes.domain.model.Inscricao;
 import com.eventosapi.comunicacoes.domain.model.Usuario;
-
-import org.springframework.context.annotation.Profile;
-
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 @Profile("mock") // ativa só com profile "mock"

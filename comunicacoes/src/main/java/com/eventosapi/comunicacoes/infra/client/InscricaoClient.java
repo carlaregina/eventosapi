@@ -1,13 +1,15 @@
 package com.eventosapi.comunicacoes.infra.client;
 
-import com.eventosapi.comunicacoes.application.port.InscricaoClientPort;
-import com.eventosapi.comunicacoes.domain.enums.TipoUsuario;
-import com.eventosapi.comunicacoes.domain.model.Inscricao;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.eventosapi.comunicacoes.application.port.InscricaoClientPort;
+import com.eventosapi.comunicacoes.domain.enums.TipoUsuario;
+import com.eventosapi.comunicacoes.domain.model.Inscricao;
+
 @FeignClient(name = "inscricao-api", url = "${servicos.inscricao.url}")
 public interface InscricaoClient extends InscricaoClientPort {
 

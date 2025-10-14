@@ -1,8 +1,8 @@
 package com.eventosapi.comunicacoes.domain.model;
 
-import com.eventosapi.comunicacoes.domain.enums.StatusInscricao;
-
 import java.time.LocalDateTime;
+
+import com.eventosapi.comunicacoes.domain.enums.StatusInscricao;
 
 public class Inscricao {
     public Long getId() {

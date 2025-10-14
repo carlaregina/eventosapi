@@ -2,12 +2,6 @@ package com.eventosapi.comunicacoes.domain.model;
 
 import com.eventosapi.comunicacoes.domain.enums.Estado;
 import com.eventosapi.comunicacoes.domain.enums.TipoLocal;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.io.Serializable;
 
 public class Local {
 

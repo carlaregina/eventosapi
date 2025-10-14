@@ -1,18 +1,15 @@
 package com.eventosapi.comunicacoes.application.services;
 
-import com.eventosapi.comunicacoes.application.port.UsuarioClientPort;
-import com.eventosapi.comunicacoes.application.services.PDFService;
-import com.eventosapi.comunicacoes.domain.model.Inscricao;
-import com.eventosapi.comunicacoes.domain.model.Usuario;
-import com.eventosapi.comunicacoes.infra.client.UsuarioClient;
-import com.eventosapi.comunicacoes.interfaces.dto.InscricaoDTO;
-import com.eventosapi.comunicacoes.interfaces.dto.InscricaoVoucherDTO;
-import com.eventosapi.comunicacoes.domain.enums.StatusInscricao;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import com.eventosapi.comunicacoes.application.port.UsuarioClientPort;
+import com.eventosapi.comunicacoes.domain.enums.StatusInscricao;
+import com.eventosapi.comunicacoes.domain.model.Usuario;
+import com.eventosapi.comunicacoes.interfaces.dto.InscricaoDTO;
+import com.eventosapi.comunicacoes.interfaces.dto.InscricaoVoucherDTO;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

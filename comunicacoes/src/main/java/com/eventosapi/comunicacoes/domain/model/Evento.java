@@ -1,10 +1,8 @@
 package com.eventosapi.comunicacoes.domain.model;
 
-
+import java.time.LocalDateTime;
 
 import com.eventosapi.comunicacoes.domain.enums.TipoEvento;
-
-import java.time.LocalDateTime;
 
 public class Evento {
 

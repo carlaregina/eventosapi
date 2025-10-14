@@ -1,10 +1,10 @@
 package com.eventosapi.comunicacoes.interfaces.dto;
 
+import java.time.LocalDateTime;
+
 import com.eventosapi.comunicacoes.domain.enums.StatusInscricao;
 
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 public class InscricaoDTO {

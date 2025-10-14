@@ -1,21 +1,27 @@
 package com.eventosapi.comunicacoes.service;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import com.eventosapi.comunicacoes.application.port.EventoClientPort;
 import com.eventosapi.comunicacoes.application.port.UsuarioClientPort;
 import com.eventosapi.comunicacoes.application.services.PDFService;
 import com.eventosapi.comunicacoes.domain.model.Evento;
 import com.eventosapi.comunicacoes.domain.model.Usuario;
 import com.eventosapi.comunicacoes.interfaces.dto.InscricaoDTO;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.*;
-
-import java.time.LocalDateTime;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class PDFServiceTest {
 
