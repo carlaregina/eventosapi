@@ -270,7 +270,7 @@ class InscricaoServiceTest {
 
     @Test
     void listar_deveRetornarDTOs_semNecessidadeDeConsultarEventoUsuario() {
-        var filtro = new FiltroInscricaoDTO(null, null, null, null, null);
+        var filtro = new FiltroInscricaoDTO(null, null, null, null, null, null, null, null, null);
         var i1 = new Inscricao(10L, 1L, 2L, StatusInscricao.CONFIRMADA, LocalDateTime.now());
         var i2 = new Inscricao(11L, 1L, 2L, StatusInscricao.PENDENTE, LocalDateTime.now());
 

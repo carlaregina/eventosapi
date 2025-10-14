@@ -23,11 +23,13 @@ public class InscricaoEntity {
   @Column(name = "id_inscricao")
   private Long id;
 
-  @Column(name = "id_evento", nullable = false)
-  private Long eventoId;
+  @ManyToOne
+  @JoinColumn(name = "id_evento", nullable = false)
+  private EventoEntity evento;
 
-  @Column(name = "id_usuario", nullable = false)
-  private Long usuarioId;
+  @ManyToOne
+  @JoinColumn(name = "id_usuario", nullable = false)
+  private UsuarioEntity usuario;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "status", nullable = false, length = 255)
@@ -39,14 +41,14 @@ public class InscricaoEntity {
   public static InscricaoEntity fromDomain(Inscricao inscricao) {
     return InscricaoEntity.builder()
       .id(inscricao.getId())
-      .eventoId(inscricao.getEventoId())
-      .usuarioId(inscricao.getUsuarioId())
+      .evento(new EventoEntity(inscricao.getEventoId()))
+      .usuario(new UsuarioEntity(inscricao.getUsuarioId()))
       .status(inscricao.getStatus())
       .data(inscricao.getData())
       .build();
   }
 
   public Inscricao toDomain() {
-    return new Inscricao(id, eventoId, usuarioId, status, data);
+    return new Inscricao(id, evento.getId(), usuario.getId(), status, data);
   }
 }
