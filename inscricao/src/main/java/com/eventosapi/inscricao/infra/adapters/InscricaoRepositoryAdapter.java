@@ -52,6 +52,10 @@ public class InscricaoRepositoryAdapter implements InscricaoRepositoryPort {
             .and(InscricaoSpecification.comDataMenorOuIgualQue(filtro.getDataFim()))
             .and(InscricaoSpecification.comStatus(filtro.getStatus() == null ? null : List.of(filtro.getStatus())))
             .and(InscricaoSpecification.comUsuarioId(filtro.getUsuarioId()))
+			.and(InscricaoSpecification.comUsuarioNome(filtro.getNome()))
+			.and(InscricaoSpecification.comUsuarioEmail(filtro.getEmail()))
+			.and(InscricaoSpecification.comUsuarioTelefone(filtro.getTelefone()))
+			.and(InscricaoSpecification.comUsuarioTipo(filtro.getTipoUsuario()))
             .and(InscricaoSpecification.comEventoId(filtro.getEventoId()));
 		return repository.findAll(specification, pageable).map(InscricaoEntity::toDomain);
 	}
