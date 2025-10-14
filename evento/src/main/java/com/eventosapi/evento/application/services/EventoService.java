@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.eventosapi.evento.application.dtos.FiltroInscricaoDTO;
 import com.eventosapi.evento.application.port.EventoPublisherPort;
 import com.eventosapi.evento.application.port.EventoRepositoryPort;
 import com.eventosapi.evento.application.port.InscricaoClientPort;
@@ -109,7 +110,9 @@ public class EventoService {
     }
 
     private void enviarPDFAtualizado(Evento atualizado) {
-        List<Inscricao> inscricoes = inscricaoClient.findAllByEventoId(atualizado.getId());
+        FiltroInscricaoDTO filtro = new FiltroInscricaoDTO();
+        filtro.setEventoId(atualizado.getId());
+        List<Inscricao> inscricoes = inscricaoClient.findAllByEventoId(filtro);
 
         for (Inscricao inscricao : inscricoes) {
             InscricaoDTO dto = new InscricaoDTO();
@@ -141,8 +144,10 @@ public class EventoService {
                 .build();
     }
 
-    public Page<UsuarioResponseDTO> listarUsuariosPorEvento(Long id, Pageable pageable) {
-        Page<Inscricao> inscricoes = inscricaoClient.findAllByEventoId(id, pageable);
+    public Page<UsuarioResponseDTO> listarUsuariosPorEvento(Long eventoId, Pageable pageable) {
+        FiltroInscricaoDTO filtro = new FiltroInscricaoDTO();
+        filtro.setEventoId(eventoId);
+        Page<Inscricao> inscricoes = inscricaoClient.findAllByEventoId(filtro, pageable);
         return inscricoes
             .map(Inscricao::getIdUsuario)
             .map(usuarioId -> usuarioClient.findById(usuarioId).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado para o id: " + usuarioId)))
