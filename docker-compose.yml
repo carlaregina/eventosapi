@@ -82,6 +82,7 @@ services:
       SERVER_PORT: 8080
       POSTGRES_HOST: postgres
       RABBITMQ_HOST: rabbitmq
+      BROKER_QUEUE_EVENTO_ATUALIZAR: evento.atualizar
       EUREKA_SERVER_URL: http://service-discovery:8761/eureka
       API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
       API_LOCAL_LIST_URL: http://local-api:8080/api/locais
@@ -112,6 +113,7 @@ services:
       SERVER_PORT: 8080
       POSTGRES_HOST: postgres
       RABBITMQ_HOST: rabbitmq
+      RABBITMQ_QUEUE_INSCRICAO_CRIADA: inscricao.criada
       EUREKA_SERVER_URL: http://service-discovery:8761/eureka
       API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
       API_EVENTO_LIST_URL: http://evento-api:8080/api/eventos
@@ -151,6 +153,7 @@ services:
       RABBITMQ_PASSWORD: admin
       RABBITMQ_SSL_ENABLED: false
       BROKER_QUEUE_EVENTO_ATUALIZAR: evento.atualizar
+      RABBITMQ_QUEUE_INSCRICAO_CRIADA: inscricao.criada
       LOKI_URL: http://loki:3100/loki/api/v1/push
       APP_NAME: comunicacao-api
     ports:
