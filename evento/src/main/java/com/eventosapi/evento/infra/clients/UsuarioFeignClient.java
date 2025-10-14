@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.eventosapi.evento.domain.model.Usuario;
 import com.eventosapi.evento.infra.feign.FeignAuthConfig;
 
-@FeignClient(name = "usuarios-api", configuration = FeignAuthConfig.class)
+@FeignClient(name = "usuarios-api", url = "${servicos.usuarios.url}", configuration = FeignAuthConfig.class)
 public interface UsuarioFeignClient {
 
     @GetMapping("/{id}")
