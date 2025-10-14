@@ -15,7 +15,6 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 
-
 @Service
 @RequiredArgsConstructor
 public class EmailService {
@@ -27,7 +26,7 @@ public class EmailService {
     public void enviarComAnexo(InscricaoDTO inscricao) {
         byte[] pdf = pdfService.geraRelatorioPDF(inscricao);
         Usuario usuario = usuarioClient.findById(inscricao.getIdUsuario())
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + inscricao.getIdUsuario()));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + inscricao.getIdUsuario()));
         String email = usuario.getEmail();
 
         String assunto = "Confira os detalhes do seu evento";
@@ -54,17 +53,16 @@ public class EmailService {
     }
 
     public void enviarVoucherInscricao(InscricaoVoucherDTO inscricaoVoucher) {
-        // Converter InscricaoVoucherDTO para InscricaoDTO para reutilizar o PDF service
         InscricaoDTO inscricaoDTO = new InscricaoDTO();
         inscricaoDTO.setId(inscricaoVoucher.getId());
         inscricaoDTO.setIdEvento(inscricaoVoucher.getIdEvento());
         inscricaoDTO.setIdUsuario(inscricaoVoucher.getIdUsuario());
         inscricaoDTO.setData(inscricaoVoucher.getData());
-      inscricaoDTO.setStatus(StatusInscricao.valueOf(inscricaoVoucher.getStatus()));
+        inscricaoDTO.setStatus(StatusInscricao.valueOf(inscricaoVoucher.getStatus()));
 
         byte[] pdf = pdfService.geraRelatorioPDF(inscricaoDTO);
         Usuario usuario = usuarioClient.findById(inscricaoVoucher.getIdUsuario())
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + inscricaoVoucher.getIdUsuario()));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + inscricaoVoucher.getIdUsuario()));
         String email = usuario.getEmail();
 
         String assunto = "Bem-vindo! Sua inscrição foi confirmada";
@@ -90,4 +88,3 @@ public class EmailService {
         }
     }
 }
-
