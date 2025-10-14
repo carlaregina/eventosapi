@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.eventosapi.comunicacoes.domain.model.Evento;
 
-@FeignClient(name = "eventos-api", url = "${api.evento.list-url}")
+@FeignClient(name = "evento-api", url = "${api.evento.list-url}")
 public interface EventoFeignClient {
 
     @GetMapping("/{id}")
