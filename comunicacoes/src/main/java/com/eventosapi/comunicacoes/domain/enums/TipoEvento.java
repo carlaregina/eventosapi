@@ -7,5 +7,4 @@ public enum TipoEvento {
     CURSO,
     ESPORTE,
     PASSEIOS_TOURS;
-
 }

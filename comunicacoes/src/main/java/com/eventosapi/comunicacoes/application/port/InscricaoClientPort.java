@@ -1,12 +1,10 @@
 package com.eventosapi.comunicacoes.application.port;
 
+import java.util.Optional;
+
 import com.eventosapi.comunicacoes.domain.model.Inscricao;
 
-import java.util.List;
-
 public interface InscricaoClientPort {
-//    List<Inscricao> findAll();
-
-    Inscricao findById(Long id);
+    Optional<Inscricao> findById(Long id);
 }
 

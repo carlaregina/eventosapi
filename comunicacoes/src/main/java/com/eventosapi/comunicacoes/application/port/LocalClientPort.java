@@ -1,12 +1,9 @@
 package com.eventosapi.comunicacoes.application.port;
 
+import java.util.Optional;
 
 import com.eventosapi.comunicacoes.domain.model.Local;
 
-import java.util.List;
-
 public interface LocalClientPort {
-    List<Local> findAll();
-
-    Local findById(Long id);
+    Optional<Local> findById(Long id);
 }

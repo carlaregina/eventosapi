@@ -140,7 +140,7 @@ services:
       dockerfile: Dockerfile
     container_name: comunicacao-api
     environment:
-      SERVER_PORT: 8080
+      SERVER_PORT: 8086
       POSTGRES_HOST: postgres
       EUREKA_SERVER_URL: http://service-discovery:8761/eureka
       MAIL_HOST: mailhog
