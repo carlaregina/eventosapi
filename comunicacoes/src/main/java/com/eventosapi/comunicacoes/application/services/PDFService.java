@@ -8,11 +8,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.eventosapi.comunicacoes.application.port.EventoClientPort;
-import com.eventosapi.comunicacoes.application.port.UsuarioClientPort;
-import com.eventosapi.comunicacoes.domain.model.Evento;
-import com.eventosapi.comunicacoes.domain.model.Usuario;
-import com.eventosapi.comunicacoes.interfaces.dto.InscricaoDTO;
+import com.eventosapi.comunicacoes.domain.model.Inscricao;
 
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -27,10 +23,7 @@ import net.sf.jasperreports.engine.JasperReport;
 @RequiredArgsConstructor
 public class PDFService {
 
-    private final UsuarioClientPort usuarioClient;
-    private final EventoClientPort eventoClient;
-
-    public byte[] geraRelatorioPDF(InscricaoDTO inscricao) {
+    public byte[] geraRelatorioPDF(Inscricao inscricao) {
         try (InputStream jasperTemplate = getClass().getResourceAsStream("/relatorios/input/Inscricao.jrxml")) {
             if (jasperTemplate == null) {
                 throw new RuntimeException("Arquivo .jrxml não encontrado");
@@ -44,7 +37,7 @@ public class PDFService {
         }
     }
 
-    public Map<String, Object> criaParametros(InscricaoDTO inscricao) {
+    public Map<String, Object> criaParametros(Inscricao inscricao) {
         Map<String, Object> parametros = new HashMap<>();
         parametros.put("SAUDACAO_USUARIO", saudacaoUsuario(inscricao));
         parametros.put("NUMERO_INSCRICAO", numeroInscricao(inscricao));
@@ -54,35 +47,25 @@ public class PDFService {
         return parametros;
     }
 
-    private String saudacaoUsuario(InscricaoDTO inscricao) {
-        Usuario usuario = usuarioClient.findById(inscricao.getIdUsuario())
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + inscricao.getIdUsuario()));
-        return "Olá, "+ usuario.getNome() + ", sua inscrição foi confirmada. Observe os detalhes do evento: ";
+    private String saudacaoUsuario(Inscricao inscricao) {
+        return "Olá, "+ inscricao.getUsuario().getNome() + ", sua inscrição foi confirmada. Observe os detalhes do evento: ";
     }
 
-    private String numeroInscricao(InscricaoDTO inscricao) {
+    private String numeroInscricao(Inscricao inscricao) {
         return "Número da inscrição: " + inscricao.getId();
     }
 
-    private String nomeEvento(InscricaoDTO inscricao) {
-        Evento evento = recuperaEvento(inscricao.getIdEvento());
-        return "Evento: " + evento.getTitulo();
+    private String nomeEvento(Inscricao inscricao) {
+        return "Evento: " + inscricao.getEvento().getTitulo();
     }
 
-    private String horarioEvento(InscricaoDTO inscricao) {
-        Evento evento = recuperaEvento(inscricao.getIdEvento());
+    private String horarioEvento(Inscricao inscricao) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String horaFormatada = evento.getData().format(formatter);
+        String horaFormatada = inscricao.getEvento().getData().format(formatter);
         return "Horário: " + horaFormatada;
     }
 
-    private String localEvento(InscricaoDTO inscricao) {
-        Evento evento = recuperaEvento(inscricao.getIdEvento());
-        return "Local: " + evento.getTitulo();
-    }
-
-    private Evento recuperaEvento(Long eventoId) {
-        return eventoClient.findById(eventoId)
-            .orElseThrow(() -> new RuntimeException("Evento não encontrado com ID: " + eventoId));
+    private String localEvento(Inscricao inscricao) {
+        return "Local: " + inscricao.getEvento().getLocal();
     }
 }

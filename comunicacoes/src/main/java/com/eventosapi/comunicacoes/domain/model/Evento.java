@@ -19,5 +19,5 @@ public class Evento {
     private TipoEvento tipo;
     private Integer maxParticipantes;
     private Long organizadorId;
-    private Long localId;
+    private Local local;
 }
