@@ -84,6 +84,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       EUREKA_SERVER_URL: http://service-discovery:8761/eureka
       API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
+      API_LOCAL_LIST_URL: http://local-api:8080/api/locais
+      API_INSCRICAO_LIST_URL: http://inscricao-api:8080/api/inscricoes
       LOKI_URL: http://loki:3100/loki/api/v1/push
       APP_NAME: evento-api
     ports:
