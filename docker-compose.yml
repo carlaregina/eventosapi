@@ -1,19 +1,262 @@
 services:
-  eventos_api:
-    build: .
-    container_name: eventos-api
+  auth-api:
+    build:
+      context: ./auth/.
+      dockerfile: Dockerfile
+    container_name: auth-api
     environment:
-      POSTGRES_HOST: eventos_db
-    depends_on: 
-      - postgres
+      SERVER_PORT: 8080
+      POSTGRES_HOST: postgres
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: auth-api
     ports:
-      - "8080:8080"
+      - "8081:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - loki
+      - postgres
+      - service-discovery
+
+  usuario-api:
+    build:
+      context: ./usuario/.
+      dockerfile: Dockerfile
+    container_name: usuario-api
+    environment:
+      SERVER_PORT: 8080
+      POSTGRES_HOST: postgres
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: usuario-api
+    ports:
+      - "8082:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - loki
+      - postgres
+      - service-discovery
+
+  local-api:
+    build:
+      context: ./local/.
+      dockerfile: Dockerfile
+    container_name: local-api
+    environment:
+      SERVER_PORT: 8080
+      POSTGRES_HOST: postgres
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
+      API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: local-api
+    ports:
+      - "8083:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - loki
+      - postgres
+      - service-discovery
+      - usuario-api
+
+  evento-api:
+    build:
+      context: ./evento/.
+      dockerfile: Dockerfile
+    container_name: evento-api
+    environment:
+      SERVER_PORT: 8080
+      POSTGRES_HOST: postgres
+      RABBITMQ_HOST: rabbitmq
+      BROKER_QUEUE_EVENTO_ATUALIZAR: evento.atualizar
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
+      API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
+      API_LOCAL_LIST_URL: http://local-api:8080/api/locais
+      API_INSCRICAO_LIST_URL: http://inscricao-api:8080/api/inscricoes
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: evento-api
+    ports:
+      - "8084:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - loki
+      - postgres
+      - service-discovery
+      - usuario-api
+      - rabbitmq
+
+  inscricao-api:
+    build:
+      context: ./inscricao/.
+      dockerfile: Dockerfile
+    container_name: inscricao-api
+    environment:
+      SERVER_PORT: 8080
+      POSTGRES_HOST: postgres
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_QUEUE_INSCRICAO_CRIADA: inscricao.criada
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
+      API_USUARIO_LIST_URL: http://usuario-api:8080/api/usuarios
+      API_EVENTO_LIST_URL: http://evento-api:8080/api/eventos
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: inscricao-api
+    ports:
+      - "8085:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - loki
+      - postgres
+      - service-discovery
+      - evento-api
+      - usuario-api
+
+  comunicacao-api:
+    build:
+      context: ./comunicacoes/.
+      dockerfile: Dockerfile
+    container_name: comunicacao-api
+    environment:
+      SERVER_PORT: 8086
+      POSTGRES_HOST: postgres
+      EUREKA_SERVER_URL: http://service-discovery:8761/eureka
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      MAIL_USERNAME: mailhog
+      MAIL_PASSWORD: mailhog
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: admin
+      RABBITMQ_PASSWORD: admin
+      RABBITMQ_SSL_ENABLED: false
+      BROKER_QUEUE_EVENTO_ATUALIZAR: evento.atualizar
+      RABBITMQ_QUEUE_INSCRICAO_CRIADA: inscricao.criada
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: comunicacao-api
+    ports:
+      - "8086:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - loki
+      - postgres
+      - mailhog
+      - rabbitmq
+      - service-discovery
+
+  service-discovery:
+    build:
+      context: ./service-discovery/.
+      dockerfile: Dockerfile
+    container_name: service-discovery
+    environment:
+      SERVER_PORT: 8761
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+      APP_NAME: service-discovery
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - loki
+
   postgres:
     image: postgres:17-alpine3.21
-    container_name: eventos_db
+    container_name: eventos-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: eventos
     ports:
       - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-U", "postgres", "-d", "eventos"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+  
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./devops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+  
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=gadmin
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./devops/grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+      - loki
