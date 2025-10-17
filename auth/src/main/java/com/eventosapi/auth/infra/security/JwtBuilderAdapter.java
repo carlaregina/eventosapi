@@ -3,6 +3,7 @@ package com.eventosapi.auth.infra.security;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class JwtBuilderAdapter implements JwtBuilderPort {
                 .withIssuer("eventos")
                 .withSubject(usuario.getEmail())
                 .withExpiresAt(generateExpirationDate())
+                .withArrayClaim("roles", List.of(usuario.getTipo().name()).toArray(new String[0]))
                 .sign(algorithm);
             return token;
         } catch (JWTCreationException ex) {

@@ -1,4 +1,5 @@
-package com.eventosapi.comunicacoes.infra.feign;
+package com.eventosapi.inscricao.infra.feign;
+
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
